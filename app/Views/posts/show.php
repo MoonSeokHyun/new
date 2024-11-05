@@ -36,6 +36,18 @@
             padding: 10px 20px;
             margin-top: 10px;
         }
+
+        /* 댓글 스타일 */
+        .comment {
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .reply {
+            margin-left: 20px;
+        }
     </style>
 </head>
 <body>
@@ -45,17 +57,15 @@
 
     <!-- content 필드의 HTML 태그를 그대로 출력 -->
     <div>
-        <?= $post['content'] ?> <!-- esc() 함수가 없어야 함 -->
+        <?= $post['content'] ?>
     </div>
 
     <p>조회수: <?= $post['view_count'] ?></p>
     <p>추천: <?= $post['likes'] ?> <a href="/posts/<?= $post['id'] ?>/like">추천하기</a></p>
     <p>비추천: <?= $post['dislikes'] ?> <a href="/posts/<?= $post['id'] ?>/dislike">비추천하기</a></p>
 
-    <!-- 수정 및 삭제 버튼 -->
+    <!-- 삭제 모달 -->
     <button onclick="openModal('delete')">삭제</button>
-
-    <!-- 모달 창 -->
     <div id="passwordModal" class="modal">
         <div class="modal-content">
             <h3>비밀번호 입력</h3>
@@ -65,7 +75,6 @@
         </div>
     </div>
 
-    <!-- 폼 및 스크립트 -->
     <form id="deleteForm" action="/posts/<?= $post['id'] ?>/delete" method="post" style="display: none;">
         <input type="hidden" name="password" id="deletePassword">
     </form>
@@ -88,14 +97,66 @@
         // 폼 제출
         function submitForm() {
             const password = document.getElementById("modalPassword").value;
-            if (actionType === 'edit') {
-                document.getElementById("editForm").submit();
-            } else if (actionType === 'delete') {
+            if (actionType === 'delete') {
                 document.getElementById("deletePassword").value = password;
                 document.getElementById("deleteForm").submit();
             }
             closeModal();
         }
     </script>
+
+    <!-- 댓글 입력 폼 -->
+    <h2>댓글 작성</h2>
+    <form action="/posts/<?= $post['id'] ?>/reply" method="post">
+        <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+        <label>닉네임:</label>
+        <input type="text" name="nickname" required><br>
+        <label>댓글 내용:</label>
+        <textarea name="content" required></textarea><br>
+        <button type="submit">댓글 작성</button>
+    </form>
+
+    <!-- 댓글 목록 -->
+    <h2>댓글 목록</h2>
+    <div>
+        <?php foreach ($replies as $reply): ?>
+            <div class="comment">
+                <strong><?= esc($reply['nickname']) ?></strong>
+                <p><?= esc($reply['content']) ?></p>
+                <button onclick="openReplyForm(<?= $reply['id'] ?>)">답글</button>
+
+                <!-- 대댓글 입력 폼 -->
+                <div class="reply-form" id="replyForm-<?= $reply['id'] ?>" style="display:none;">
+                    <form action="/posts/<?= $post['id'] ?>/reply" method="post">
+                        <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                        <input type="hidden" name="parent_id" value="<?= $reply['id'] ?>">
+                        <label>닉네임:</label>
+                        <input type="text" name="nickname" required><br>
+                        <label>대댓글 내용:</label>
+                        <textarea name="content" required></textarea><br>
+                        <button type="submit">대댓글 작성</button>
+                    </form>
+                </div>
+
+                <!-- 대댓글 표시 -->
+                <?php foreach ($replies as $subReply): ?>
+                    <?php if ($subReply['parent_id'] === $reply['id']): ?>
+                        <div class="reply">
+                            <strong><?= esc($subReply['nickname']) ?></strong>
+                            <p><?= esc($subReply['content']) ?></p>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <script>
+    function openReplyForm(replyId) {
+        var replyForm = document.getElementById('replyForm-' + replyId);
+        replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none'; // 폼 보이기/숨기기
+    }
+    </script>
+
 </body>
 </html>

@@ -2,11 +2,13 @@
 
 namespace App\Controllers;
 use App\Models\PostModel;
+use App\Models\ReplyModel; // 댓글 모델 추가
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class Posts extends BaseController
 {
     protected $postModel;
+    protected $replyModel;
     protected $db;
     protected $categories = [
         1 => '퐁퐁이들 소식',
@@ -17,6 +19,7 @@ class Posts extends BaseController
     public function __construct()
     {
         $this->postModel = new PostModel();
+        $this->replyModel = new ReplyModel(); // 댓글 모델 초기화
         $this->db = \Config\Database::connect();
     }
 
@@ -72,7 +75,7 @@ class Posts extends BaseController
         $data = [
             'title' => $this->request->getPost('title'),
             'content' => $content,
-            'nickname' => $nickname, // 닉네임 추가
+            'nickname' => $nickname,
             'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
             'category' => $category,
         ];
@@ -90,8 +93,32 @@ class Posts extends BaseController
         }
 
         $this->postModel->update($id, ['view_count' => $post['view_count'] + 1]);
-        return view('posts/show', ['post' => $post]);
+
+        // 댓글과 대댓글을 한 번에 가져오기
+        $replies = $this->replyModel->getRepliesByPostId($id);
+
+        return view('posts/show', ['post' => $post, 'replies' => $replies]);
     }
+
+    // 댓글 추가
+    public function addReply()
+    {
+        $postId = $this->request->getPost('post_id');
+        $nickname = $this->request->getPost('nickname');
+        $content = $this->request->getPost('content');
+        $parentId = $this->request->getPost('parent_id') ?: null; // 부모 댓글 ID
+    
+        $data = [
+            'post_id' => $postId,
+            'nickname' => $nickname,
+            'content' => $content,
+            'parent_id' => $parentId // 부모 댓글 ID 저장
+        ];
+    
+        $this->replyModel->insert($data); // 댓글 또는 대댓글 저장
+        return redirect()->to("/posts/{$postId}");
+    }
+    
 
     // 게시글 수정
     public function edit($id)
