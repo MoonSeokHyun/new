@@ -55,9 +55,8 @@
     <p>작성자: <?= esc($post['nickname']) ?></p>
     <p>카테고리: <?= esc($post['category']) ?></p>
 
-    <!-- content 필드의 HTML 태그를 그대로 출력 -->
     <div>
-        <?= $post['content'] ?>
+        <?= $post['content'] ?> <!-- content 필드의 HTML 태그를 그대로 출력 -->
     </div>
 
     <p>조회수: <?= $post['view_count'] ?></p>
@@ -120,34 +119,42 @@
     <h2>댓글 목록</h2>
     <div>
         <?php foreach ($replies as $reply): ?>
-            <div class="comment">
-                <strong><?= esc($reply['nickname']) ?></strong>
-                <p><?= esc($reply['content']) ?></p>
-                <button onclick="openReplyForm(<?= $reply['id'] ?>)">답글</button>
+            <?php if ($reply['parent_id'] === null): // 부모 댓글만 표시 ?>
+                <div class="comment">
+                    <strong><?= esc($reply['nickname']) ?></strong>
+                    <p><?= esc($reply['content']) ?></p>
+                    <button onclick="openReplyForm(<?= $reply['id'] ?>)">답글</button>
 
-                <!-- 대댓글 입력 폼 -->
-                <div class="reply-form" id="replyForm-<?= $reply['id'] ?>" style="display:none;">
-                    <form action="/posts/<?= $post['id'] ?>/reply" method="post">
-                        <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-                        <input type="hidden" name="parent_id" value="<?= $reply['id'] ?>">
-                        <label>닉네임:</label>
-                        <input type="text" name="nickname" required><br>
-                        <label>대댓글 내용:</label>
-                        <textarea name="content" required></textarea><br>
-                        <button type="submit">대댓글 작성</button>
-                    </form>
+                    <!-- 대댓글 입력 폼 -->
+                    <div class="reply-form" id="replyForm-<?= $reply['id'] ?>" style="display:none;">
+                        <form action="/posts/<?= $post['id'] ?>/reply" method="post">
+                            <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                            <input type="hidden" name="parent_id" value="<?= $reply['id'] ?>">
+                            <label>닉네임:</label>
+                            <input type="text" name="nickname" required><br>
+                            <label>대댓글 내용:</label>
+                            <textarea name="content" required></textarea><br>
+                            <button type="submit">대댓글 작성</button>
+                        </form>
+                    </div>
+
+                    <!-- 대댓글 표시 -->
+                    <?php 
+                    // 부모 댓글 ID가 같은 대댓글을 출력합니다.
+                    $subReplies = array_filter($replies, function($r) use ($reply) {
+                        return $r['parent_id'] === $reply['id'];
+                    });
+                    ?>
+                    <div class="reply">
+                        <?php foreach ($subReplies as $subReply): ?>
+                            <div class="comment reply">
+                                <strong><?= esc($subReply['nickname']) ?></strong>
+                                <p><?= esc($subReply['content']) ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-
-                <!-- 대댓글 표시 -->
-                <?php foreach ($replies as $subReply): ?>
-                    <?php if ($subReply['parent_id'] === $reply['id']): ?>
-                        <div class="reply">
-                            <strong><?= esc($subReply['nickname']) ?></strong>
-                            <p><?= esc($subReply['content']) ?></p>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
+            <?php endif; ?>
         <?php endforeach; ?>
     </div>
 

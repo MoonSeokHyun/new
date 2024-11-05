@@ -28,16 +28,30 @@ class Posts extends BaseController
     {
         $category = $this->request->getGet('category');
         $categoryName = $this->categories[$category] ?? '전체';
-
+    
+        // 검색어 처리
+        $search = $this->request->getGet('search');
+    
         $query = $this->postModel->where('is_deleted', 'N');
+    
         if ($category) {
             $query->where('category', $category);
         }
-        
+    
+        // 제목, 내용, 닉네임으로 검색
+        if ($search) {
+            $query->groupStart()
+                ->like('title', $search)
+                ->orLike('content', $search)
+                ->orLike('nickname', $search)
+                ->groupEnd();
+        }
+    
         $data['posts'] = $query->findAll();
         $data['category'] = $category;
         $data['categoryName'] = $categoryName;
-        
+        $data['search'] = $search; // 검색어를 뷰에 전달
+    
         return view('posts/index', $data);
     }
 
