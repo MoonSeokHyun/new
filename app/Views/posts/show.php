@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <title>게시글 상세</title>
     <style>
+        /* 전체적인 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #555;
+            margin-top: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
         /* 모달 스타일 */
         .modal {
             display: none;
@@ -35,18 +56,60 @@
         .modal-content button {
             padding: 10px 20px;
             margin-top: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        /* 댓글 스타일 */
+        .modal-content button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 댓글 및 대댓글 스타일 */
         .comment {
             margin: 10px 0;
             border: 1px solid #ccc;
             padding: 10px;
             border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .reply {
             margin-left: 20px;
+            border-left: 2px solid #007BFF;
+            padding-left: 10px;
+        }
+
+        /* 입력 폼 스타일 */
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 댓글 작성 버튼 */
+        .reply-button {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -109,9 +172,9 @@
     <form action="/posts/<?= $post['id'] ?>/reply" method="post">
         <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
         <label>닉네임:</label>
-        <input type="text" name="nickname" required><br>
+        <input type="text" name="nickname" required>
         <label>댓글 내용:</label>
-        <textarea name="content" required></textarea><br>
+        <textarea name="content" required></textarea>
         <button type="submit">댓글 작성</button>
     </form>
 
@@ -123,7 +186,7 @@
                 <div class="comment">
                     <strong><?= esc($reply['nickname']) ?></strong>
                     <p><?= esc($reply['content']) ?></p>
-                    <button onclick="openReplyForm(<?= $reply['id'] ?>)">답글</button>
+                    <button class="reply-button" onclick="openReplyForm(<?= $reply['id'] ?>)">답글</button>
 
                     <!-- 대댓글 입력 폼 -->
                     <div class="reply-form" id="replyForm-<?= $reply['id'] ?>" style="display:none;">
@@ -131,9 +194,9 @@
                             <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                             <input type="hidden" name="parent_id" value="<?= $reply['id'] ?>">
                             <label>닉네임:</label>
-                            <input type="text" name="nickname" required><br>
+                            <input type="text" name="nickname" required>
                             <label>대댓글 내용:</label>
-                            <textarea name="content" required></textarea><br>
+                            <textarea name="content" required></textarea>
                             <button type="submit">대댓글 작성</button>
                         </form>
                     </div>
