@@ -7,6 +7,9 @@
 <body>
     <h1>게시글 목록</h1>
 
+    <!-- 글쓰기 버튼 -->
+    <a href="/posts/create?category=<?= esc($category) ?>">글쓰기</a>
+
     <!-- 검색 폼 -->
     <form action="/posts" method="get">
         <input type="hidden" name="category" value="<?= esc($category) ?>">
