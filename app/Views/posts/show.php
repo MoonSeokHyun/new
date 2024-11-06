@@ -140,6 +140,13 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        /* 이미지 스타일 */
+        .content img {
+            max-width: 100%; /* 이미지가 부모 요소의 100% 너비를 넘지 않도록 설정 */
+            height: auto; /* 비율을 유지하도록 설정 */
+            border-radius: 5px; /* 이미지 모서리 둥글게 */
+        }
+
         /* 댓글 및 대댓글 스타일 */
         .comment {
             margin: 10px 0;
