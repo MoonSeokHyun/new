@@ -40,80 +40,85 @@ class DCInsideCrawler extends Controller
             echo "디렉토리 생성 완료: {$uploadPath}\n";
         }
 
-        // URL 설정 및 HTML 가져오기
-        $url = "https://gall.dcinside.com/board/view/?id=neostock&no={$postNumber}";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
-        curl_setopt($ch, CURLOPT_REFERER, 'https://gall.dcinside.com/');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        while (true) {
+            // URL 설정 및 HTML 가져오기
+            $url = "https://gall.dcinside.com/board/view/?id=neostock&no={$postNumber}";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+            curl_setopt($ch, CURLOPT_REFERER, 'https://gall.dcinside.com/');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
-        $html = curl_exec($ch);
+            $html = curl_exec($ch);
 
-        if ($html === false || empty($html)) {
-            echo "Post {$postNumber} 가져오기 실패.\n";
-            curl_close($ch);
-            return;
-        }
-
-        curl_close($ch);
-
-        $dom = new \DOMDocument();
-        @$dom->loadHTML($html);
-        $xpath = new \DOMXPath($dom);
-
-        // 제목 크롤링
-        $titleNode = $xpath->query("//span[@class='title_subject']");
-        $title = $titleNode->length > 0 ? $titleNode->item(0)->textContent : '제목 없음';
-
-        // 본문 크롤링
-        $contentNode = $xpath->query("//div[contains(@class, 'write_div')]");
-        if ($contentNode->length > 0) {
-            $content = trim($contentNode->item(0)->textContent);
-        } else {
-            echo "Post {$postNumber} 본문을 찾을 수 없습니다.\n";
-            return;
-        }
-
-        // 이미지 URL 추출 및 다운로드 (GIF 제외)
-        $imageHtml = '';
-        $imageNodes = $xpath->query("//div[contains(@class, 'write_div')]//img");
-        foreach ($imageNodes as $img) {
-            $imageUrl = $img->getAttribute('src');
-            if (str_ends_with(strtolower($imageUrl), '.gif')) {
+            if ($html === false || empty($html)) {
+                echo "Post {$postNumber} 가져오기 실패. 다음 번호로 이동.\n";
+                curl_close($ch);
+                $postNumber++;
                 continue;
             }
 
-            $localImageUrl = $this->downloadImage($imageUrl, $uploadPath, $postNumber, $currentDate);
-            if ($localImageUrl) {
-                $imageHtml .= "<p><img src='{$localImageUrl}' alt='Uploaded Image'></p>";
+            curl_close($ch);
+
+            $dom = new \DOMDocument();
+            @$dom->loadHTML($html);
+            $xpath = new \DOMXPath($dom);
+
+            // 제목 크롤링
+            $titleNode = $xpath->query("//span[@class='title_subject']");
+            $title = $titleNode->length > 0 ? $titleNode->item(0)->textContent : '제목 없음';
+
+            // 본문 크롤링
+            $contentNode = $xpath->query("//div[contains(@class, 'write_div')]");
+            if ($contentNode->length > 0) {
+                $content = trim($contentNode->item(0)->textContent);
+            } else {
+                echo "Post {$postNumber} 본문을 찾을 수 없습니다. 다음 번호로 이동.\n";
+                $postNumber++;
+                continue;
             }
+
+            // 이미지 URL 추출 및 다운로드 (GIF 제외)
+            $imageHtml = '';
+            $imageNodes = $xpath->query("//div[contains(@class, 'write_div')]//img");
+            foreach ($imageNodes as $img) {
+                $imageUrl = $img->getAttribute('src');
+                if (str_ends_with(strtolower($imageUrl), '.gif')) {
+                    continue;
+                }
+
+                $localImageUrl = $this->downloadImage($imageUrl, $uploadPath, $postNumber, $currentDate);
+                if ($localImageUrl) {
+                    $imageHtml .= "<p><img src='{$localImageUrl}' alt='Uploaded Image'></p>";
+                }
+            }
+
+            // 이미지와 본문을 합쳐 최종 콘텐츠 생성
+            $finalContent = "<p>{$content}</p>" . $imageHtml;
+
+            // 데이터베이스에 데이터 삽입
+            $this->postModel->insert([
+                'post_number' => $postNumber,
+                'title' => $title,
+                'nickname' => '자료셔틀',
+                'content' => $finalContent,
+                'category' => 8,
+                'password' => password_hash('147258', PASSWORD_BCRYPT),
+                'is_deleted' => 'N'
+            ]);
+
+            // 크롤링 완료 기록을 `crawl_logs`에 추가
+            $this->db->table('crawl_logs')->insert([
+                'post_number' => $postNumber,
+                'completed_at' => date('Y-m-d H:i:s')
+            ]);
+
+            echo "Post {$postNumber} 크롤링 완료.\n";
+            break; // 크롤링 완료 시 종료
         }
-
-        // 이미지와 본문을 합쳐 최종 콘텐츠 생성
-        $finalContent = "<p>{$content}</p>" . $imageHtml;
-
-        // 데이터베이스에 데이터 삽입
-        $this->postModel->insert([
-            'post_number' => $postNumber,
-            'title' => $title,
-            'nickname' => '자료셔틀',
-            'content' => $finalContent,
-            'category' => 8,
-            'password' => password_hash('147258', PASSWORD_BCRYPT),
-            'is_deleted' => 'N'
-        ]);
-
-        // 크롤링 완료 기록을 `crawl_logs`에 추가
-        $this->db->table('crawl_logs')->insert([
-            'post_number' => $postNumber,
-            'completed_at' => date('Y-m-d H:i:s')
-        ]);
-
-        echo "Post {$postNumber} 크롤링 완료.\n";
     }
 
     private function downloadImage($imageUrl, $uploadPath, $postNumber, $currentDate)
