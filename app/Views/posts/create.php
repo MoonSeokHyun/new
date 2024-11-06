@@ -223,7 +223,7 @@
 <body>
 
 <div id="hd_section">
-    <a href="//pongpongkorea.com/">풍코</a>
+    <a href="//pongpongkorea.co.kr/">풍코</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
@@ -249,7 +249,6 @@
                     <a href="/posts?category=7">유머 게시판</a>
                 </div>
             </li>
-            <li class="has-sub"><a href="https://pongpongkorea.com/rd">랜덤 글</a></li>
         </ul>
     </div>
 </div>

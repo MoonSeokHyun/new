@@ -25,16 +25,18 @@
             background-color: #222;
             color: #ddd;
             padding: 20px;
+            line-height: 1.6; /* 줄 간격 추가 */
         }
 
         /* 네비게이션 바 스타일 */
         #hd_section {
             background-color: #333;
-            padding: 10px 20px;
+            padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
+            margin-bottom: 20px; /* 하단 여백 추가 */
         }
         #hd_section a {
             color: #00d8ff;
@@ -119,7 +121,7 @@
             color: #00d8ff;
             border-bottom: 2px solid #444;
             padding-bottom: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px; /* 하단 여백 추가 */
             font-size: 1.8em;
         }
 
@@ -129,12 +131,13 @@
             font-size: 1.2em;
             border-bottom: 1px solid #444;
             padding-bottom: 5px;
+            margin-top: 30px; /* 상단 여백 추가 */
         }
 
         /* 본문 스타일 */
         .content {
             background-color: #333;
-            padding: 15px;
+            padding: 20px; /* 내부 여백 증가 */
             border-radius: 5px;
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -145,6 +148,7 @@
             max-width: 100%; /* 이미지가 부모 요소의 100% 너비를 넘지 않도록 설정 */
             height: auto; /* 비율을 유지하도록 설정 */
             border-radius: 5px; /* 이미지 모서리 둥글게 */
+            margin-bottom: 10px; /* 이미지 하단 여백 추가 */
         }
 
         /* 댓글 및 대댓글 스타일 */
@@ -154,6 +158,7 @@
             border-radius: 5px;
             background-color: #333;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px; /* 하단 여백 추가 */
         }
 
         .reply {
@@ -265,7 +270,6 @@
                     <a href="/posts?category=7">유머 게시판</a>
                 </div>
             </li>
-            <li class="has-sub"><a href="https://pongpongkorea.com/rd">랜덤 글</a></li>
         </ul>
     </div>
 </div>
