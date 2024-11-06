@@ -19,4 +19,5 @@ $routes->post('posts/(:num)/reply', 'Posts::addReply'); // 댓글 추가
 $routes->get('crawler/crawlAndSave/(:num)', 'Crawler::crawlAndSave/$1');
 $routes->get('crawler/crawlAndSave', 'Crawler::crawlAndSave');
 
+$routes->get('dcinside/crawl/(:num)', 'DCInsideCrawler::crawlDCInside/$1');
 
