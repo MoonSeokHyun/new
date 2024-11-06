@@ -127,6 +127,14 @@
             line-height: 1.8;
             text-align: left;
         }
+
+        /* 이미지 스타일 */
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
         .interactions {
             display: flex;
             justify-content: center;
