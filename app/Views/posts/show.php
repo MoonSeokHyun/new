@@ -232,7 +232,6 @@
 <!-- Header Section -->
 <div id="hd_section">
     <a href="/">풍코</a>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
             <li class="has-sub"><a href="#">공지사항</a>
@@ -320,11 +319,6 @@
 </div>
 
 <script>
-    function toggleMenu() {
-        const menu = document.querySelector('.hd_dd_menu');
-        menu.classList.toggle('active');
-    }
-
     function toggleReplyForm(replyId) {
         const replyForm = document.getElementById(`reply-form-${replyId}`);
         replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
