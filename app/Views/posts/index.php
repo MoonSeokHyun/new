@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 목록</title>
     <style>
         /* 전체 스타일 */
@@ -104,8 +105,9 @@
         /* 게시글 목록 스타일 */
         h1 {
             color: #eee;
-            font-size: 1.8em;
+            font-size: 1.5em;
             margin-bottom: 15px;
+            text-align: center;
         }
 
         a {
@@ -223,6 +225,25 @@
             color: #888;
             margin-bottom: 15px;
         }
+
+        /* 모바일 친화적 스타일 조정 */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em; /* 제목 크기 조정 */
+            }
+            h2 {
+                font-size: 1em; /* 부제목 크기 조정 */
+            }
+            .btn {
+                font-size: 0.8em; /* 버튼 크기 조정 */
+            }
+            input[type="text"], button[type="submit"] {
+                font-size: 0.8em; /* 입력 폼 크기 조정 */
+            }
+            li {
+                padding: 10px; /* 리스트 아이템 패딩 조정 */
+            }
+        }
     </style>
 </head>
 <body>
@@ -258,8 +279,6 @@
         </ul>
     </div>
 </div>
-
-<h1>게시글 목록</h1>
 
 <!-- 글쓰기 버튼 -->
 <a class="btn" href="/posts/create?category=<?= esc($category) ?>">글쓰기</a>
