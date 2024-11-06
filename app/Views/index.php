@@ -7,7 +7,7 @@
     <meta name="naver-site-verification" content="3364bf3d26f95db9c37f59a7acb7f4523cc8c823" />
     <meta name="google-adsense-account" content="ca-pub-6686738239613464">
 
-    <title>풍코 - 남녀차별, 퐁퐁남 토론 커뮤니티</title>
+    <title>풍퐁코리아 - 남녀차별, 퐁퐁남 토론 커뮤니티</title>
     
     <!-- SEO 메타태그 -->
     <meta name="description" content="풍코 커뮤니티 - 퐁퐁남, 남녀차별, 최신 이슈와 토론을 위한 플랫폼. 다양한 게시판에서 이슈와 유머를 함께 나눠보세요.">
@@ -236,7 +236,7 @@
 <body>
 
 <div id="hd_section">
-    <a href="/">풍코</a>
+    <a href="/">퐁퐁코리아 도태남 집합소</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
