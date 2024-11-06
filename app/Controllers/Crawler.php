@@ -76,12 +76,13 @@ class Crawler extends Controller
             $title = $titleTag ? $titleTag->nodeValue : 'No Title';
 
             // 본문 텍스트 추출
-            $content = '';
             $contentNodes = $xpath->query("//div[contains(@class, 'simple_attach_img_div')]");
             if ($contentNodes->length > 0) {
                 $content = trim($contentNodes->item(0)->textContent);
             } else {
-                echo "Post {$startNumber} 본문을 찾을 수 없습니다.\n";
+                echo "Post {$startNumber} 본문을 찾을 수 없습니다. 다음 번호로 이동.\n";
+                $startNumber++;
+                continue;
             }
 
             // 이미지 URL 추출 및 다운로드 (GIF 제외)
