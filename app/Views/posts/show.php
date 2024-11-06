@@ -247,11 +247,11 @@
 
 <!-- 네비게이션 헤더 -->
 <div id="hd_section">
-    <a href="//pongpongkorea.com/">풍코</a>
+    <a href="/pongpongkorea.co.kr/">풍코</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
-            <li class="has-sub"><a href="/main">메인</a></li>
+            <li class="has-sub"><a href="/">메인</a></li>
             <li class="has-sub">
                 <a href="#">공지사항</a>
                 <div class="dd_toggle">
