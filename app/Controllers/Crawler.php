@@ -37,9 +37,10 @@ class Crawler extends Controller
         }
 
         while ($count < 1) {
-            $existingPost = $this->postModel->where('post_number', $startNumber)->where('is_deleted', 'N')->first();
-            if ($existingPost) {
-                echo "Post {$startNumber} 이미 존재. 다음 번호로 이동.\n";
+            // 중복 체크: `crawl_logs` 테이블에서 이미 크롤링된 게시물 번호인지 확인
+            $logExists = $this->db->table('crawl_logs')->where('post_number', $startNumber)->get()->getRow();
+            if ($logExists) {
+                echo "Post {$startNumber} 이미 크롤링됨. 다음 번호로 이동.\n";
                 $startNumber++;
                 continue;
             }
@@ -111,6 +112,12 @@ class Crawler extends Controller
                 'category' => 7,
                 'password' => password_hash('147258', PASSWORD_BCRYPT),
                 'is_deleted' => 'N'
+            ]);
+
+            // 크롤링 완료 기록을 `crawl_logs`에 추가
+            $this->db->table('crawl_logs')->insert([
+                'post_number' => $startNumber,
+                'completed_at' => date('Y-m-d H:i:s')
             ]);
 
             echo "Post {$startNumber} 크롤링 완료.\n";
