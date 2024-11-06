@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
-        /* 기본 스타일 */
         * {
             margin: 0;
             padding: 0;
@@ -22,37 +21,35 @@
         }
         body {
             font-family: '돋움', Arial, sans-serif;
-            background-color: #222;
+            background-color: #1e1e1e;
             color: #ddd;
             padding: 20px;
-            line-height: 1.6; /* 줄 간격 추가 */
+            line-height: 1.6;
         }
 
-        /* 네비게이션 바 스타일 */
+        /* 헤더 스타일 */
         #hd_section {
             background-color: #333;
-            padding: 15px 20px;
+            padding: 15px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 20px; /* 하단 여백 추가 */
+            align-items: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
         }
         #hd_section a {
             color: #00d8ff;
             text-decoration: none;
             font-weight: bold;
-            margin: 0 10px;
-            padding: 8px;
-            font-size: 0.9em;
-            transition: background-color 0.3s ease;
+            font-size: 1em;
+            margin-right: 15px;
         }
         #hd_section a:hover {
             background-color: #444;
+            padding: 6px 8px;
             border-radius: 3px;
         }
 
-        /* 모바일 메뉴 버튼 스타일 */
         .menu-toggle {
             display: none;
             background-color: transparent;
@@ -62,14 +59,15 @@
             cursor: pointer;
         }
 
-        /* 드롭다운 메뉴 스타일 */
+        /* 드롭다운 메뉴 */
         .hd_dd_menu {
-            position: relative;
+            display: flex;
+            flex-wrap: wrap;
         }
         .hd_dd_menu ul {
             display: flex;
             list-style: none;
-            flex-wrap: wrap;
+            gap: 10px;
         }
         .hd_dd_menu .has-sub {
             position: relative;
@@ -80,27 +78,138 @@
             top: 100%;
             left: 0;
             background-color: #444;
-            border-radius: 3px;
-            padding: 8px 0;
-            min-width: 120px;
+            border-radius: 5px;
+            padding: 10px 0;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .hd_dd_menu .has-sub:hover .dd_toggle {
             display: block;
         }
-        .hd_dd_menu .has-sub .dd_toggle a {
+        .hd_dd_menu .dd_toggle a {
             color: #ddd;
             display: block;
-            padding: 6px 15px;
+            padding: 8px 12px;
             text-decoration: none;
-            font-size: 0.85em;
         }
-        .hd_dd_menu .has-sub .dd_toggle a:hover {
+        .hd_dd_menu .dd_toggle a:hover {
             background-color: #333;
         }
 
-        /* 모바일 스타일 */
+        /* 본문 스타일 */
+        .post-container {
+            background-color: #2c2c2c;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        .post-header {
+            text-align: center;
+            border-bottom: 2px solid #444;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            color: #00d8ff;
+        }
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #aaa;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #444;
+        }
+        .content {
+            font-size: 1em;
+            color: #eee;
+            padding: 15px;
+            line-height: 1.8;
+            text-align: left;
+        }
+        .interactions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .interactions a {
+            color: #00d8ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* 댓글 스타일 */
+        h2 {
+            font-size: 1.4em;
+            margin-top: 30px;
+            color: #00b0d4;
+        }
+        .comment-section {
+            margin-top: 20px;
+        }
+        .comment {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .comment strong {
+            color: #00d8ff;
+        }
+        .reply {
+            margin-left: 30px;
+            border-left: 2px solid #00d8ff;
+            padding-left: 10px;
+            background-color: #2a2a2a;
+            border-radius: 5px;
+        }
+        .reply-btn {
+            color: #00b0d4;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .reply-btn:hover {
+            color: #00d8ff;
+        }
+        .reply-form {
+            display: none;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #444;
+            color: #ddd;
+        }
+        button {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            padding: 10px;
+            background-color: #00d8ff;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px auto;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00b0d4;
+        }
+
+        /* 반응형 스타일 */
         @media (max-width: 768px) {
+            .post-meta {
+                flex-direction: column;
+                text-align: center;
+            }
             .menu-toggle {
                 display: block;
             }
@@ -116,156 +225,27 @@
                 display: flex;
             }
         }
-
-        h1 {
-            color: #00d8ff;
-            border-bottom: 2px solid #444;
-            padding-bottom: 10px;
-            margin-bottom: 20px; /* 하단 여백 추가 */
-            font-size: 1.8em;
-            text-align: center; /* 제목 가운데 정렬 */
-        }
-
-        h2 {
-            color: #00b0d4;
-            margin-top: 20px;
-            font-size: 1.2em;
-            border-bottom: 1px solid #444;
-            padding-bottom: 5px;
-            margin-top: 30px; /* 상단 여백 추가 */
-            text-align: center; /* 부제목 가운데 정렬 */
-        }
-
-        /* 본문 스타일 */
-        .content {
-            background-color: #333;
-            padding: 20px; /* 내부 여백 증가 */
-            border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            text-align: center; /* 내용 가운데 정렬 */
-        }
-
-        /* 이미지 스타일 */
-        .content img {
-            max-width: 100%; /* 이미지가 부모 요소의 100% 너비를 넘지 않도록 설정 */
-            height: auto; /* 비율을 유지하도록 설정 */
-            border-radius: 5px; /* 이미지 모서리 둥글게 */
-            margin-bottom: 10px; /* 이미지 하단 여백 추가 */
-        }
-
-        /* 댓글 및 대댓글 스타일 */
-        .comment {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #333;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px; /* 하단 여백 추가 */
-        }
-
-        .reply {
-            margin-left: 20px;
-            border-left: 2px solid #00d8ff;
-            padding-left: 10px;
-            margin-top: 5px;
-        }
-
-        /* 입력 폼 스타일 */
-        input[type="text"],
-        input[type="password"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #444;
-            border: 1px solid #555;
-            border-radius: 5px;
-            color: #ddd;
-            font-size: 0.9em;
-        }
-
-        button {
-            background-color: #00d8ff;
-            color: #222;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9em;
-            width: 100%;
-            max-width: 200px;
-            margin: 10px auto;
-            display: block;
-        }
-
-        button:hover {
-            background-color: #00b0d4;
-        }
-
-        /* 네비게이션 버튼 스타일 */
-        .post-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 0.9em;
-        }
-
-        .post-navigation a {
-            color: #00d8ff;
-            text-decoration: none;
-            padding: 8px 12px;
-            background-color: #333;
-            border-radius: 3px;
-            border: 1px solid #444;
-        }
-
-        .post-navigation a:hover {
-            background-color: #444;
-        }
-
-        /* 모바일 친화적 레이아웃 */
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 1.5em;
-            }
-            h2 {
-                font-size: 1.1em;
-            }
-            .post-navigation a {
-                padding: 6px 8px;
-                font-size: 0.8em;
-            }
-        }
     </style>
 </head>
 <body>
 
-<!-- 네비게이션 헤더 -->
+<!-- Header Section -->
 <div id="hd_section">
     <a href="/">풍코</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
-            <li class="has-sub"><a href="/">메인</a></li>
-            <li class="has-sub">
-                <a href="#">공지사항</a>
+            <li class="has-sub"><a href="#">공지사항</a>
                 <div class="dd_toggle">
                     <a href="/posts?category=99">공지사항</a>
                 </div>
             </li>
-            <li class="has-sub">
-                <a href="#">베스트 게시판</a>
+            <li class="has-sub"><a href="#">베스트 게시판</a>
                 <div class="dd_toggle">
                     <a href="/posts?category=9">풍코 베스트</a>
                 </div>
             </li>
-            <li class="has-sub">
-                <a href="#">전체 게시판</a>
+            <li class="has-sub"><a href="#">전체 게시판</a>
                 <div class="dd_toggle">
                     <a href="/posts?category=1">풍코 토론</a>
                     <a href="/posts?category=8">풍코 이슈</a>
@@ -277,54 +257,64 @@
     </div>
 </div>
 
-<h1><?= esc($post['title']) ?></h1>
-<p>작성자: <?= esc($post['nickname']) ?></p>
-
-<div class="content">
-    <?= $post['content'] ?>
+<!-- Post Container -->
+<div class="post-container">
+    <div class="post-header"><?= esc($post['title']) ?></div>
+    <div class="post-meta">
+        <p>작성자: <?= esc($post['nickname']) ?></p>
+        <p>조회수: <?= $post['view_count'] ?></p>
+    </div>
+    <div class="content"><?= $post['content'] ?></div>
 </div>
 
-<p>조회수: <?= $post['view_count'] ?></p>
-<p>
-    추천: <?= $post['likes'] ?> 
+<!-- Like and Dislike -->
+<div class="interactions">
     <a href="/posts/<?= $post['id'] ?>/like">
-        <i class="fas fa-thumbs-up" aria-hidden="true"></i>
+        <i class="fas fa-thumbs-up"></i> 추천: <?= $post['likes'] ?>
     </a>
-</p>
-<p>
-    비추천: <?= $post['dislikes'] ?> 
     <a href="/posts/<?= $post['id'] ?>/dislike">
-        <i class="fas fa-thumbs-down" aria-hidden="true"></i>
+        <i class="fas fa-thumbs-down"></i> 비추천: <?= $post['dislikes'] ?>
     </a>
-</p>
-
-<div class="post-navigation">
-    <?php if ($previousPost): ?>
-        <a href="/posts/<?= $previousPost['id'] ?>">&laquo; 이전 글: <?= esc($previousPost['title']) ?></a>
-    <?php endif; ?>
-    <?php if ($nextPost): ?>
-        <a href="/posts/<?= $nextPost['id'] ?>">다음 글: <?= esc($nextPost['title']) ?> &raquo;</a>
-    <?php endif; ?>
 </div>
 
-<h2>댓글 작성</h2>
-<form action="/posts/<?= $post['id'] ?>/reply" method="post">
-    <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-    <label>닉네임:</label>
-    <input type="text" name="nickname" required>
-    <label>댓글 내용:</label>
-    <textarea name="content" required></textarea>
-    <button type="submit">댓글 작성</button>
-</form>
+<!-- Comment Form -->
+<div class="form-section">
+    <h2>댓글 작성</h2>
+    <form action="/posts/<?= $post['id'] ?>/reply" method="post">
+        <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+        <label>닉네임:</label>
+        <input type="text" name="nickname" required>
+        <label>댓글 내용:</label>
+        <textarea name="content" required></textarea>
+        <button type="submit">댓글 작성</button>
+    </form>
+</div>
 
-<h2>댓글 목록</h2>
-<div>
+<!-- Comments List -->
+<div class="comment-section">
+    <h2>댓글 목록</h2>
     <?php foreach ($replies as $reply): ?>
-        <div class="comment">
+        <div class="comment <?= $reply['parent_id'] ? 'reply' : '' ?>" id="comment-<?= $reply['id'] ?>">
             <strong><?= esc($reply['nickname']) ?></strong>
             <p><?= esc($reply['content']) ?></p>
-            <button onclick="openReplyForm(<?= $reply['id'] ?>)">답글</button>
-            <!-- 대댓글 입력 폼과 목록은 동일하게 유지 -->
+
+            <!-- 답글 버튼 및 폼 -->
+            <?php if (!$reply['parent_id']): ?>
+                <span class="reply-btn" onclick="toggleReplyForm(<?= $reply['id'] ?>)">답글</span>
+            <?php endif; ?>
+
+            <!-- 대댓글 입력 폼 -->
+            <div id="reply-form-<?= $reply['id'] ?>" class="reply-form">
+                <form action="/posts/<?= $post['id'] ?>/reply" method="post">
+                    <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                    <input type="hidden" name="parent_id" value="<?= $reply['id'] ?>">
+                    <label>닉네임:</label>
+                    <input type="text" name="nickname" required>
+                    <label>댓글 내용:</label>
+                    <textarea name="content" required></textarea>
+                    <button type="submit">답글 작성</button>
+                </form>
+            </div>
         </div>
     <?php endforeach; ?>
 </div>
@@ -333,6 +323,11 @@
     function toggleMenu() {
         const menu = document.querySelector('.hd_dd_menu');
         menu.classList.toggle('active');
+    }
+
+    function toggleReplyForm(replyId) {
+        const replyForm = document.getElementById(`reply-form-${replyId}`);
+        replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
     }
 </script>
 
