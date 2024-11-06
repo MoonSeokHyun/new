@@ -51,7 +51,7 @@ class Posts extends BaseController
                 ->groupEnd();
         }
 
-        $data['posts'] = $query->orderBy('id', 'ASC')->paginate(10); // 페이지당 10개씩
+        $data['posts'] = $query->orderBy('id', 'desc')->paginate(10); // 페이지당 10개씩
         $data['category'] = $category;
         $data['categoryName'] = $categoryName;
         $data['search'] = $search; // 검색어를 뷰에 전달
