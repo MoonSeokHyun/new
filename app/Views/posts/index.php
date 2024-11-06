@@ -279,9 +279,10 @@
     </div>
 </div>
 
-
 <!-- 글쓰기 버튼 -->
-<a class="btn" href="/posts/create?category=<?= esc($category) ?>">글쓰기</a>
+<?php if ($category != 99 && $category != 9): ?>
+    <a class="btn" href="/posts/create?category=<?= esc($category) ?>">글쓰기</a>
+<?php endif; ?>
 
 <!-- 검색 폼 -->
 <form action="/posts" method="get">

@@ -100,7 +100,8 @@ class Posts extends BaseController
         ];
 
         $this->postModel->insert($data);
-        return redirect()->to("/posts?category={$category}");
+        return redirect()->to("/posts?category={$category}")
+                         ->with('alert', '게시글이 성공적으로 등록되었습니다.');
     }
 
     // 게시글 상세 조회
@@ -226,7 +227,7 @@ class Posts extends BaseController
         ])->get()->getRow();
 
         if ($existing) {
-            return redirect()->back()->with('error', '이미 해당 게시글에 투표하셨습니다.');
+            return redirect()->back()->with('error', '이미 추천하셨습니다.');
         }
 
         $builder->insert([

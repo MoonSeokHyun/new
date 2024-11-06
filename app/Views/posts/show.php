@@ -123,6 +123,7 @@
             padding-bottom: 10px;
             margin-bottom: 20px; /* 하단 여백 추가 */
             font-size: 1.8em;
+            text-align: center; /* 제목 가운데 정렬 */
         }
 
         h2 {
@@ -132,6 +133,7 @@
             border-bottom: 1px solid #444;
             padding-bottom: 5px;
             margin-top: 30px; /* 상단 여백 추가 */
+            text-align: center; /* 부제목 가운데 정렬 */
         }
 
         /* 본문 스타일 */
@@ -141,6 +143,7 @@
             border-radius: 5px;
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center; /* 내용 가운데 정렬 */
         }
 
         /* 이미지 스타일 */
