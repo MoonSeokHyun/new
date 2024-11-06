@@ -16,4 +16,5 @@ $routes->post('/posts/(:num)/delete', 'Posts::delete/$1');
 $routes->get('/posts/(:num)/like', 'Posts::like/$1');  // 수정된 부분
 $routes->get('/posts/(:num)/dislike', 'Posts::dislike/$1');  // 수정된 부분
 $routes->post('posts/(:num)/reply', 'Posts::addReply'); // 댓글 추가
+$routes->get('crawler/crawlAndSave/(:num)', 'Crawler::crawlAndSave/$1');
 

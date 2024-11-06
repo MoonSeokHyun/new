@@ -18,7 +18,7 @@ class App extends BaseConfig
      */
 
     
-    public string $baseURL = 'https://www.pongpongkorea.co.kr/';
+     public string $baseURL = 'http://localhost:8080/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
