@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="32ICtfA9W_GY36z5sfWlyLwYFrrcbK8qUDEbAFCDQMU" />
+    <meta name="naver-site-verification" content="3364bf3d26f95db9c37f59a7acb7f4523cc8c823" />
+
     <title>풍코 - 남녀차별, 퐁퐁남 토론 커뮤니티</title>
     
     <!-- SEO 메타태그 -->
