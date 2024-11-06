@@ -20,4 +20,6 @@ $routes->get('crawler/crawlAndSave/(:num)', 'Crawler::crawlAndSave/$1');
 $routes->get('crawler/crawlAndSave', 'Crawler::crawlAndSave');
 
 $routes->get('dcinside/crawl/(:num)', 'DCInsideCrawler::crawlDCInside/$1');
+$routes->get('dcinside/crawl', 'DCInsideCrawler::crawl');
+
 

@@ -16,15 +16,21 @@ class DCInsideCrawler extends Controller
         $this->postModel = new PostModel();
         $this->db = \Config\Database::connect();
         
-        // 업로드 기본 경로 설정 (배포와 로컬환경에서 모두 사용 가능)
+        // 업로드 기본 경로 설정
         $this->uploadBasePath = FCPATH . 'uploads/';
         
         // 최대 실행 시간을 200초로 설정
         ini_set('max_execution_time', 200);
     }
 
-    public function crawlDCInside($postNumber)
+    public function crawl($postNumber = null)
     {
+        // postNumber가 주어지지 않았을 경우, 마지막 크롤링된 번호를 가져와 +1 시킴
+        if (is_null($postNumber)) {
+            $lastCrawl = $this->db->table('crawl_logs')->orderBy('post_number', 'DESC')->get()->getRow();
+            $postNumber = $lastCrawl ? $lastCrawl->post_number + 1 : 5850163;  // 기본값 설정
+        }
+
         // 오늘 날짜에 해당하는 폴더 경로 설정
         $currentDate = date('Y-m-d');
         $uploadPath = $this->uploadBasePath . $currentDate . '/';
@@ -34,19 +40,12 @@ class DCInsideCrawler extends Controller
             echo "디렉토리 생성 완료: {$uploadPath}\n";
         }
 
-        // 중복 확인: `crawl_logs` 테이블에서 이미 크롤링된 게시물 번호인지 확인
-        $logExists = $this->db->table('crawl_logs')->where('post_number', $postNumber)->get()->getRow();
-        if ($logExists) {
-            echo "Post {$postNumber} 이미 크롤링됨. 다음 번호로 이동.\n";
-            return;
-        }
-
         // URL 설정 및 HTML 가져오기
         $url = "https://gall.dcinside.com/board/view/?id=neostock&no={$postNumber}";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);  // 타임아웃 1분으로 설정
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
         curl_setopt($ch, CURLOPT_REFERER, 'https://gall.dcinside.com/');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -103,7 +102,7 @@ class DCInsideCrawler extends Controller
             'title' => $title,
             'nickname' => '자료셔틀',
             'content' => $finalContent,
-            'category' => 8,  // 카테고리를 8로 고정
+            'category' => 8,
             'password' => password_hash('147258', PASSWORD_BCRYPT),
             'is_deleted' => 'N'
         ]);
