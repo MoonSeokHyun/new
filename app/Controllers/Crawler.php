@@ -16,16 +16,26 @@ class Crawler extends Controller
         $this->postModel = new PostModel();
         $this->db = \Config\Database::connect();
         
-        // 업로드 기본 경로 설정 (배포와 로컬환경에서 모두 사용 가능)
+        // 업로드 기본 경로 설정
         $this->uploadBasePath = FCPATH . 'uploads/';
         
         // 최대 실행 시간을 200초로 설정
         ini_set('max_execution_time', 200);
     }
 
-    public function crawlAndSave($startNumber)
+    public function crawlAndSave()
     {
         $count = 0;  // 크롤링할 게시물 수
+
+        // 마지막으로 크롤링한 게시물 번호 가져오기
+        $lastCrawledPost = $this->db->table('last_crawled_post')
+            ->select('post_number')
+            ->orderBy('id', 'DESC')
+            ->get()
+            ->getRow();
+        
+        // 처음에는 1336105번부터 시작하도록 기본 번호 설정
+        $startNumber = $lastCrawledPost ? $lastCrawledPost->post_number + 1 : 1336105;
 
         // 오늘 날짜에 해당하는 폴더 경로 설정
         $currentDate = date('Y-m-d');
@@ -120,6 +130,9 @@ class Crawler extends Controller
                 'post_number' => $startNumber,
                 'completed_at' => date('Y-m-d H:i:s')
             ]);
+
+            // `last_crawled_post` 테이블 업데이트
+            $this->db->table('last_crawled_post')->replace(['id' => 1, 'post_number' => $startNumber]);
 
             echo "Post {$startNumber} 크롤링 완료.\n";
 
