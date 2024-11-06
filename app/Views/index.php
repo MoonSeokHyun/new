@@ -3,7 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>풍코 - 게시글 목록</title>
+    <title>풍코 - 남녀차별, 퐁퐁남 토론 커뮤니티</title>
+    
+    <!-- SEO 메타태그 -->
+    <meta name="description" content="풍코 커뮤니티 - 퐁퐁남, 남녀차별, 최신 이슈와 토론을 위한 플랫폼. 다양한 게시판에서 이슈와 유머를 함께 나눠보세요.">
+    <meta name="keywords" content="퐁퐁남, 남녀차별, 토론, 커뮤니티, 풍코, 유머, 이슈">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="풍코 - 남녀차별과 퐁퐁남 이슈 커뮤니티">
+    <meta property="og:description" content="풍코 커뮤니티에서 퐁퐁남, 남녀차별 등 다양한 이슈를 자유롭게 토론하세요.">
+    <meta property="og:image" content="https://pongpongkorea.com/path/to/thumbnail.jpg">
+    <meta property="og:url" content="https://pongpongkorea.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="풍코 - 남녀차별과 퐁퐁남 이슈 커뮤니티">
+    <meta name="twitter:description" content="풍코 커뮤니티에서 남녀차별, 퐁퐁남 등 사회적 이슈와 유머를 함께 즐겨보세요.">
+    <meta name="twitter:image" content="https://pongpongkorea.com/path/to/thumbnail.jpg">
+    
     <style>
         /* 기본 스타일 초기화 */
         * {
@@ -171,50 +189,80 @@
                 margin-top: 5px;
             }
         }
+          /* a 태그 기본 스타일 제거 */
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* 카테고리 링크 스타일 */
+    .category-link {
+        color: #00d8ff; /* 카테고리 링크 색상 */
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .category-link:hover {
+        color: #00b0d4;
+    }
+
+    /* 게시글 링크 스타일 */
+    .post-link {
+        color: #ddd; /* 게시글 제목 링크 색상 */
+        font-size: 1em;
+        font-weight: normal;
+        transition: color 0.3s ease;
+    }
+
+    .post-link:hover {
+        color: #00d8ff;
+    }
+
+    /* 제목과 정보 배치 스타일 */
+    .category h2, .post h3 {
+        margin-bottom: 8px;
+    }
+
+    .post-info {
+        color: #aaa;
+        font-size: 0.85em;
+    }
     </style>
 </head>
 <body>
 
 <div id="hd_section">
-    <a href="/pongpongkorea.co.kr/">풍코</a>
+    <a href="/">풍코</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
             <li class="has-sub"><a href="/">메인</a></li>
             <li class="has-sub">
-                <a href="#">공지사항</a>
-                <div class="dd_toggle">
-                    <a href="/posts?category=99">공지사항</a>
-                </div>
+                <a href="/posts?category=99">공지사항</a> <!-- 공지사항 카테고리 링크 -->
             </li>
             <li class="has-sub">
-                <a href="#">베스트 게시판</a>
-                <div class="dd_toggle">
-                    <a href="/posts?category=9">풍코 베스트</a>
-                </div>
+                <a href="/posts?category=9">베스트 게시판</a> <!-- 베스트 카테고리 링크 -->
             </li>
             <li class="has-sub">
                 <a href="#">전체 게시판</a>
                 <div class="dd_toggle">
-                    <a href="/posts?category=1">풍코 토론</a>
-                    <a href="/posts?category=8">풍코 이슈</a>
-                    <a href="/posts?category=4">자유 게시판</a>
-                    <a href="/posts?category=7">유머 게시판</a>
+                    <a href="/posts?category=1">퐁코 토론</a> <!-- 퐁코 토론 카테고리 링크 -->
+                    <a href="/posts?category=8">퐁코 이슈</a> <!-- 퐁코 이슈 카테고리 링크 -->
+                    <a href="/posts?category=4">자유 게시판</a> <!-- 자유 게시판 카테고리 링크 -->
+                    <a href="/posts?category=7">유머 게시판</a> <!-- 유머 게시판 카테고리 링크 -->
                 </div>
             </li>
         </ul>
     </div>
 </div>
 
-
-
 <?php foreach ($postsByCategory as $categoryName => $posts): ?>
     <div class="category">
-        <h2><?= esc($categoryName) ?></h2>
+        <h2><a href="/posts?category=<?= urlencode($categoryName) ?>" class="category-link"><?= esc($categoryName) ?></a></h2>
         <?php if (count($posts) > 0): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="post">
-                    <h3><a href="/posts/<?= esc($post['id']) ?>"><?= esc($post['title']) ?></a></h3>
+                    <h3><a href="/posts/<?= esc($post['id']) ?>" class="post-link"><?= esc($post['title']) ?></a></h3>
                     <div class="post-info">
                         <p>작성자: <?= esc($post['nickname']) ?></p>
                         <p>조회수: <?= esc($post['view_count']) ?> | 추천: <?= esc($post['likes']) ?> | 비추천: <?= esc($post['dislikes']) ?></p>

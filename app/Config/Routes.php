@@ -22,4 +22,9 @@ $routes->get('crawler/crawlAndSave', 'Crawler::crawlAndSave');
 $routes->get('dcinside/crawl/(:num)', 'DCInsideCrawler::crawlDCInside/$1');
 $routes->get('dcinside/crawl', 'DCInsideCrawler::crawl');
 
+// Sitemap Routes
+$routes->get('sitemap.xml', 'SitemapController::index'); // 사이트맵 인덱스
+$routes->get('sitemap/page/(:num)', 'SitemapController::page/$1'); // 각 페이지별 사이트맵
+
+
 
