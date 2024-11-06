@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\PostModel;
 use App\Models\ReplyModel; // 댓글 모델 추가
 use CodeIgniter\Database\Exceptions\DatabaseException;
@@ -11,9 +12,12 @@ class Posts extends BaseController
     protected $replyModel;
     protected $db;
     protected $categories = [
-        1 => '퐁퐁이들 소식',
-        2 => '도태남',
-        3 => '알파남'
+        99 => '공지사항',  // 공지사항을 맨 위에 위치시킴
+        9 => '베스트',
+        1 => '퐁코 토론',
+        8 => '퐁코 이슈',
+        4 => '자유 게시판',
+        7 => '유머 게시판'
     ];
 
     public function __construct()
@@ -28,16 +32,16 @@ class Posts extends BaseController
     {
         $category = $this->request->getGet('category');
         $categoryName = $this->categories[$category] ?? '전체';
-    
+
         // 검색어 처리
         $search = $this->request->getGet('search');
-    
+
         $query = $this->postModel->where('is_deleted', 'N');
-    
+
         if ($category) {
             $query->where('category', $category);
         }
-    
+
         // 제목, 내용, 닉네임으로 검색
         if ($search) {
             $query->groupStart()
@@ -46,12 +50,13 @@ class Posts extends BaseController
                 ->orLike('nickname', $search)
                 ->groupEnd();
         }
-    
-        $data['posts'] = $query->findAll();
+
+        $data['posts'] = $query->orderBy('id', 'ASC')->paginate(10); // 페이지당 10개씩
         $data['category'] = $category;
         $data['categoryName'] = $categoryName;
         $data['search'] = $search; // 검색어를 뷰에 전달
-    
+        $data['pager'] = $this->postModel->pager; // 페이징 객체 추가
+
         return view('posts/index', $data);
     }
 
@@ -97,7 +102,7 @@ class Posts extends BaseController
         $this->postModel->insert($data);
         return redirect()->to("/posts?category={$category}");
     }
-    
+
     // 게시글 상세 조회
     public function show($id)
     {
@@ -106,12 +111,35 @@ class Posts extends BaseController
             throw new \CodeIgniter\Exceptions\PageNotFoundException();
         }
 
+        // 현재 글의 조회수 증가
         $this->postModel->update($id, ['view_count' => $post['view_count'] + 1]);
 
-        // 댓글과 대댓글을 한 번에 가져오기
+        // 댓글과 대댓글 가져오기
         $replies = $this->replyModel->getRepliesByPostId($id);
 
-        return view('posts/show', ['post' => $post, 'replies' => $replies]);
+        // 카테고리 ID 가져오기
+        $categoryId = $post['category'];
+
+        // 동일 카테고리 내에서 이전 글 찾기
+        $previousPost = $this->postModel->where('id <', $id)
+                                         ->where('category', $categoryId)
+                                         ->where('is_deleted', 'N')
+                                         ->orderBy('id', 'DESC')
+                                         ->first();
+
+        // 동일 카테고리 내에서 다음 글 찾기
+        $nextPost = $this->postModel->where('id >', $id)
+                                     ->where('category', $categoryId)
+                                     ->where('is_deleted', 'N')
+                                     ->orderBy('id', 'ASC')
+                                     ->first();
+
+        return view('posts/show', [
+            'post' => $post,
+            'replies' => $replies,
+            'previousPost' => $previousPost,
+            'nextPost' => $nextPost
+        ]);
     }
 
     // 댓글 추가
@@ -121,18 +149,17 @@ class Posts extends BaseController
         $nickname = $this->request->getPost('nickname');
         $content = $this->request->getPost('content');
         $parentId = $this->request->getPost('parent_id') ?: null; // 부모 댓글 ID
-    
+
         $data = [
             'post_id' => $postId,
             'nickname' => $nickname,
             'content' => $content,
             'parent_id' => $parentId // 부모 댓글 ID 저장
         ];
-    
+
         $this->replyModel->insert($data); // 댓글 또는 대댓글 저장
         return redirect()->to("/posts/{$postId}");
     }
-    
 
     // 게시글 수정
     public function edit($id)
@@ -211,6 +238,10 @@ class Posts extends BaseController
         $post = $this->postModel->find($postId);
         if ($isLike) {
             $this->postModel->update($postId, ['likes' => $post['likes'] + 1]);
+            // 추천 수가 10개 이상이면 카테고리를 베스트로 변경
+            if ($post['likes'] + 1 >= 10 && $post['category'] !== 9) {
+                $this->postModel->update($postId, ['category' => 9]); // 카테고리 변경
+            }
         } else {
             $this->postModel->update($postId, ['dislikes' => $post['dislikes'] + 1]);
         }
