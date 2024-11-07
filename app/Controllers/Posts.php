@@ -32,8 +32,6 @@ class Posts extends BaseController
     {
         $category = $this->request->getGet('category');
         $categoryName = $this->categories[$category] ?? '전체';
-
-        // 검색어 처리
         $search = $this->request->getGet('search');
 
         $query = $this->postModel->where('is_deleted', 'N');
@@ -42,7 +40,6 @@ class Posts extends BaseController
             $query->where('category', $category);
         }
 
-        // 제목, 내용, 닉네임으로 검색
         if ($search) {
             $query->groupStart()
                 ->like('title', $search)
@@ -51,14 +48,29 @@ class Posts extends BaseController
                 ->groupEnd();
         }
 
-        $data['posts'] = $query->orderBy('id', 'desc')->paginate(10); // 페이지당 10개씩
-        $data['category'] = $category;
-        $data['categoryName'] = $categoryName;
-        $data['search'] = $search; // 검색어를 뷰에 전달
-        $data['pager'] = $this->postModel->pager; // 페이징 객체 추가
+        $posts = $query->orderBy('id', 'desc')->paginate(10);
+        $posts = $this->attachReplyCountsAndDate($posts); // 댓글 수와 날짜 추가
+
+        $data = [
+            'posts' => $posts,
+            'category' => $category,
+            'categoryName' => $categoryName,
+            'search' => $search,
+            'pager' => $this->postModel->pager,
+        ];
 
         return view('posts/index', $data);
     }
+
+    private function attachReplyCountsAndDate($posts)
+    {
+        foreach ($posts as &$post) {
+            $post['reply_count'] = $this->replyModel->where('post_id', $post['id'])->countAllResults();
+            $post['created_at'] = date('Y-m-d', strtotime($post['created_at']));
+        }
+        return $posts;
+    }
+
 
     // 게시글 작성 페이지 (카테고리 자동 설정)
     public function create()

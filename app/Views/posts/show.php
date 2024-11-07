@@ -173,13 +173,13 @@
             text-align: left;
         }
         .content img {
-            display: block; /* 이미지가 각 줄의 가운데로 오도록 설정 */
-            margin: 2px auto; /* 상하단 여백 */
-            max-width: 100%; /* 화면에 맞춰 이미지 최대 크기를 조정 */
-            width: 100%; /* 이미지가 컨테이너 너비에 맞게 확장 */
-            height: auto; /* 이미지 비율을 유지하여 높이 조정 */
-            border-radius: 5px; /* 이미지의 모서리를 둥글게 설정 */
-        }
+        display: block; /* 이미지가 각 줄의 가운데로 오도록 설정 */
+        margin: 2px auto; /* 상하단 여백 */
+        max-width: 100%; /* 화면에 맞춰 이미지 최대 크기를 조정 */
+        width: 100%; /* 이미지가 컨테이너 너비에 맞게 확장 */
+        height: auto; /* 이미지 비율을 유지하여 높이 조정 */
+        border-radius: 5px; /* 이미지의 모서리를 둥글게 설정 */
+    }
 
         .interactions {
             display: flex;
@@ -300,8 +300,12 @@
 
             /* 모바일 이미지 크기 확장 */
             .content img {
-                width: auto; /* 모바일 화면에서는 자동 크기 조정 */
-                max-width: 100%; /* 모바일 화면 너비에 맞춤 */
+                max-width: 100%;
+                height: auto;
+                max-height: 600px;
+                object-fit: contain; /* 비율을 유지한 채 화면에 맞게 조정 */
+                min-height:
+                margin: 0;
             }
         }
     </style>
@@ -342,8 +346,7 @@
 <div class="post-container">
     <div class="post-header"><?= esc($post['title']) ?></div>
     <div class="post-meta">
-        <p>작성자: <?= esc($post['nickname']) ?></p>
-        <p>조회수: <?= $post['view_count'] ?></p>
+        <p>작성자: <?= esc($post['nickname']) ?> | 조회수: <?= $post['view_count'] ?></p>
     </div>
     <div class="content"><?= $post['content'] ?></div>
 </div>

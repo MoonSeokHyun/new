@@ -68,10 +68,14 @@
         <?php if (count($posts) > 0): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="post">
-                    <h3><a href="/posts/<?= esc($post['id']) ?>" class="post-link"><?= esc($post['title']) ?></a></h3>
+                    <h3>
+                        <a href="/posts/<?= esc($post['id']) ?>" class="post-link">
+                            <?= esc($post['title']) ?> <span class="reply-count">[<?= esc($post['reply_count']) ?>]</span>
+                        </a>
+                    </h3>
                     <div class="post-info">
                         <p>작성자: <?= esc($post['nickname']) ?></p>
-                        <p>조회수: <?= esc($post['view_count']) ?> | 추천: <?= esc($post['likes']) ?> | 비추천: <?= esc($post['dislikes']) ?></p>
+                        <p><?= esc($post['created_at']) ?> | 조회수: <?= esc($post['view_count']) ?> | 추천: <?= esc($post['likes']) ?> | 비추천: <?= esc($post['dislikes']) ?></p>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -80,6 +84,9 @@
         <?php endif; ?>
     </div>
 <?php endforeach; ?>
+
+
+
 
 <script>
     // 메뉴 토글 함수

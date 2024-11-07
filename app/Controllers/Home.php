@@ -2,53 +2,67 @@
 
 namespace App\Controllers;
 
-use App\Models\PostModel; // PostModel을 사용하기 위해 추가합니다.
+use App\Models\PostModel;
+use App\Models\ReplyModel;
 
 class Home extends BaseController
 {
     protected $postModel;
+    protected $replyModel;
 
     public function __construct()
     {
         $this->postModel = new PostModel();
+        $this->replyModel = new ReplyModel();
     }
 
     public function index()
     {
-        // 카테고리 목록을 가져옵니다.
         $categories = [
-            99 => '공지사항',  // 공지사항을 맨 위에 위치시킴
-                        9 => '베스트',
+            99 => '공지사항',
+            9 => '베스트',
             1 => '퐁코 토론',
             8 => '퐁코 이슈',
             4 => '자유 게시판',
             7 => '유머 게시판',
         ];
-        
-        // 각 카테고리별로 5개의 게시글을 가져옵니다.
+
         $postsByCategory = [];
-        
-        // 공지사항을 먼저 가져옵니다.
+
+        // 공지사항 가져오기
         $posts = $this->postModel->where('category', 99)
                                  ->where('is_deleted', 'N')
-                                 ->orderBy('created_at', 'DESC') // 최신 순으로 정렬
-                                 ->findAll(5); // 5개만 가져오기
-        $postsByCategory['공지사항'] = $posts; // 공지사항 게시글 저장
+                                 ->orderBy('created_at', 'DESC')
+                                 ->findAll(5);
 
-        // 나머지 카테고리를 반복하여 게시글을 가져옵니다.
+        $posts = $this->attachReplyCountsAndDate($posts); // 댓글 수와 작성 날짜 추가
+        $postsByCategory['공지사항'] = $posts;
+
+        // 나머지 카테고리별로 반복
         foreach ($categories as $categoryId => $categoryName) {
-            if ($categoryId == 99) continue; // 이미 공지사항을 처리했으므로 건너뜁니다.
+            if ($categoryId == 99) continue;
 
             $posts = $this->postModel->where('category', $categoryId)
                                      ->where('is_deleted', 'N')
-                                     ->orderBy('created_at', 'DESC') // 최신 순으로 정렬
-                                     ->findAll(5); // 5개만 가져오기
-            $postsByCategory[$categoryName] = $posts; // 카테고리별 게시글 저장
+                                     ->orderBy('created_at', 'DESC')
+                                     ->findAll(5);
+
+            $posts = $this->attachReplyCountsAndDate($posts); // 댓글 수와 작성 날짜 추가
+            $postsByCategory[$categoryName] = $posts;
         }
 
         return view('index', [
             'categories' => $categories,
-            'postsByCategory' => $postsByCategory // 뷰에 게시글 목록을 전달
+            'postsByCategory' => $postsByCategory,
         ]);
+    }
+
+    private function attachReplyCountsAndDate($posts)
+    {
+        foreach ($posts as &$post) {
+            $post['reply_count'] = $this->replyModel->where('post_id', $post['id'])->countAllResults();
+            $post['created_at'] = date('Y-m-d', strtotime($post['created_at'])); // 날짜 형식으로 변환
+        }
+        return $posts;
     }
 }

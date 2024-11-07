@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 목록</title>
     <style>
+                * {
+            margin: 5;
+            padding: 0;
+            box-sizing: border-box;
+        }
         /* 전체 스타일 */
         body {
             font-family: '돋움', 'Arial', sans-serif;
@@ -307,9 +312,18 @@
     <?php foreach ($posts as $post): ?>
         <li>
             <a href="/posts/<?= $post['id'] ?>">
-                <?= esc($post['title']) ?> <span style="font-weight:normal; color: #bbb;"></span>
+                <?= esc($post['title']) ?>
+                <span style="font-weight:normal; color: #bbb;">
+                    [<?= esc($post['reply_count']) ?>]
+                </span>
             </a>
-            <p>작성자: <?= esc($post['nickname']) ?> | 조회수: <?= esc($post['view_count']) ?> | 추천: <?= esc($post['likes']) ?> | 비추천: <?= esc($post['dislikes']) ?></p>
+            <p>
+                작성자: <?= esc($post['nickname']) ?> | 
+                조회수: <?= esc($post['view_count']) ?> | 
+                추천: <?= esc($post['likes']) ?> | 
+                비추천: <?= esc($post['dislikes']) ?>
+            </p>
+            <p>작성일 <?= esc($post['created_at']) ?></p>
         </li>
     <?php endforeach; ?>
 </ul>
