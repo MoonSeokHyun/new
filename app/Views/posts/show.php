@@ -128,12 +128,12 @@
             text-align: left;
         }
 
-        /* 이미지 스타일 */
         .content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    max-height: 800px; /* 이미지가 큰 화면에서 더 크게 표시되도록 설정 */
+}
 
         .interactions {
             display: flex;
@@ -233,12 +233,11 @@
                 display: flex;
             }
 
-            /* 모바일 이미지 크기 확장 */
             .content img {
-                max-width: 100%;
-                height: auto;
-                max-height: 500px;
-            }
+        max-width: 100%;
+        height: auto;
+        max-height: 600px; /* 모바일에서 이미지를 크게 표시 */
+    }
         }
     </style>
 </head>
