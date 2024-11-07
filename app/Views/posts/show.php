@@ -20,35 +20,43 @@
     box-sizing: border-box;
 }
 body {
+    width: 100%; /* 기본적으로 전체 화면에 맞춤 */
     font-family: '돋움', Arial, sans-serif;
     background-color: #1e1e1e;
     color: #ddd;
-    padding: 20px;
     line-height: 1.6;
+}
+
+/* PC 화면에서만 최대 너비 적용 */
+@media (min-width: 768px) {
+    body {
+        max-width: 1350px;
+        margin: 0 auto; /* 가운데 정렬 */
+    }
 }
 
 /* 헤더 스타일 */
 #hd_section {
-    background-color: #333;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-#hd_section a {
-    color: #00d8ff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1em;
-    margin-right: 15px;
-}
-#hd_section a:hover {
-    background-color: #444;
-    padding: 6px 8px;
-    border-radius: 3px;
-}
+            background-color: #333;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        #hd_section a {
+            color: #00d8ff;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            padding: 8px;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+        #hd_section a:hover {
+            background-color: #444;
+            border-radius: 3px;
+        }
 
 .menu-toggle {
     display: none;
@@ -99,11 +107,19 @@ body {
 .post-container {
     background-color: #2c2c2c;
     border-radius: 8px;
-    padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    margin-left: auto;
+    margin-right: auto; /* 가운데 정렬 */
+}
+
+.content {
+    text-align: center; /* 내부 텍스트 중앙 정렬 */
+    margin: 0 auto;
+    max-width: 700px; /* 너비 설정으로 가운데 정렬 효과 */
 }
 .post-header {
+    margin-top : 10px;
     text-align: center;
     border-bottom: 2px solid #444;
     padding-bottom: 10px;
@@ -117,13 +133,13 @@ body {
     font-size: 0.9em;
     color: #aaa;
     margin-bottom: 15px;
-    padding-bottom: 10px;
+    padding: 0 15px 10px 15px; /* 좌우에 15px 여백 추가 */
     border-bottom: 1px solid #444;
 }
+
 .content {
     font-size: 1em;
     color: #eee;
-    padding: 15px;
     line-height: 1.8;
     text-align: left;
 }
@@ -245,22 +261,26 @@ button:hover {
 </head>
 <body>
 
-<!-- Header Section -->
 <div id="hd_section">
-    <a href="/">풍코</a>
+    <a href="/">퐁퐁코리아 도태남 집합소</a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
-            <li class="has-sub"><a href="#">공지사항</a>
+            <li class="has-sub"><a href="/">메인</a></li>
+            <li class="has-sub">
+                <a href="#">공지사항</a>
                 <div class="dd_toggle">
                     <a href="/posts?category=99">공지사항</a>
                 </div>
             </li>
-            <li class="has-sub"><a href="#">베스트 게시판</a>
+            <li class="has-sub">
+                <a href="#">베스트 게시판</a>
                 <div class="dd_toggle">
                     <a href="/posts?category=9">풍코 베스트</a>
                 </div>
             </li>
-            <li class="has-sub"><a href="#">전체 게시판</a>
+            <li class="has-sub">
+                <a href="#">전체 게시판</a>
                 <div class="dd_toggle">
                     <a href="/posts?category=1">풍코 토론</a>
                     <a href="/posts?category=8">풍코 이슈</a>
@@ -271,6 +291,7 @@ button:hover {
         </ul>
     </div>
 </div>
+
 
 <!-- Post Container -->
 <div class="post-container">

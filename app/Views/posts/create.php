@@ -38,6 +38,12 @@
             padding: 20px;
             margin: 0;
         }
+        @media (min-width: 768px) {
+    body {
+        max-width: 1350px;
+        margin: 0 auto; /* 가운데 정렬 */
+    }
+}
 
         /* 네비게이션 바 스타일 */
         #hd_section {
@@ -222,7 +228,7 @@
 </head>
 <body>
 <div id="hd_section">
-    <a href="/pongpongkorea.co.kr/">풍코</a>
+    <a href="/">퐁퐁코리아 도태남 집합소</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>

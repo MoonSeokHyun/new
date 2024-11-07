@@ -3,6 +3,12 @@
     padding: 0;
     box-sizing: border-box;
 }
+@media (min-width: 768px) {
+    body {
+        max-width: 1350px;
+        margin: 0 auto; /* 가운데 정렬 */
+    }
+}
 body {
     font-family: '돋움', Arial, sans-serif;
     background-color: #222;

@@ -37,23 +37,30 @@
         <ul>
             <li class="has-sub"><a href="/">메인</a></li>
             <li class="has-sub">
-                <a href="/posts?category=99">공지사항</a> <!-- 공지사항 카테고리 링크 -->
+                <a href="#">공지사항</a>
+                <div class="dd_toggle">
+                    <a href="/posts?category=99">공지사항</a>
+                </div>
             </li>
             <li class="has-sub">
-                <a href="/posts?category=9">베스트 게시판</a> <!-- 베스트 카테고리 링크 -->
+                <a href="#">베스트 게시판</a>
+                <div class="dd_toggle">
+                    <a href="/posts?category=9">풍코 베스트</a>
+                </div>
             </li>
             <li class="has-sub">
                 <a href="#">전체 게시판</a>
                 <div class="dd_toggle">
-                    <a href="/posts?category=1">퐁코 토론</a> <!-- 퐁코 토론 카테고리 링크 -->
-                    <a href="/posts?category=8">퐁코 이슈</a> <!-- 퐁코 이슈 카테고리 링크 -->
-                    <a href="/posts?category=4">자유 게시판</a> <!-- 자유 게시판 카테고리 링크 -->
-                    <a href="/posts?category=7">유머 게시판</a> <!-- 유머 게시판 카테고리 링크 -->
+                    <a href="/posts?category=1">풍코 토론</a>
+                    <a href="/posts?category=8">풍코 이슈</a>
+                    <a href="/posts?category=4">자유 게시판</a>
+                    <a href="/posts?category=7">유머 게시판</a>
                 </div>
             </li>
         </ul>
     </div>
 </div>
+
 
 <?php foreach ($postsByCategory as $categoryName => $posts): ?>
     <div class="category">
