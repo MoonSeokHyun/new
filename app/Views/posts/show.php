@@ -174,6 +174,7 @@
         }
         .content img {
             max-width: 100%;
+            min-width: 700px; /* 최소 너비를 700px로 설정 */
             height: auto;
             border-radius: 5px;
             max-height: 800px;
@@ -296,13 +297,17 @@
                 display: flex;
             }
 
-            /* 모바일 이미지 크기 확장 */
+            @media (max-width: 768px) {
             .content img {
-                max-width: 100%;
-                height: auto;
-                max-height: 600px;
-                margin: 0;
+                width: 100%;            /* 화면 너비에 맞춤 */
+                max-width: 100%;         /* 최대 너비를 화면 크기로 제한 */
+                height: auto;            /* 비율에 맞춰 자동 조정 */
+                object-fit: contain;     /* 이미지가 비율을 유지하며 화면에 맞춰지도록 함 */
+                border-radius: 5px;
+                margin: 0 auto;
             }
+            }
+
         }
     </style>
 </head>
