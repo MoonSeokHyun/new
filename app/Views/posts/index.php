@@ -23,7 +23,7 @@
         /* 네비게이션 바 스타일 */
         #hd_section {
             background-color: #333;
-            padding: 10px 20px;
+            padding: 3px 3px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -136,6 +136,7 @@
             text-align: center;
             display: inline-block;
             margin-bottom: 15px;
+            margin-left : 15px;
         }
 
         .btn:hover {
@@ -143,7 +144,8 @@
         }
 
         form {
-            margin-bottom: 20px;
+            margin-top : 10px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -229,7 +231,6 @@
         h2 {
             font-size: 1em;
             color: #888;
-            margin-bottom: 15px;
         }
 
         /* 모바일 친화적 스타일 조정 */
@@ -241,7 +242,9 @@
                 font-size: 1em; /* 부제목 크기 조정 */
             }
             .btn {
+                margin-top: 10px;
                 font-size: 0.8em; /* 버튼 크기 조정 */
+                margin-left : 15px;
             }
             input[type="text"], button[type="submit"] {
                 font-size: 0.8em; /* 입력 폼 크기 조정 */
@@ -254,7 +257,7 @@
 </head>
 <body>
 <div id="hd_section">
-    <a href="/">풍코</a>
+    <a href="/">퐁퐁코리아 도태남 집합소</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
@@ -284,11 +287,6 @@
     </div>
 </div>
 
-<!-- 글쓰기 버튼 -->
-<?php if ($category != 99 && $category != 9): ?>
-    <a class="btn" href="/posts/create?category=<?= esc($category) ?>">글쓰기</a>
-<?php endif; ?>
-
 <!-- 검색 폼 -->
 <form action="/posts" method="get">
     <input type="hidden" name="category" value="<?= esc($category) ?>">
@@ -296,16 +294,22 @@
     <button type="submit">검색</button>
 </form>
 
-<h2>카테고리: <?= esc($categoryName) ?></h2>
+<h2 class="category-header">
+    카테고리: <?= esc($categoryName) ?>
+    <?php if ($category != 99 && $category != 9): ?>
+        <a class="btn" href="/posts/create?category=<?= esc($category) ?>">글쓰기</a>
+    <?php endif; ?>
+</h2>
+
 
 <!-- 게시글 목록 -->
 <ul>
     <?php foreach ($posts as $post): ?>
         <li>
             <a href="/posts/<?= $post['id'] ?>">
-                <?= esc($post['title']) ?> <span style="font-weight:normal; color: #bbb;">(작성자: <?= esc($post['nickname']) ?>)</span>
+                <?= esc($post['title']) ?> <span style="font-weight:normal; color: #bbb;"></span>
             </a>
-            <p>조회수: <?= esc($post['view_count']) ?> | 추천: <?= esc($post['likes']) ?> | 비추천: <?= esc($post['dislikes']) ?></p>
+            <p>작성자: <?= esc($post['nickname']) ?> | 조회수: <?= esc($post['view_count']) ?> | 추천: <?= esc($post['likes']) ?> | 비추천: <?= esc($post['dislikes']) ?></p>
         </li>
     <?php endforeach; ?>
 </ul>

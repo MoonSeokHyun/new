@@ -48,7 +48,7 @@
         /* 네비게이션 바 스타일 */
         #hd_section {
             background-color: #333;
-            padding: 10px 20px;
+            padding: 3px 3px;
             display: flex;
             align-items: center;
             justify-content: space-between;
