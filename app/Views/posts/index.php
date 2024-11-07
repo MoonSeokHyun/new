@@ -6,7 +6,7 @@
     <title>게시글 목록</title>
     <style>
                 * {
-            margin: 5;
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
