@@ -14,231 +14,233 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: '돋움', Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #ddd;
-            padding: 20px;
-            line-height: 1.6;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: '돋움', Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: #ddd;
+    padding: 20px;
+    line-height: 1.6;
+}
 
-        /* 헤더 스타일 */
-        #hd_section {
-            background-color: #333;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        #hd_section a {
-            color: #00d8ff;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1em;
-            margin-right: 15px;
-        }
-        #hd_section a:hover {
-            background-color: #444;
-            padding: 6px 8px;
-            border-radius: 3px;
-        }
+/* 헤더 스타일 */
+#hd_section {
+    background-color: #333;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+#hd_section a {
+    color: #00d8ff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    margin-right: 15px;
+}
+#hd_section a:hover {
+    background-color: #444;
+    padding: 6px 8px;
+    border-radius: 3px;
+}
 
-        .menu-toggle {
-            display: none;
-            background-color: transparent;
-            border: none;
-            font-size: 20px;
-            color: #00d8ff;
-            cursor: pointer;
-        }
+.menu-toggle {
+    display: none;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    color: #00d8ff;
+    cursor: pointer;
+}
 
-        /* 드롭다운 메뉴 */
-        .hd_dd_menu {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .hd_dd_menu ul {
-            display: flex;
-            list-style: none;
-            gap: 10px;
-        }
-        .hd_dd_menu .has-sub {
-            position: relative;
-        }
-        .hd_dd_menu .has-sub .dd_toggle {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #444;
-            border-radius: 5px;
-            padding: 10px 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .hd_dd_menu .has-sub:hover .dd_toggle {
-            display: block;
-        }
-        .hd_dd_menu .dd_toggle a {
-            color: #ddd;
-            display: block;
-            padding: 8px 12px;
-            text-decoration: none;
-        }
-        .hd_dd_menu .dd_toggle a:hover {
-            background-color: #333;
-        }
+/* 드롭다운 메뉴 */
+.hd_dd_menu {
+    display: flex;
+    flex-wrap: wrap;
+}
+.hd_dd_menu ul {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+}
+.hd_dd_menu .has-sub {
+    position: relative;
+}
+.hd_dd_menu .has-sub .dd_toggle {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    border-radius: 5px;
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.hd_dd_menu .has-sub:hover .dd_toggle {
+    display: block;
+}
+.hd_dd_menu .dd_toggle a {
+    color: #ddd;
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+}
+.hd_dd_menu .dd_toggle a:hover {
+    background-color: #333;
+}
 
-        /* 본문 스타일 */
-        .post-container {
-            background-color: #2c2c2c;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        }
-        .post-header {
-            text-align: center;
-            border-bottom: 2px solid #444;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-            color: #00d8ff;
-        }
-        .post-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: #aaa;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #444;
-        }
-        .content {
-            font-size: 1em;
-            color: #eee;
-            padding: 15px;
-            line-height: 1.8;
-            text-align: left;
-        }
-
-        .content img {
+/* 본문 스타일 */
+.post-container {
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.post-header {
+    text-align: center;
+    border-bottom: 2px solid #444;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+    color: #00d8ff;
+}
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #444;
+}
+.content {
+    font-size: 1em;
+    color: #eee;
+    padding: 15px;
+    line-height: 1.8;
+    text-align: left;
+}
+.content img {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
     max-height: 800px; /* 이미지가 큰 화면에서 더 크게 표시되도록 설정 */
 }
 
-        .interactions {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        .interactions a {
-            color: #00d8ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
+.interactions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+.interactions a {
+    color: #00d8ff;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-        /* 댓글 스타일 */
-        h2 {
-            font-size: 1.4em;
-            margin-top: 30px;
-            color: #00b0d4;
-        }
-        .comment-section {
-            margin-top: 20px;
-        }
-        .comment {
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        .comment strong {
-            color: #00d8ff;
-        }
-        .reply {
-            margin-left: 30px;
-            border-left: 2px solid #00d8ff;
-            padding-left: 10px;
-            background-color: #2a2a2a;
-            border-radius: 5px;
-        }
-        .reply-btn {
-            color: #00b0d4;
-            font-size: 0.9em;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-        .reply-btn:hover {
-            color: #00d8ff;
-        }
-        .reply-form {
-            display: none;
-            margin-top: 10px;
-        }
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #444;
-            color: #ddd;
-        }
-        button {
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            padding: 10px;
-            background-color: #00d8ff;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin: 10px auto;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #00b0d4;
-        }
+/* 댓글 스타일 */
+h2 {
+    font-size: 1.4em;
+    margin-top: 30px;
+    color: #00b0d4;
+}
+.comment-section {
+    margin-top: 20px;
+}
+.comment {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.comment strong {
+    color: #00d8ff;
+}
+.reply {
+    margin-left: 30px;
+    border-left: 2px solid #00d8ff;
+    padding-left: 10px;
+    background-color: #2a2a2a;
+    border-radius: 5px;
+}
+.reply-btn {
+    color: #00b0d4;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin-top: 5px;
+}
+.reply-btn:hover {
+    color: #00d8ff;
+}
+.reply-form {
+    display: none;
+    margin-top: 10px;
+}
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #444;
+    color: #ddd;
+}
+button {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    background-color: #00d8ff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin: 10px auto;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #00b0d4;
+}
 
-        /* 반응형 스타일 */
-        @media (max-width: 768px) {
-            .post-meta {
-                flex-direction: column;
-                text-align: center;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .hd_dd_menu {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background-color: #333;
-                padding: 10px 0;
-                border-radius: 3px;
-            }
-            .hd_dd_menu.active {
-                display: flex;
-            }
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .post-meta {
+        flex-direction: column;
+        text-align: center;
+    }
+    .menu-toggle {
+        display: block;
+    }
+    .hd_dd_menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #333;
+        padding: 10px 0;
+        border-radius: 3px;
+    }
+    .hd_dd_menu.active {
+        display: flex;
+    }
 
-            .content img {
+    /* 모바일 이미지 크기 확장 */
+    .content img {
         max-width: 100%;
         height: auto;
         max-height: 600px; /* 모바일에서 이미지를 크게 표시 */
+        margin: 0; /* 모바일에서 이미지 좌우 여백 제거 */
     }
-        }
+}
+
     </style>
 </head>
 <body>
