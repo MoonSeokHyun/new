@@ -232,6 +232,13 @@
             .hd_dd_menu.active {
                 display: flex;
             }
+
+            /* 모바일 이미지 크기 확장 */
+            .content img {
+                max-width: 100%;
+                height: auto;
+                max-height: 500px;
+            }
         }
     </style>
 </head>
@@ -300,30 +307,45 @@
 <!-- Comments List -->
 <div class="comment-section">
     <h2>댓글 목록</h2>
-    <?php foreach ($replies as $reply): ?>
-        <div class="comment <?= $reply['parent_id'] ? 'reply' : '' ?>" id="comment-<?= $reply['id'] ?>">
-            <strong><?= esc($reply['nickname']) ?></strong>
-            <p><?= esc($reply['content']) ?></p>
+    <?php
+    function displayReplies($replies, $parentId = null) {
+        foreach ($replies as $reply) {
+            if ($reply['parent_id'] == $parentId) {
+                ?>
+                <div class="comment <?= $reply['parent_id'] ? 'reply' : '' ?>" id="comment-<?= $reply['id'] ?>">
+                    <strong><?= esc($reply['nickname']) ?></strong>
+                    <p><?= esc($reply['content']) ?></p>
 
-            <!-- 답글 버튼 및 폼 -->
-            <?php if (!$reply['parent_id']): ?>
-                <span class="reply-btn" onclick="toggleReplyForm(<?= $reply['id'] ?>)">답글</span>
-            <?php endif; ?>
+                    <!-- 답글 버튼 및 폼 -->
+                    <?php if (!$reply['parent_id']): ?>
+                        <span class="reply-btn" onclick="toggleReplyForm(<?= $reply['id'] ?>)">답글</span>
+                    <?php endif; ?>
 
-            <!-- 대댓글 입력 폼 -->
-            <div id="reply-form-<?= $reply['id'] ?>" class="reply-form">
-                <form action="/posts/<?= $post['id'] ?>/reply" method="post">
-                    <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-                    <input type="hidden" name="parent_id" value="<?= $reply['id'] ?>">
-                    <label>닉네임:</label>
-                    <input type="text" name="nickname" required>
-                    <label>댓글 내용:</label>
-                    <textarea name="content" required></textarea>
-                    <button type="submit">답글 작성</button>
-                </form>
-            </div>
-        </div>
-    <?php endforeach; ?>
+                    <!-- 대댓글 입력 폼 -->
+                    <div id="reply-form-<?= $reply['id'] ?>" class="reply-form">
+                        <form action="/posts/<?= $reply['post_id'] ?>/reply" method="post">
+                            <input type="hidden" name="post_id" value="<?= $reply['post_id'] ?>">
+                            <input type="hidden" name="parent_id" value="<?= $reply['id'] ?>">
+                            <label>닉네임:</label>
+                            <input type="text" name="nickname" required>
+                            <label>댓글 내용:</label>
+                            <textarea name="content" required></textarea>
+                            <button type="submit">답글 작성</button>
+                        </form>
+                    </div>
+
+                    <?php
+                    // 재귀적으로 자식 댓글들을 출력
+                    displayReplies($replies, $reply['id']);
+                    ?>
+                </div>
+                <?php
+            }
+        }
+    }
+
+    displayReplies($replies);
+    ?>
 </div>
 
 <script>
