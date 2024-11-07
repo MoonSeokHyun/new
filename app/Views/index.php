@@ -29,7 +29,7 @@
 
 </head>
 <body>
-
+<!--헤더자리-->
 <div id="hd_section">
     <a href="/">퐁퐁코리아 도태남 집합소</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
@@ -61,7 +61,6 @@
     </div>
 </div>
 
-
 <?php foreach ($postsByCategory as $categoryName => $posts): ?>
     <div class="category">
         <h2><a href="/posts?category=<?= urlencode($categoryName) ?>" class="category-link"><?= esc($categoryName) ?></a></h2>
@@ -84,8 +83,6 @@
         <?php endif; ?>
     </div>
 <?php endforeach; ?>
-
-
 
 
 <script>
