@@ -25,13 +25,11 @@ class DCInsideCrawler extends Controller
 
     public function crawl($postNumber = null)
     {
-        // postNumber가 주어지지 않았을 경우, 마지막 크롤링된 번호를 가져와 +1 시킴
         if (is_null($postNumber)) {
             $lastCrawl = $this->db->table('crawl_logs')->orderBy('post_number', 'DESC')->get()->getRow();
-            $postNumber = $lastCrawl ? $lastCrawl->post_number + 1 : 5850163;  // 기본값 설정
+            $postNumber = $lastCrawl ? $lastCrawl->post_number + 1 : 5850163;
         }
 
-        // 오늘 날짜에 해당하는 폴더 경로 설정
         $currentDate = date('Y-m-d');
         $uploadPath = $this->uploadBasePath . $currentDate . '/';
         
@@ -41,7 +39,6 @@ class DCInsideCrawler extends Controller
         }
 
         while (true) {
-            // URL 설정 및 HTML 가져오기
             $url = "https://gall.dcinside.com/board/view/?id=neostock&no={$postNumber}";
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -67,11 +64,9 @@ class DCInsideCrawler extends Controller
             @$dom->loadHTML($html);
             $xpath = new \DOMXPath($dom);
 
-            // 제목 크롤링
             $titleNode = $xpath->query("//span[@class='title_subject']");
             $title = $titleNode->length > 0 ? $titleNode->item(0)->textContent : '제목 없음';
 
-            // 본문 크롤링
             $contentNode = $xpath->query("//div[contains(@class, 'write_div')]");
             if ($contentNode->length > 0) {
                 $content = trim($contentNode->item(0)->textContent);
@@ -81,7 +76,6 @@ class DCInsideCrawler extends Controller
                 continue;
             }
 
-            // 이미지 URL 추출 및 다운로드 (GIF 제외)
             $imageHtml = '';
             $imageNodes = $xpath->query("//div[contains(@class, 'write_div')]//img");
             foreach ($imageNodes as $img) {
@@ -96,10 +90,8 @@ class DCInsideCrawler extends Controller
                 }
             }
 
-            // 이미지와 본문을 합쳐 최종 콘텐츠 생성
             $finalContent = "<p>{$content}</p>" . $imageHtml;
 
-            // 데이터베이스에 데이터 삽입
             $this->postModel->insert([
                 'post_number' => $postNumber,
                 'title' => $title,
@@ -110,14 +102,13 @@ class DCInsideCrawler extends Controller
                 'is_deleted' => 'N'
             ]);
 
-            // 크롤링 완료 기록을 `crawl_logs`에 추가
             $this->db->table('crawl_logs')->insert([
                 'post_number' => $postNumber,
                 'completed_at' => date('Y-m-d H:i:s')
             ]);
 
             echo "Post {$postNumber} 크롤링 완료.\n";
-            break; // 크롤링 완료 시 종료
+            break;
         }
     }
 
@@ -129,23 +120,24 @@ class DCInsideCrawler extends Controller
             $imageUrl = 'https://gall.dcinside.com' . $imageUrl;
         }
 
-        $context = stream_context_create([
-            "http" => [
-                "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-                "Referer" => "https://gall.dcinside.com/"
-            ],
-            "ssl" => [
-                "verify_peer" => false,
-                "verify_peer_name" => false,
-            ]
-        ]);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $imageUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+        curl_setopt($ch, CURLOPT_REFERER, 'https://gall.dcinside.com/');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 
-        $imageData = file_get_contents($imageUrl, false, $context);
+        $imageData = curl_exec($ch);
 
         if ($imageData === false) {
-            echo "이미지 다운로드 실패: {$imageUrl}\n";
+            echo "이미지 다운로드 실패: {$imageUrl} - " . curl_error($ch) . "\n";
+            curl_close($ch);
             return null;
         }
+
+        curl_close($ch);
 
         $imageFileName = "post_{$postNumber}_" . uniqid() . '.png';
         $imagePath = "{$uploadPath}{$imageFileName}";
