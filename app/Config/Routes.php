@@ -26,5 +26,8 @@ $routes->get('dcinside/crawl', 'DCInsideCrawler::crawl');
 $routes->get('sitemap.xml', 'SitemapController::index'); // 사이트맵 인덱스
 $routes->get('sitemap/page/(:num)', 'SitemapController::page/$1'); // 각 페이지별 사이트맵
 
+$routes->post('/posts/(:num)/ajaxLike', 'Posts::ajaxLike/$1');
+$routes->post('/posts/(:num)/ajaxDislike', 'Posts::ajaxDislike/$1');
+
 
 

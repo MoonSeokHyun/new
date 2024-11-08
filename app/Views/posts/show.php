@@ -14,287 +14,441 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
-        * {
-            margin: 5;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            width: 100%;
-            font-family: '돋움', Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #ddd;
-            line-height: 1.6;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        /* PC 화면에서만 최대 너비 적용 */
-        @media (min-width: 768px) {
-            body {
-                max-width: 1350px;
-                margin: 0 auto;
-            }
-        }
+body {
+    width: 100%;
+    font-family: '돋움', Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: #ddd;
+    line-height: 1.6;
+}
 
-        /* 헤더 스타일 */
+/* PC 화면에서만 최대 너비 적용 */
+@media (min-width: 768px) {
+    body {
+        max-width: 1350px;
+        margin: 0 auto;
+    }
+}
 
-        .menu-toggle {
-            display: none;
-            background-color: transparent;
-            border: none;
-            font-size: 20px;
-            color: #00d8ff;
-            cursor: pointer;
-        }
-        /* 본문 스타일 */
-        .post-container {
-            background-color: #2c2c2c;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .content {
-            text-align: center;
-            margin: 0 auto;
-            max-width: 700px;
-        }
-        .post-header {
-            margin-top: 10px;
-            text-align: center;
-            border-bottom: 2px solid #444;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-            color: #00d8ff;
-        }
-        .post-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: #aaa;
-            margin-bottom: 15px;
-            padding: 0 15px 10px 15px;
-            border-bottom: 1px solid #444;
-        }
+/* 본문 스타일 */
+.post-container {
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    margin-left: auto;
+    margin-right: auto;
+}
 
-        .content {
-            font-size: 1em;
-            color: #eee;
-            line-height: 1.8;
-            text-align: left;
-        }
-        .content img {
-        display: block; /* 이미지가 각 줄의 가운데로 오도록 설정 */
-        margin: 2px auto; /* 상하단 여백 */
-        max-width: 100%; /* 화면에 맞춰 이미지 최대 크기를 조정 */
-        width: 100%; /* 이미지가 컨테이너 너비에 맞게 확장 */
-        height: auto; /* 이미지 비율을 유지하여 높이 조정 */
-        border-radius: 5px; /* 이미지의 모서리를 둥글게 설정 */
+.content {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.post-header {
+    margin-top: 10px;
+    text-align: center;
+    border-bottom: 2px solid #444;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+    color: #00d8ff;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 15px;
+    padding: 0 15px 10px 15px;
+    border-bottom: 1px solid #444;
+}
+
+.content img {
+    display: block;
+    margin: 2px auto;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+
+.form-section {
+    padding: 10px;
+    margin: 15px;
+    background-color: #2a2a2a;
+    border-radius: 5px;
+}
+
+.form-section h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #00d8ff;
+}
+
+.form-section input[type="text"],
+.form-section textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #444;
+    color: #ddd;
+    font-size: 0.9em;
+}
+
+.form-section button {
+    width: 100%;
+    padding: 8px;
+    background-color: #00d8ff;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-section button:hover {
+    background-color: #00b0d4;
+}
+
+/* 댓글 목록 스타일 */
+.comment-section {
+    padding: 10px;
+    margin: 15px;
+}
+
+.comment-section h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #00b0d4;
+}
+
+.comment {
+    background-color: #333;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.comment strong {
+    color: #00d8ff;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.comment p {
+    font-size: 0.9em;
+    color: #ddd;
+    margin-top: 5px;
+}
+
+.reply {
+    margin-left: 15px;
+    padding-left: 10px;
+    border-left: 2px solid #00d8ff;
+    background-color: #2a2a2a;
+    margin-top: 10px;
+}
+
+.reply-btn {
+    color: #00b0d4;
+    font-size: 0.8em;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.reply-btn:hover {
+    color: #00d8ff;
+}
+
+.reply-form {
+    display: none;
+    margin-top: 10px;
+}
+
+.reply-form input[type="text"],
+.reply-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #444;
+    color: #ddd;
+    font-size: 0.9em;
+}
+
+.reply-form button {
+    width: 100%;
+    padding: 8px;
+    background-color: #00d8ff;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.reply-form button:hover {
+    background-color: #00b0d4;
+}
+
+/* 모바일 스타일 */
+@media (max-width: 768px) {
+    .form-section,
+    .comment-section {
+        margin: 10px;
+        padding: 10px;
+    }
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #444;
+    color: #ddd;
+}
+
+button {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    background-color: #00d8ff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #00b0d4;
+}
+
+/* 네비게이션 버튼 스타일 */
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    gap: 10px;
+}
+
+.post-navigation a {
+    color: #00d8ff;
+    text-decoration: none;
+    padding: 8px 12px;
+    background-color: #333;
+    border-radius: 5px;
+    border: 1px solid #444;
+    max-width: 45%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.post-navigation a:hover {
+    background-color: #444;
+    color: #00e0ff;
+    border-color: #00e0ff;
+}
+
+
+/* 모바일 스타일 */
+@media (max-width: 768px) {
+    .post-meta {
+        flex-direction: column;
+        text-align: center;
     }
 
-        .interactions {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        .interactions a {
-            color: #00d8ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .content {
+        width: 100%;
+        padding: 0 10px;
+    }
 
-        /* 댓글 스타일 */
-        h2 {
-            font-size: 1.4em;
-            margin-top: 30px;
-            color: #00b0d4;
-        }
-        .comment-section {
-            margin-top: 20px;
-        }
-        .comment {
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        .comment strong {
-            color: #00d8ff;
-        }
-        .reply {
-            margin-left: 30px;
-            border-left: 2px solid #00d8ff;
-            padding-left: 10px;
-            background-color: #2a2a2a;
-            border-radius: 5px;
-        }
-        .reply-btn {
-            color: #00b0d4;
-            font-size: 0.9em;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-        .reply-btn:hover {
-            color: #00d8ff;
-        }
-        .reply-form {
-            display: none;
-            margin-top: 10px;
-        }
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #444;
-            color: #ddd;
-        }
-        button {
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            padding: 10px;
-            background-color: #00d8ff;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin: 10px auto;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #00b0d4;
-        }
+    .content img {
+        max-width: 100%;
+        height: auto;
+    }
 
-        /* 네비게이션 버튼 스타일 */
-        .post-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 0.9em;
-        }
-        .post-navigation a {
-            color: #00d8ff;
-            text-decoration: none;
-            padding: 8px 12px;
-            background-color: #333;
-            border-radius: 3px;
-            border: 1px solid #444;
-        }
-        .post-navigation a:hover {
-            background-color: #444;
-        }
+    .menu-toggle {
+        display: block;
+    }
 
-        /* 반응형 스타일 */
-        @media (max-width: 768px) {
-            .post-meta {
-                flex-direction: column;
-                text-align: center;
-            }
-            .menu-toggle {
-                display: block;
-            }
+    .hd_dd_menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #333;
+        padding: 10px 0;
+        border-radius: 3px;
+    }
 
-            /* 모바일 이미지 크기 확장 */
-            .content img {
-                max-width: 100%;
-                height: auto;
-                max-height: 600px;
-                object-fit: contain; /* 비율을 유지한 채 화면에 맞게 조정 */
-                min-height:
-                margin: 0;
-            }
-        }
-        #hd_section {
-            background-color: #333;
-            padding: 3px 3px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        #hd_section a {
-            color: #00d8ff;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 0 10px;
-            padding: 8px;
-            font-size: 0.9em;
-            transition: background-color 0.3s ease;
-        }
-        #hd_section a:hover {
-            background-color: #444;
-            border-radius: 3px;
-        }
+    .hd_dd_menu.active {
+        display: flex;
+    }
+}
 
-        /* 모바일 메뉴 버튼 스타일 */
-        .menu-toggle {
-            display: none;
-            background-color: transparent;
-            border: none;
-            font-size: 20px;
-            color: #00d8ff;
-            cursor: pointer;
-        }
+/* 헤더 스타일 */
+#hd_section {
+    background-color: #333;
+    padding: 3px 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
 
-        /* 드롭다운 메뉴 스타일 */
-        .hd_dd_menu {
-            position: relative;
-        }
-        .hd_dd_menu ul {
-            display: flex;
-            list-style: none;
-            flex-wrap: wrap;
-        }
-        .hd_dd_menu .has-sub {
-            position: relative;
-        }
-        .hd_dd_menu .has-sub .dd_toggle {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #444;
-            border-radius: 3px;
-            padding: 8px 0;
-            min-width: 120px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .hd_dd_menu .has-sub:hover .dd_toggle {
-            display: block;
-        }
-        .hd_dd_menu .has-sub .dd_toggle a {
-            color: #ddd;
-            display: block;
-            padding: 6px 15px;
-            text-decoration: none;
-            font-size: 0.85em;
-        }
-        .hd_dd_menu .has-sub .dd_toggle a:hover {
-            background-color: #333;
-        }
+#hd_section a {
+    color: #00d8ff;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+    padding: 8px;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
 
-        /* 모바일 스타일 */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-            .hd_dd_menu {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background-color: #333;
-                padding: 10px 0;
-                border-radius: 3px;
-            }
-            .hd_dd_menu.active {
-                display: flex;
-            }
-        }
+#hd_section a:hover {
+    background-color: #444;
+    border-radius: 3px;
+}
+
+/* 모바일 메뉴 버튼 스타일 */
+.menu-toggle {
+    display: none;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    color: #00d8ff;
+    cursor: pointer;
+}
+
+/* 드롭다운 메뉴 스타일 */
+.hd_dd_menu {
+    position: relative;
+}
+
+.hd_dd_menu ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.hd_dd_menu .has-sub {
+    position: relative;
+}
+
+.hd_dd_menu .has-sub .dd_toggle {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    border-radius: 3px;
+    padding: 8px 0;
+    min-width: 120px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hd_dd_menu .has-sub:hover .dd_toggle {
+    display: block;
+}
+
+.hd_dd_menu .has-sub .dd_toggle a {
+    color: #ddd;
+    display: block;
+    padding: 6px 15px;
+    text-decoration: none;
+    font-size: 0.85em;
+}
+
+.hd_dd_menu .has-sub .dd_toggle a:hover {
+    background-color: #333;
+}
+
+/* 모바일 스타일 */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    .hd_dd_menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #333;
+        padding: 10px 0;
+        border-radius: 3px;
+    }
+    .hd_dd_menu.active {
+        display: flex;
+    }
+}
+
+.interactions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.interactions a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 15px;
+    color: #00d8ff;
+    background-color: #2c2c2c;
+    border: 1px solid #444;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.interactions a i {
+    margin-right: 5px;
+}
+
+.interactions a:hover {
+    background-color: #444;
+    color: #00e0ff;
+    border-color: #00e0ff;
+}
+
+.interactions a:active {
+    transform: scale(0.95);
+}
+
+#like-btn {
+    color: #00d8ff;
+}
+
+#dislike-btn {
+    color: #ff5c5c;
+}
+
     </style>
 </head>
 <body>
@@ -337,6 +491,16 @@
     <div class="content"><?= $post['content'] ?></div>
 </div>
 
+<!--추천 반대 -->
+<div class="interactions">
+    <a href="javascript:void(0);" onclick="handleLike(<?= $post['id'] ?>)" id="like-btn">
+        <i class="fas fa-thumbs-up"></i> 추천: <span id="like-count"><?= $post['likes'] ?></span>
+    </a>
+    <a href="javascript:void(0);" onclick="handleDislike(<?= $post['id'] ?>)" id="dislike-btn">
+        <i class="fas fa-thumbs-down"></i> 비추천: <span id="dislike-count"><?= $post['dislikes'] ?></span>
+    </a>
+</div>
+
 <!-- 이전/다음 글 네비게이션 -->
 <div class="post-navigation">
     <?php if ($previousPost): ?>
@@ -347,14 +511,6 @@
     <?php endif; ?>
 </div>
 
-<div class="interactions">
-    <a href="/posts/<?= $post['id'] ?>/like">
-        <i class="fas fa-thumbs-up"></i> 추천: <?= $post['likes'] ?>
-    </a>
-    <a href="/posts/<?= $post['id'] ?>/dislike">
-        <i class="fas fa-thumbs-down"></i> 비추천: <?= $post['dislikes'] ?>
-    </a>
-</div>
 
 <div class="form-section">
     <h2>댓글 작성</h2>
@@ -426,4 +582,45 @@ wcs_do();
 }
 </script>
 </body>
+<script>
+function handleLike(postId) {
+    fetch(`/posts/${postId}/ajaxLike`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('like-count').innerText = data.likes;
+            alert('추천하셨습니다.');
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function handleDislike(postId) {
+    fetch(`/posts/${postId}/ajaxDislike`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('dislike-count').innerText = data.dislikes;
+            alert('비추천하셨습니다.');
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
 </html>
