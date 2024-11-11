@@ -85,24 +85,38 @@ class Posts extends BaseController
         $category = $this->request->getPost('category');
         $content = $this->request->getPost('content');
         $nickname = $this->request->getPost('nickname'); // 닉네임 필드 추가
-
+    
         $dateFolder = date('Y-m-d');
         $uploadPath = FCPATH . 'uploads/' . $dateFolder;
-
+    
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0755, true);
         }
-
+    
         $files = $this->request->getFiles();
         for ($i = 1; $i <= 5; $i++) {
-            if ($files["image$i"]->isValid() && !$files["image$i"]->hasMoved()) {
-                $fileName = $files["image$i"]->getRandomName();
-                $files["image$i"]->move($uploadPath, $fileName);
+            $file = $files["image$i"];
+            if ($file->isValid() && !$file->hasMoved()) {
+                // 10MB 이하인지 확인
+                if ($file->getSize() > 10 * 1024 * 1024) { // 10MB
+                    echo "<script>alert('이미지 {$i}이(가) 10MB를 초과했습니다.'); history.back();</script>";
+                    exit;
+                }
+    
+                // 이미지 파일인지 확인 (GIF, PNG, JPEG 등만 허용)
+                $mimeType = $file->getMimeType();
+                if (!in_array($mimeType, ['image/gif', 'image/jpeg', 'image/png'])) {
+                    echo "<script>alert('이미지 {$i}은(는) 허용되지 않는 형식입니다. GIF, PNG, JPEG 파일만 가능합니다.'); history.back();</script>";
+                    exit;
+                }
+    
+                $fileName = $file->getRandomName();
+                $file->move($uploadPath, $fileName);
                 $imagePath = '/uploads/' . $dateFolder . '/' . $fileName;
                 $content .= "<p><img src='{$imagePath}' alt='Uploaded Image'></p>";
             }
         }
-
+    
         $data = [
             'title' => $this->request->getPost('title'),
             'content' => $content,
@@ -110,12 +124,12 @@ class Posts extends BaseController
             'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
             'category' => $category,
         ];
-
+    
         $this->postModel->insert($data);
         return redirect()->to("/posts?category={$category}")
                          ->with('alert', '게시글이 성공적으로 등록되었습니다.');
     }
-
+    
     // 게시글 상세 조회
     public function show($id)
     {

@@ -63,7 +63,7 @@
 
 <?php foreach ($postsByCategory as $categoryName => $posts): ?>
     <div class="category">
-        <h2><a href="/posts?category=<?= urlencode($categoryName) ?>" class="category-link"><?= esc($categoryName) ?></a></h2>
+        <h2><a href="/posts?category=<?= urlencode($categoryName) ?>" class="category-link"><?= esc($categoryName) ?></h2>
         <?php if (count($posts) > 0): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="post">
