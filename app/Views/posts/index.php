@@ -264,7 +264,37 @@
     .hd_dd_menu.active {
         display: flex;
     }
+
 }
+/* 광고 스타일 */
+.ad-container {
+    margin: 15px auto;
+    max-width: 1350px; /* 본문과 동일한 최대 너비로 제한 */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.ad-iframe {
+    width: 100%; /* 부모 컨테이너의 가로 너비를 가득 채우도록 설정 */
+    height: auto;
+    border: none;
+}
+
+/* PC 화면에서 높이 설정 */
+@media (min-width: 768px) {
+    .ad-iframe {
+        height: 150px; /* PC 화면에서 충분히 큰 높이 설정 */
+    }
+}
+
+/* 모바일 화면에서 높이 설정 */
+@media (max-width: 767px) {
+    .ad-iframe {
+        height: 100px; /* 모바일에서 낮은 높이 설정 */
+    }
+}
+
     </style>
 </head>
 <body>
@@ -313,6 +343,13 @@
     <?php endif; ?>
 </h2>
 
+<div class="ad-container">
+    <iframe src="https://ads-partners.coupang.com/widgets.html?id=819616&template=carousel&trackingCode=AF8077807&subId=&width=680&height=140&tsource=" 
+            class="ad-iframe" 
+            frameborder="0" 
+            scrolling="no" 
+            referrerpolicy="unsafe-url"></iframe>
+</div>
 
 <!-- 게시글 목록 -->
 <ul>

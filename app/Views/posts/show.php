@@ -449,6 +449,26 @@ button:hover {
     color: #ff5c5c;
 }
 
+.ad-iframe {
+    width: 100%;
+    max-width: 680px;
+    height: auto;
+    border: none;
+    margin: 0 auto;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .ad-iframe {
+        height: 140px;
+    }
+}
+
+@media (max-width: 767px) {
+    .ad-iframe {
+        height: 100px; /* Reduced height for mobile */
+    }
+}
     </style>
 </head>
 <body>
@@ -490,6 +510,12 @@ button:hover {
     </div>
     <div class="content"><?= $post['content'] ?></div>
 </div>
+
+    <iframe src="https://ads-partners.coupang.com/widgets.html?id=819616&template=carousel&trackingCode=AF8077807&subId=&width=100&height=1000&tsource="
+            class="ad-iframe"
+            frameborder="0"
+            scrolling="no"
+            referrerpolicy="unsafe-url"></iframe>
 
 <!--추천 반대 -->
 <div class="interactions">
