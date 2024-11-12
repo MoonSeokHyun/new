@@ -276,56 +276,78 @@ class Posts extends BaseController
         return redirect()->back();
     }
     public function ajaxLike($id)
-{
-    if ($this->request->isAJAX()) {
-        $userIp = $this->request->getIPAddress();
-        $existing = $this->db->table('post_likes')
-                             ->where(['post_id' => $id, 'user_ip' => $userIp, 'is_like' => true])
-                             ->get()
-                             ->getRow();
-
-        if ($existing) {
-            return $this->response->setJSON(['success' => false, 'message' => '이미 추천한 게시글입니다']);
+    {
+        if ($this->request->isAJAX()) {
+            $userIp = $this->request->getIPAddress();
+            
+            // 사용자가 이미 비추천했는지 확인
+            $disliked = $this->db->table('post_likes')
+                                 ->where(['post_id' => $id, 'user_ip' => $userIp, 'is_like' => false])
+                                 ->get()
+                                 ->getRow();
+            
+            if ($disliked) {
+                return $this->response->setJSON(['success' => false, 'message' => '이미 비추천한 게시글입니다. 비추천을 취소하고 다시 시도하세요.']);
+            }
+            
+            // 사용자가 이미 추천했는지 확인
+            $existing = $this->db->table('post_likes')
+                                 ->where(['post_id' => $id, 'user_ip' => $userIp, 'is_like' => true])
+                                 ->get()
+                                 ->getRow();
+    
+            if ($existing) {
+                return $this->response->setJSON(['success' => false, 'message' => '이미 추천한 게시글입니다.']);
+            }
+    
+            $post = $this->postModel->find($id);
+            $this->db->table('post_likes')->insert([
+                'post_id' => $id,
+                'user_ip' => $userIp,
+                'is_like' => true,
+            ]);
+    
+            $this->postModel->update($id, ['likes' => $post['likes'] + 1]);
+            return $this->response->setJSON(['success' => true, 'likes' => $post['likes'] + 1]);
         }
-
-        $post = $this->postModel->find($id);
-        $this->db->table('post_likes')->insert([
-            'post_id' => $id,
-            'user_ip' => $userIp,
-            'is_like' => true,
-        ]);
-
-        $this->postModel->update($id, ['likes' => $post['likes'] + 1]);
-        return $this->response->setJSON(['success' => true, 'likes' => $post['likes'] + 1]);
+        return $this->response->setJSON(['success' => false, 'message' => '추천 요청에 실패했습니다']);
     }
-    return $this->response->setJSON(['success' => false, 'message' => '추천 요청에 실패했습니다']);
-}
-
-public function ajaxDislike($id)
-{
-    if ($this->request->isAJAX()) {
-        $userIp = $this->request->getIPAddress();
-        $existing = $this->db->table('post_likes')
-                             ->where(['post_id' => $id, 'user_ip' => $userIp, 'is_like' => false])
-                             ->get()
-                             ->getRow();
-
-        if ($existing) {
-            return $this->response->setJSON(['success' => false, 'message' => '이미 비추천한 게시글입니다']);
+    
+    public function ajaxDislike($id)
+    {
+        if ($this->request->isAJAX()) {
+            $userIp = $this->request->getIPAddress();
+            
+            // 사용자가 이미 추천했는지 확인
+            $liked = $this->db->table('post_likes')
+                              ->where(['post_id' => $id, 'user_ip' => $userIp, 'is_like' => true])
+                              ->get()
+                              ->getRow();
+    
+            if ($liked) {
+                return $this->response->setJSON(['success' => false, 'message' => '이미 추천한 게시글입니다. 추천을 취소하고 다시 시도하세요.']);
+            }
+    
+            // 사용자가 이미 비추천했는지 확인
+            $existing = $this->db->table('post_likes')
+                                 ->where(['post_id' => $id, 'user_ip' => $userIp, 'is_like' => false])
+                                 ->get()
+                                 ->getRow();
+    
+            if ($existing) {
+                return $this->response->setJSON(['success' => false, 'message' => '이미 비추천한 게시글입니다.']);
+            }
+    
+            $post = $this->postModel->find($id);
+            $this->db->table('post_likes')->insert([
+                'post_id' => $id,
+                'user_ip' => $userIp,
+                'is_like' => false,
+            ]);
+    
+            $this->postModel->update($id, ['dislikes' => $post['dislikes'] + 1]);
+            return $this->response->setJSON(['success' => true, 'dislikes' => $post['dislikes'] + 1]);
         }
-
-        $post = $this->postModel->find($id);
-        $this->db->table('post_likes')->insert([
-            'post_id' => $id,
-            'user_ip' => $userIp,
-            'is_like' => false,
-        ]);
-
-        $this->postModel->update($id, ['dislikes' => $post['dislikes'] + 1]);
-        return $this->response->setJSON(['success' => true, 'dislikes' => $post['dislikes'] + 1]);
+        return $this->response->setJSON(['success' => false, 'message' => '비추천 요청에 실패했습니다']);
     }
-    return $this->response->setJSON(['success' => false, 'message' => '비추천 요청에 실패했습니다']);
-}
-}
-
-
+}    

@@ -609,7 +609,19 @@ wcs_do();
 </script>
 </body>
 <script>
+let hasLiked = false;
+let hasDisliked = false;
+
 function handleLike(postId) {
+    if (hasLiked) {
+        alert('이미 추천하셨습니다.');
+        return;
+    }
+    if (hasDisliked) {
+        alert('이미 비추천을 하셨습니다. 비추천을 취소하고 다시 시도해 주세요.');
+        return;
+    }
+
     fetch(`/posts/${postId}/ajaxLike`, {
         method: 'POST',
         headers: {
@@ -620,6 +632,7 @@ function handleLike(postId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            hasLiked = true;
             document.getElementById('like-count').innerText = data.likes;
             alert('추천하셨습니다.');
         } else {
@@ -630,6 +643,15 @@ function handleLike(postId) {
 }
 
 function handleDislike(postId) {
+    if (hasDisliked) {
+        alert('이미 비추천하셨습니다.');
+        return;
+    }
+    if (hasLiked) {
+        alert('이미 추천을 하셨습니다. 추천을 취소하고 다시 시도해 주세요.');
+        return;
+    }
+
     fetch(`/posts/${postId}/ajaxDislike`, {
         method: 'POST',
         headers: {
@@ -640,6 +662,7 @@ function handleDislike(postId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            hasDisliked = true;
             document.getElementById('dislike-count').innerText = data.dislikes;
             alert('비추천하셨습니다.');
         } else {
@@ -648,5 +671,6 @@ function handleDislike(postId) {
     })
     .catch(error => console.error('Error:', error));
 }
+
 </script>
 </html>
