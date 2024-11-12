@@ -213,3 +213,32 @@ font-size: 0.85em;
         display: flex;
     }
 }
+
+/* 광고 스타일 */
+.ad-container {
+    margin: 15px auto;
+    max-width: 1350px; /* 본문과 동일한 최대 너비로 제한 */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.ad-iframe {
+    width: 100%; /* 부모 컨테이너의 가로 너비를 가득 채우도록 설정 */
+    height: auto;
+    border: none;
+}
+
+/* PC 화면에서 높이 설정 */
+@media (min-width: 768px) {
+    .ad-iframe {
+        height: 125px; /* PC 화면에서 충분히 큰 높이 설정 */
+    }
+}
+
+/* 모바일 화면에서 높이 설정 */
+@media (max-width: 767px) {
+    .ad-iframe {
+        height: 80px; /* 모바일에서 낮은 높이 설정 */
+    }
+}

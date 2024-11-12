@@ -60,10 +60,17 @@
         </ul>
     </div>
 </div>
+<div class="ad-container">
+    <iframe src="https://ads-partners.coupang.com/widgets.html?id=819616&template=carousel&trackingCode=AF8077807&subId=&width=680&height=140&tsource=" 
+            class="ad-iframe" 
+            frameborder="0" 
+            scrolling="no" 
+            referrerpolicy="unsafe-url"></iframe>
+</div>
 
 <?php foreach ($postsByCategory as $categoryName => $posts): ?>
     <div class="category">
-        <h2><a href="/posts?category=<?= urlencode($categoryName) ?>" class="category-link"><?= esc($categoryName) ?></h2>
+        <h2><a href="/posts?category=<?= urlencode($categoryName) ?>" class="category-link"><?= esc($categoryName) ?></a></h2>
         <?php if (count($posts) > 0): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="post">
@@ -83,6 +90,36 @@
         <?php endif; ?>
     </div>
 <?php endforeach; ?>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const categoryLinks = document.querySelectorAll(".category-link");
+        
+        // 카테고리 이름과 ID 매핑
+        const categories = {
+            "공지사항": 99,
+            "베스트": 9,
+            "퐁코 토론": 1,
+            "퐁코 이슈": 8,
+            "자유 게시판": 4,
+            "유머 게시판": 7
+        };
+
+        categoryLinks.forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault(); // 기본 링크 이동을 막음
+                
+                const categoryName = this.textContent.trim();
+                const categoryId = categories[categoryName];
+
+                if (categoryId !== undefined) {
+                    // URL을 카테고리 ID로 변경하여 이동
+                    window.location.href = `/posts?category=${encodeURIComponent(categoryId)}`;
+                }
+            });
+        });
+    });
+</script>
 
 
 <script>
