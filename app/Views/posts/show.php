@@ -543,12 +543,22 @@ button:hover {
     <form action="/posts/<?= $post['id'] ?>/reply" method="post">
         <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
         <label>닉네임:</label>
-        <input type="text" name="nickname" required>
+        <input type="text" name="nickname" id="nickname" required>
         <label>댓글 내용:</label>
         <textarea name="content" required></textarea>
         <button type="submit">댓글 작성</button>
     </form>
 </div>
+
+<script>
+    // 페이지 로드 시 닉네임 필드에 '퐁퐁이'와 1~999 사이의 랜덤 숫자 설정
+    document.addEventListener("DOMContentLoaded", function() {
+        const randomNumber = Math.floor(Math.random() * 999) + 1; // 1부터 999 사이의 숫자 생성
+        const nicknameField = document.getElementById("nickname");
+        nicknameField.value = `퐁퐁이${randomNumber}`;
+    });
+</script>
+
 
 <div class="comment-section">
     <h2>댓글 목록</h2>
