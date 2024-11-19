@@ -473,6 +473,39 @@ button:hover {
     </style>
 </head>
 <body>
+
+<!-- PC 화면 좌우 광고 -->
+<div class="ad-left">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
+     crossorigin="anonymous"></script>
+<!-- 수직형 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="7954046670"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<div class="ad-right">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
+     crossorigin="anonymous"></script>
+<!-- 수직형 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="7954046670"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+
 <div id="hd_section">
     <a href="/">퐁퐁코리아 도태남 집합소</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
@@ -538,6 +571,21 @@ button:hover {
     <?php endif; ?>
 </div>
 
+
+<div class="ad-banner-mobile">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
+     crossorigin="anonymous"></script>
+<!-- 수평형 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="7025215607"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
 
 <div class="form-section">
     <h2>댓글 작성</h2>
