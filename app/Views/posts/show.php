@@ -470,6 +470,64 @@ button:hover {
         height: 100px; /* Reduced height for mobile */
     }
 }
+
+/* 광고 영역 스타일 */
+.ad-left,
+.ad-right {
+    display: none; /* 기본값: 숨김 */
+    position: fixed;
+    top: 10%;
+    width: 160px;
+    height: 600px;
+    z-index: 100;
+    background-color: transparent; /* 광고 배경 없음 */
+}
+
+/* 좌측 광고 */
+.ad-left {
+    left: 10px;
+}
+
+/* 우측 광고 */
+.ad-right {
+    right: 10px;
+}
+
+/* 모바일 광고 배너 */
+.ad-banner-mobile {
+    display: none; /* 기본값: 숨김 */
+    text-align: center;
+    margin: 20px auto; /* 위아래 여백과 가운데 정렬 */
+}
+
+/* PC 화면에서 광고 활성화 */
+@media (min-width: 1024px) {
+    .ad-left,
+    .ad-right {
+        display: block; /* PC 화면에서만 표시 */
+    }
+}
+
+/* 모바일 화면에서 광고 활성화 */
+@media (max-width: 768px) {
+    .ad-banner-mobile {
+        display: block; /* 모바일 화면에서만 표시 */
+    }
+
+    /* 좌우 광고 숨김 */
+    .ad-left,
+    .ad-right {
+        display: none;
+    }
+}
+
+/* 본문 컨텐츠 여백 조정 */
+@media (min-width: 1024px) {
+    body {
+        margin-left: 180px; /* 좌측 광고 공간 확보 */
+        margin-right: 180px; /* 우측 광고 공간 확보 */
+    }
+}
     </style>
 </head>
 <body>
