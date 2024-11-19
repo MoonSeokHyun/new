@@ -470,99 +470,12 @@ button:hover {
         height: 100px; /* Reduced height for mobile */
     }
 }
-
-/* 광고 영역 스타일 */
-.ad-left,
-.ad-right {
-    display: none; /* 기본값: 숨김 */
-    position: fixed;
-    top: 10%;
-    width: 160px;
-    height: 600px;
-    z-index: 100;
-    background-color: transparent; /* 광고 배경 없음 */
-}
-
-/* 좌측 광고 */
-.ad-left {
-    left: 10px;
-}
-
-/* 우측 광고 */
-.ad-right {
-    right: 10px;
-}
-
-/* 모바일 광고 배너 */
-.ad-banner-mobile {
-    display: none; /* 기본값: 숨김 */
-    text-align: center;
-    margin: 20px auto; /* 위아래 여백과 가운데 정렬 */
-}
-
-/* PC 화면에서 광고 활성화 */
-@media (min-width: 1024px) {
-    .ad-left,
-    .ad-right {
-        display: block; /* PC 화면에서만 표시 */
-    }
-}
-
-/* 모바일 화면에서 광고 활성화 */
-@media (max-width: 768px) {
-    .ad-banner-mobile {
-        display: block; /* 모바일 화면에서만 표시 */
-    }
-
-    /* 좌우 광고 숨김 */
-    .ad-left,
-    .ad-right {
-        display: none;
-    }
-}
-
-/* 본문 컨텐츠 여백 조정 */
-@media (min-width: 1024px) {
-    body {
-        margin-left: 180px; /* 좌측 광고 공간 확보 */
-        margin-right: 180px; /* 우측 광고 공간 확보 */
-    }
-}
     </style>
 </head>
 <body>
 
-<!-- PC 화면 좌우 광고 -->
-<div class="ad-left">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
-     crossorigin="anonymous"></script>
-<!-- 수직형 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6686738239613464"
-     data-ad-slot="7954046670"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
-
-<div class="ad-right">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
-     crossorigin="anonymous"></script>
-<!-- 수직형 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6686738239613464"
-     data-ad-slot="7954046670"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
-
+<div class="ad-left"></div>
+<div class="ad-right"></div>
 
 <div id="hd_section">
     <a href="/">퐁퐁코리아 도태남 집합소</a>
@@ -630,20 +543,6 @@ button:hover {
 </div>
 
 
-<div class="ad-banner-mobile">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
-     crossorigin="anonymous"></script>
-<!-- 수평형 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6686738239613464"
-     data-ad-slot="7025215607"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
 
 <div class="form-section">
     <h2>댓글 작성</h2>
