@@ -26,6 +26,9 @@
     <meta name="twitter:description" content="풍코 커뮤니티에서 남녀차별, 퐁퐁남 등 사회적 이슈와 유머를 함께 즐겨보세요.">
     <meta name="twitter:image" content="https://pongpongkorea.com/path/to/thumbnail.jpg">
     
+    <!--광고 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
+     crossorigin="anonymous"></script>
 
 </head>
 <body>

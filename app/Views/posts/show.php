@@ -12,8 +12,9 @@
     <meta property="og:url" content="https://pongpongkorea.com/posts/<?= $post['id'] ?>">
     <meta property="og:image" content="https://pongpongkorea.com/path/to/thumbnail.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <!--광고 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
-    crossorigin="anonymous"></script>
+     crossorigin="anonymous"></script>
     <style>
 * {
     margin: 0;
