@@ -3,140 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="32ICtfA9W_GY36z5sfWlyLwYFrrcbK8qUDEbAFCDQMU" />
-    <meta name="naver-site-verification" content="3364bf3d26f95db9c37f59a7acb7f4523cc8c823" />
-    <meta name="google-adsense-account" content="ca-pub-6686738239613464">
-    <link rel="stylesheet" href="/css/index.css"> 
-    <title>풍퐁코리아 - 남녀차별, 퐁퐁남 토론 커뮤니티</title>
-    
-    <!-- SEO 메타태그 -->
-    <meta name="description" content="풍코 커뮤니티 - 퐁퐁남, 남녀차별, 최신 이슈와 토론을 위한 플랫폼. 다양한 게시판에서 이슈와 유머를 함께 나눠보세요.">
-    <meta name="keywords" content="퐁퐁남, 남녀차별, 토론, 커뮤니티, 풍코, 유머, 이슈">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="풍코 - 남녀차별과 퐁퐁남 이슈 커뮤니티">
-    <meta property="og:description" content="풍코 커뮤니티에서 퐁퐁남, 남녀차별 등 다양한 이슈를 자유롭게 토론하세요.">
-    <meta property="og:image" content="https://pongpongkorea.com/path/to/thumbnail.jpg">
-    <meta property="og:url" content="https://pongpongkorea.com">
-    <meta property="og:type" content="website">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="풍코 - 남녀차별과 퐁퐁남 이슈 커뮤니티">
-    <meta name="twitter:description" content="풍코 커뮤니티에서 남녀차별, 퐁퐁남 등 사회적 이슈와 유머를 함께 즐겨보세요.">
-    <meta name="twitter:image" content="https://pongpongkorea.com/path/to/thumbnail.jpg">
-    
+    <title>퐁퐁코리아</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 기본 스타일 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9e6e6; /* 부드러운 배경 색상 */
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header img {
+            width: 120px; /* 로고 크기 */
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #5a8f9e;
+            margin-bottom: 10px;
+        }
+
+        .search-bar {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-bar:focus {
+            border-color: #5a8f9e;
+        }
+
+        /* 그리드 레이아웃 */
+        main {
+            display: flex;
+            justify-content: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 800px; /* 최대 너비 조정 */
+        }
+
+        /* 카드 스타일 */
+        .icon-card {
+            background-color: #ffcccb; /* 부드러운 배경 색상 */
+            border-radius: 12px;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 18px;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, background-color 0.3s;
+            width: 100%; /* 카드 폭을 100%로 설정하여 화면 꽉 차게 */
+        }
+
+        .icon-card:hover {
+            transform: scale(1.05);
+            background-color: #ffb3b3;
+        }
+
+        .icon-card:nth-child(1) {
+            background-color: #f8d3b2; /* 전화번호 */
+        }
+
+        .icon-card:nth-child(2) {
+            background-color: #f3e7b3; /* 지역정보 */
+        }
+
+        .icon-card:nth-child(3) {
+            background-color: #f4d2de; /* 공공기관 */
+        }
+
+        .icon-card:nth-child(4) {
+            background-color: #a2c8e8; /* 음식점 */
+        }
+
+        .icon-card:nth-child(5) {
+            background-color: #c9f0c2; /* 병원 */
+        }
+
+        .icon-card:nth-child(6) {
+            background-color: #f7f0c5; /* 상가 */
+        }
+
+        .icon-card:nth-child(7) {
+            background-color: #c2dbf4; /* 뉴스 */
+        }
+
+        .icon-card:nth-child(8) {
+            background-color: #d5c1f5; /* 뉴스 */
+        }
+
+        .icon-card:nth-child(9) {
+            background-color: #d8e1f5; /* 생활서비스 */
+        }
+
+        .icon-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #5a8f9e;
+        }
+
+        /* 모바일 최적화 (3x3 배열 유지, 카드 크기 확장) */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr); /* 3x3 배열 유지 */
+                gap: 20px;
+            }
+
+            .search-bar {
+                width: 90%;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            header img {
+                width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr); /* 모바일에서 3x3 배열 유지 */
+                gap: 10px;
+            }
+
+            .icon-card {
+                padding: 30px 15px;
+                font-size: 16px; /* 폰트 크기 수정 */
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .search-bar {
+                width: 95%;
+                font-size: 14px;
+            }
+        }
+
+        /* 푸터 스타일 */
+        footer {
+            background-color: #5a8f9e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #f9e6e6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
 </head>
 <body>
-<!--헤더자리-->
-<div id="hd_section">
-    <a href="/">퐁퐁코리아 도태남 집합소</a>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <div class="hd_dd_menu">
-        <ul>
-            <li class="has-sub"><a href="/">메인</a></li>
-            <li class="has-sub">
-                <a href="#">공지사항</a>
-                <div class="dd_toggle">
-                    <a href="/posts?category=99">공지사항</a>
+    <div class="container">
+        <header>
+            <!-- 로고 이미지 추가 -->
+            <h1>퐁퐁코리아</h1>
+            <input type="text" class="search-bar" placeholder="검색해보세요...">
+        </header>
+        <main>
+            <div class="grid">
+                <div class="icon-card">
+                    <i class="fas fa-phone-alt"></i>
+                    전화번호
                 </div>
-            </li>
-            <li class="has-sub">
-                <a href="#">베스트 게시판</a>
-                <div class="dd_toggle">
-                    <a href="/posts?category=9">풍코 베스트</a>
+                <div class="icon-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    지역정보
                 </div>
-            </li>
-            <li class="has-sub">
-                <a href="#">전체 게시판</a>
-                <div class="dd_toggle">
-                    <a href="/posts?category=1">풍코 토론</a>
-                    <a href="/posts?category=8">풍코 이슈</a>
-                    <a href="/posts?category=4">자유 게시판</a>
-                    <a href="/posts?category=7">유머 게시판</a>
+                <div class="icon-card">
+                    <i class="fas fa-building"></i>
+                    공공기관
                 </div>
-            </li>
-        </ul>
+                <div class="icon-card">
+                    <i class="fas fa-utensils"></i>
+                    음식점
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-hospital-alt"></i>
+                    병원
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-home"></i>
+                    상가
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-newspaper"></i>
+                    뉴스
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-newspaper"></i>
+                    뉴스
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-cogs"></i>
+                    생활서비스
+                </div>
+            </div>
+        </main>
     </div>
-</div>
-
-<div class="ad-container">
-    <iframe src="https://ads-partners.coupang.com/widgets.html?id=819616&template=carousel&trackingCode=AF8077807&subId=&width=680&height=140&tsource=" 
-            class="ad-iframe" 
-            frameborder="0" 
-            scrolling="no" 
-            referrerpolicy="unsafe-url"></iframe>
-</div>
-
-<?php foreach ($postsByCategory as $categoryName => $posts): ?>
-    <div class="category">
-        <h2><a href="/posts?category=<?= urlencode($categoryName) ?>" class="category-link"><?= esc($categoryName) ?></a></h2>
-        <?php if (count($posts) > 0): ?>
-            <?php foreach ($posts as $post): ?>
-                <div class="post">
-                    <h3>
-                        <a href="/posts/<?= esc($post['id']) ?>" class="post-link">
-                            <?= esc($post['title']) ?> <span class="reply-count">[<?= esc($post['reply_count']) ?>]</span>
-                        </a>
-                    </h3>
-                    <div class="post-info">
-                        <p>작성자: <?= esc($post['nickname']) ?></p>
-                        <p><?= esc($post['created_at']) ?> | 조회수: <?= esc($post['view_count']) ?> | 추천: <?= esc($post['likes']) ?> | 비추천: <?= esc($post['dislikes']) ?></p>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>게시글이 없습니다.</p>
-        <?php endif; ?>
-    </div>
-<?php endforeach; ?>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const categoryLinks = document.querySelectorAll(".category-link");
-        
-        // 카테고리 이름과 ID 매핑
-        const categories = {
-            "공지사항": 99,
-            "베스트": 9,
-            "퐁코 토론": 1,
-            "퐁코 이슈": 8,
-            "자유 게시판": 4,
-            "유머 게시판": 7
-        };
-
-        categoryLinks.forEach(link => {
-            link.addEventListener("click", function(event) {
-                event.preventDefault(); // 기본 링크 이동을 막음
-                
-                const categoryName = this.textContent.trim();
-                const categoryId = categories[categoryName];
-
-                if (categoryId !== undefined) {
-                    // URL을 카테고리 ID로 변경하여 이동
-                    window.location.href = `/posts?category=${encodeURIComponent(categoryId)}`;
-                }
-            });
-        });
-    });
-</script>
-
-
-<script>
-    // 메뉴 토글 함수
-    function toggleMenu() {
-        const menu = document.querySelector('.hd_dd_menu');
-        menu.classList.toggle('active');
-    }
-</script>
-<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
-<script type="text/javascript">
-if(!wcs_add) var wcs_add = {};
-wcs_add["wa"] = "8bcce9183d61c0";
-if(window.wcs) {
-wcs_do();
-}
-</script>
+    
+    <footer>
+        <p>이 데이터는 공공데이터 <a href="https://www.data.go.kr" target="_blank">www.data.go.kr</a>을 활용하여 만든 웹사이트 입니다. 사용 방법 혹은 정보 변경 요청은 <a href="mailto:gjqmaoslwj@naver.com">gjqmaoslwj@naver.com</a> 으로 연락 주시기 바랍니다.</p>
+    </footer>
 </body>
 </html>
