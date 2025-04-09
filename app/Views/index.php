@@ -189,10 +189,12 @@
         </header>
         <main>
             <div class="grid">
-                <div class="icon-card">
-                    <i>📞</i> <!-- 전화번호 이모지 -->
-                    <p>전화번호</p>
-                </div>
+            <div class="icon-card">
+    <a href="/hairsalon"> <!-- 1번 미용실 예시 ID -->
+        <i>💇‍♀️</i> <!-- 미용실 이모지 -->
+        <p>미용실</p>
+    </a>
+</div>
                 <div class="icon-card">
                     <i>📍</i> <!-- 지역정보 이모지 -->
                     <p>지역정보</p>

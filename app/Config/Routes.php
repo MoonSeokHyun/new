@@ -29,5 +29,10 @@ $routes->get('sitemap/page/(:num)', 'SitemapController::page/$1'); // 각 페이
 $routes->post('/posts/(:num)/ajaxLike', 'Posts::ajaxLike/$1');
 $routes->post('/posts/(:num)/ajaxDislike', 'Posts::ajaxDislike/$1');
 
+//미용실
+
+$routes->get('/hairsalon', 'HairSalonController::index');  // 미용실 목록 페이지 (페이징 + 검색 기능 포함)
+$routes->get('/hairsalon/detail/(:segment)', 'HairSalonController::detail/$1');  // 미용실 디테일 페이지
+
 
 
