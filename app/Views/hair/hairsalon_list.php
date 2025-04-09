@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>퐁퐁코리아 - 미용실 목록</title>
+    <title>퐁퐁코리아</title>
     <style>
+        /* 기본 스타일 */
         * {
             margin: 0;
             padding: 0;
@@ -13,7 +14,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9e6e6;
+            background-color: #f9e6e6; /* 부드러운 배경 색상 */
             color: #333;
             padding: 0;
             margin: 0;
@@ -32,19 +33,79 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 36px;
+            font-size: 40px;
             color: #5a8f9e;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .sub-heading {
             font-size: 24px;
-            color: #333;
+            color: #555;
             margin-bottom: 30px;
+        }
+
+        /* 상단 "메인으로 돌아가기" 버튼과 검색박스 레이아웃 설정 */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* "메인으로 돌아가기" 버튼 */
+        .main-button {
+            padding: 8px 15px;
+            font-size: 16px;
+            background-color: #ff6f61;
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .main-button:hover {
+            background-color: #e05a49;
+        }
+
+        /* 검색 박스 */
+        .search-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+            margin-right: 10px;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #5a8f9e;
+        }
+
+        .search-box button {
+            padding: 10px 25px;
+            font-size: 16px;
+            border: none;
+            background-color: #5a8f9e;
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-box button:hover {
+            background-color: #4a7f89;
         }
 
         /* 그리드 레이아웃 */
@@ -57,10 +118,10 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr); /* 3개씩 그리드로 변경 */
             gap: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 1200px;
             background-color: white;
             padding: 20px;
             border-radius: 12px;
@@ -72,12 +133,17 @@
             background-color: #ffcccb;
             border-radius: 12px;
             text-align: center;
-            padding: 40px 20px;
-            font-size: 22px;
+            padding: 20px;
+            font-size: 16px;
             color: #333;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, background-color 0.3s;
             width: 100%;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .icon-card:hover {
@@ -92,49 +158,16 @@
         }
 
         .icon-card p {
-            font-size: 18px;
+            font-size: 16px;
             margin-top: 10px;
-        }
-
-        .icon-card .info {
-            font-size: 14px;
-            color: #666;
-            margin-top: 10px;
-        }
-
-        /* 검색 박스 */
-        .search-box {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .search-box input {
-            padding: 10px;
-            font-size: 18px;
-            width: 300px;
-            margin-right: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .search-box button {
-            padding: 10px 20px;
-            font-size: 18px;
-            border: none;
-            background-color: #5a8f9e;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .search-box button:hover {
-            background-color: #4a7f89;
         }
 
         /* 페이징 스타일 */
         .pagination {
             margin-top: 30px;
             text-align: center;
+            display: flex;
+            justify-content: center;
         }
 
         .pagination a {
@@ -144,6 +177,7 @@
             border-radius: 5px;
             margin: 0 5px;
             text-decoration: none;
+            font-size: 16px;
         }
 
         .pagination a:hover {
@@ -168,36 +202,78 @@
             text-decoration: none;
             font-weight: bold;
         }
+
+        /* 모바일 최적화 */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr); /* 2개씩 그리드로 변경 */
+            }
+
+            .pagination a {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            .icon-card {
+                height: 150px;
+                padding: 15px;
+                font-size: 14px;
+            }
+
+            .search-box input {
+                width: 100%; /* 모바일에서는 입력창을 가득 채우도록 */
+            }
+
+            .main-button {
+                width: 100%; /* 모바일에서는 버튼이 가득 차도록 */
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr; /* 1개씩 그리드로 변경 */
+            }
+
+            .pagination a {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+
+            .icon-card {
+                height: 250px; /* 모바일에서는 카드 높이를 조금 늘림 */
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>퐁퐁코리아</h1>
-            <p class="sub-heading">미용실 목록을 확인하세요!</p>
+            <p class="sub-heading">생활정보를 한눈에, 퐁퐁코리아!</p>
         </header>
 
-        <!-- 검색 박스 -->
-        <div class="search-box">
-            <form method="get">
-                <input type="text" name="search" value="<?= esc($search) ?>" placeholder="미용실 이름 검색...">
-                <button type="submit">검색</button>
-            </form>
+        <!-- 상단 버튼 및 검색박스를 왼쪽과 오른쪽 끝으로 배치 -->
+        <div class="top-bar">
+            <a href="/" class="main-button">메인으로 돌아가기</a>
+
+            <div class="search-box">
+                <form method="get">
+                    <input type="text" name="search" value="<?= esc($search) ?>" placeholder="검색...">
+                    <button type="submit">검색</button>
+                </form>
+            </div>
         </div>
 
         <main>
             <div class="grid">
                 <?php foreach ($salons as $salon): ?>
                 <div class="icon-card">
-                    <!-- 미용실 상세 페이지로 이동 -->
-                    <a href="/hairsalon/detail/<?= esc($salon['id']) ?>">
+                    <a href="/hairsalon/detail/<?= esc($salon['id']) ?>" style="display: block; height: 100%;">
                         <i>💇‍♀️</i>
-                        <p><?= esc($salon['open_service_name']) ?></p>
                     </a>
-                    <!-- 추가 정보 표시 -->
-                    <div class="info">
-                        <p><strong>사업자명:</strong> <?= esc($salon['business_name']) ?></p>
-                        <p><strong>전화번호:</strong> <?= esc($salon['contact_phone_number']) ?></p>
+                    <div class="card-info">
+                        <p><strong>비즈니스명:</strong> <?= esc($salon['business_name']) ?></p>
                         <p><strong>주소:</strong> <?= esc($salon['full_address']) ?></p>
                     </div>
                 </div>

@@ -19,10 +19,10 @@ class HairSalonController extends Controller
         if ($search) {
             $salons = $model->like('open_service_name', $search)
                             ->orLike('business_name', $search)
-                            ->paginate(10, 'salons'); // 10개씩 표시
+                            ->paginate(12, 'salons'); // 10개씩 표시
         } else {
             // 검색어가 없으면 전체 목록에서 페이징 처리
-            $salons = $model->paginate(10, 'salons'); // 10개씩 표시
+            $salons = $model->paginate(12, 'salons'); // 10개씩 표시
         }
 
         // 페이지 네비게이션 데이터
