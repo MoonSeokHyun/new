@@ -15,7 +15,7 @@
         <!--광고 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464"
      crossorigin="anonymous"></script>
-    <style>
+     <style>
 * {
     margin: 0;
     padding: 0;
@@ -25,8 +25,8 @@
 body {
     width: 100%;
     font-family: '돋움', Arial, sans-serif;
-    background-color: #1e1e1e;
-    color: #ddd;
+    background-color: #F1E0A6; /* 어두운 차분한 노란색 배경 */
+    color: #4E4E4E; /* 텍스트 색상 차분한 회색 */
     line-height: 1.6;
 }
 
@@ -40,7 +40,7 @@ body {
 
 /* 본문 스타일 */
 .post-container {
-    background-color: #2c2c2c;
+    background-color: #D8C28C; /* 어두운 노란색 배경 */
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -57,21 +57,21 @@ body {
 .post-header {
     margin-top: 10px;
     text-align: center;
-    border-bottom: 2px solid #444;
+    border-bottom: 2px solid #D7A01F; /* 다소 어두운 노란색 하단 테두리 */
     padding-bottom: 10px;
     margin-bottom: 15px;
     font-size: 1.8em;
-    color: #00d8ff;
+    color: #D7A01F; /* 어두운 노란색 */
 }
 
 .post-meta {
     display: flex;
     justify-content: space-between;
     font-size: 0.9em;
-    color: #aaa;
+    color: #6F6F6F;
     margin-bottom: 15px;
     padding: 0 15px 10px 15px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #D7A01F; /* 어두운 노란색 테두리 */
 }
 
 .content img {
@@ -84,18 +84,17 @@ body {
     object-fit: cover;
 }
 
-
 .form-section {
     padding: 10px;
     margin: 15px;
-    background-color: #2a2a2a;
+    background-color: #B8A56A; /* 부드러운 어두운 노란색 배경 */
     border-radius: 5px;
 }
 
 .form-section h2 {
     font-size: 1.2em;
     margin-bottom: 10px;
-    color: #00d8ff;
+    color: #D7A01F; /* 어두운 노란색 */
 }
 
 .form-section input[type="text"],
@@ -103,17 +102,17 @@ body {
     width: 100%;
     padding: 8px;
     margin-bottom: 8px;
-    border: 1px solid #555;
+    border: 1px solid #D7A01F; /* 어두운 노란색 */
     border-radius: 3px;
-    background-color: #444;
-    color: #ddd;
+    background-color: #E1D7A3; /* 부드러운 연한 노란색 배경 */
+    color: #4E4E4E;
     font-size: 0.9em;
 }
 
 .form-section button {
     width: 100%;
     padding: 8px;
-    background-color: #00d8ff;
+    background-color: #D7A01F; /* 어두운 노란색 */
     border: none;
     border-radius: 3px;
     font-weight: bold;
@@ -121,7 +120,7 @@ body {
 }
 
 .form-section button:hover {
-    background-color: #00b0d4;
+    background-color: #C68A1D; /* 진한 노란색 */
 }
 
 /* 댓글 목록 스타일 */
@@ -133,18 +132,18 @@ body {
 .comment-section h2 {
     font-size: 1.2em;
     margin-bottom: 10px;
-    color: #00b0d4;
+    color: #D7A01F; /* 어두운 노란색 */
 }
 
 .comment {
-    background-color: #333;
+    background-color: #C4A76F; /* 부드러운 어두운 노란색 */
     padding: 10px;
     margin-top: 10px;
     border-radius: 5px;
 }
 
 .comment strong {
-    color: #00d8ff;
+    color: #D7A01F; /* 어두운 노란색 */
     display: block;
     margin-bottom: 5px;
     font-size: 0.9em;
@@ -152,20 +151,20 @@ body {
 
 .comment p {
     font-size: 0.9em;
-    color: #ddd;
+    color: #4E4E4E;
     margin-top: 5px;
 }
 
 .reply {
     margin-left: 15px;
     padding-left: 10px;
-    border-left: 2px solid #00d8ff;
-    background-color: #2a2a2a;
+    border-left: 2px solid #D7A01F; /* 어두운 노란색 답글 구분선 */
+    background-color: #B8A56A;
     margin-top: 10px;
 }
 
 .reply-btn {
-    color: #00b0d4;
+    color: #C68A1D; /* 진한 노란색 */
     font-size: 0.8em;
     cursor: pointer;
     display: inline-block;
@@ -173,7 +172,7 @@ body {
 }
 
 .reply-btn:hover {
-    color: #00d8ff;
+    color: #D7A01F;
 }
 
 .reply-form {
@@ -186,17 +185,17 @@ body {
     width: 100%;
     padding: 8px;
     margin-bottom: 8px;
-    border: 1px solid #555;
+    border: 1px solid #D7A01F; /* 어두운 노란색 */
     border-radius: 3px;
-    background-color: #444;
-    color: #ddd;
+    background-color: #E1D7A3; /* 부드러운 연한 노란색 배경 */
+    color: #4E4E4E;
     font-size: 0.9em;
 }
 
 .reply-form button {
     width: 100%;
     padding: 8px;
-    background-color: #00d8ff;
+    background-color: #D7A01F;
     border: none;
     border-radius: 3px;
     font-weight: bold;
@@ -204,44 +203,7 @@ body {
 }
 
 .reply-form button:hover {
-    background-color: #00b0d4;
-}
-
-/* 모바일 스타일 */
-@media (max-width: 768px) {
-    .form-section,
-    .comment-section {
-        margin: 10px;
-        padding: 10px;
-    }
-}
-
-input[type="text"],
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    background-color: #444;
-    color: #ddd;
-}
-
-button {
-    display: block;
-    width: 100%;
-    max-width: 200px;
-    padding: 10px;
-    background-color: #00d8ff;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    margin: 10px auto;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #00b0d4;
+    background-color: #C68A1D; /* 진한 노란색 */
 }
 
 /* 네비게이션 버튼 스타일 */
@@ -255,7 +217,7 @@ button:hover {
 }
 
 .post-navigation a {
-    color: #00d8ff;
+    color: #D7A01F;
     text-decoration: none;
     padding: 8px 12px;
     background-color: #333;
@@ -271,186 +233,11 @@ button:hover {
 
 .post-navigation a:hover {
     background-color: #444;
-    color: #00e0ff;
-    border-color: #00e0ff;
+    color: #D7A01F;
+    border-color: #D7A01F;
 }
 
-
-/* 모바일 스타일 */
-@media (max-width: 768px) {
-    .post-meta {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .content {
-        width: 100%;
-        padding: 0 10px;
-    }
-
-    .content img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .hd_dd_menu {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        background-color: #333;
-        padding: 10px 0;
-        border-radius: 3px;
-    }
-
-    .hd_dd_menu.active {
-        display: flex;
-    }
-}
-
-/* 헤더 스타일 */
-#hd_section {
-    background-color: #333;
-    padding: 3px 3px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-#hd_section a {
-    color: #00d8ff;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 0 10px;
-    padding: 8px;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
-}
-
-#hd_section a:hover {
-    background-color: #444;
-    border-radius: 3px;
-}
-
-/* 모바일 메뉴 버튼 스타일 */
-.menu-toggle {
-    display: none;
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    color: #00d8ff;
-    cursor: pointer;
-}
-
-/* 드롭다운 메뉴 스타일 */
-.hd_dd_menu {
-    position: relative;
-}
-
-.hd_dd_menu ul {
-    display: flex;
-    list-style: none;
-    flex-wrap: wrap;
-}
-
-.hd_dd_menu .has-sub {
-    position: relative;
-}
-
-.hd_dd_menu .has-sub .dd_toggle {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #444;
-    border-radius: 3px;
-    padding: 8px 0;
-    min-width: 120px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.hd_dd_menu .has-sub:hover .dd_toggle {
-    display: block;
-}
-
-.hd_dd_menu .has-sub .dd_toggle a {
-    color: #ddd;
-    display: block;
-    padding: 6px 15px;
-    text-decoration: none;
-    font-size: 0.85em;
-}
-
-.hd_dd_menu .has-sub .dd_toggle a:hover {
-    background-color: #333;
-}
-
-/* 모바일 스타일 */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: block;
-    }
-    .hd_dd_menu {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        background-color: #333;
-        padding: 10px 0;
-        border-radius: 3px;
-    }
-    .hd_dd_menu.active {
-        display: flex;
-    }
-}
-
-.interactions {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 20px 0;
-}
-
-.interactions a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 15px;
-    color: #00d8ff;
-    background-color: #2c2c2c;
-    border: 1px solid #444;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1em;
-    transition: all 0.3s ease;
-}
-
-.interactions a i {
-    margin-right: 5px;
-}
-
-.interactions a:hover {
-    background-color: #444;
-    color: #00e0ff;
-    border-color: #00e0ff;
-}
-
-.interactions a:active {
-    transform: scale(0.95);
-}
-
-#like-btn {
-    color: #00d8ff;
-}
-
-#dislike-btn {
-    color: #ff5c5c;
-}
-
+/* 광고 스타일 */
 .ad-iframe {
     width: 100%;
     max-width: 680px;
@@ -471,43 +258,59 @@ button:hover {
         height: 100px; /* Reduced height for mobile */
     }
 }
-    </style>
+
+.interactions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.interactions a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 15px;
+    color: #D7A01F;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.interactions a i {
+    margin-right: 5px;
+}
+
+.interactions a:hover {
+    background-color: #444;
+    color: #D7A01F;
+    border-color: #D7A01F;
+}
+
+.interactions a:active {
+    transform: scale(0.95);
+}
+
+#like-btn {
+    color: #00d8ff;
+}
+
+#dislike-btn {
+    color: #FF5C5C;
+}
+</style>
+
+
 </head>
 <body>
 
 <div class="ad-left"></div>
 <div class="ad-right"></div>
 
-<div id="hd_section">
-    <a href="/">퐁퐁코리아 도태남 집합소</a>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <div class="hd_dd_menu">
-        <ul>
-            <li class="has-sub"><a href="/">메인</a></li>
-            <li class="has-sub">
-                <a href="#">공지사항</a>
-                <div class="dd_toggle">
-                    <a href="/posts?category=99">공지사항</a>
-                </div>
-            </li>
-            <li class="has-sub">
-                <a href="#">베스트 게시판</a>
-                <div class="dd_toggle">
-                    <a href="/posts?category=9">풍코 베스트</a>
-                </div>
-            </li>
-            <li class="has-sub">
-                <a href="#">전체 게시판</a>
-                <div class="dd_toggle">
-                    <a href="/posts?category=1">풍코 토론</a>
-                    <a href="/posts?category=8">풍코 이슈</a>
-                    <a href="/posts?category=4">자유 게시판</a>
-                    <a href="/posts?category=7">유머 게시판</a>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
 
 <div class="post-container">
     <div class="post-header"><?= esc($post['title']) ?></div>

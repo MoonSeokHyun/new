@@ -12,9 +12,21 @@
     <ul class="top-menu">
       <!-- 편의점 메뉴 -->
       <li class="menu-group">
-        <a href="#" class="dropdown-toggle">🍩 편의시설 ▾</a>
+        <a href="#" class="dropdown-toggle">🍩 편의시설 </a>
         <ul class="sub-menu">
           <li><a href="/hairsalon">미용실</a></li>
+        </ul>
+      </li>
+
+    </ul>
+
+    <ul class="top-menu">
+      <!-- 편의점 메뉴 -->
+      <li class="menu-group">
+        <a href="#" class="dropdown-toggle"> 😀 유머 </a>
+        <ul class="sub-menu">
+          <li><a href="/posts?category=9">베스트</a></li>
+          <li><a href="/posts?category=7">웃긴자료</a></li>
         </ul>
       </li>
 
@@ -23,6 +35,7 @@
 </div>
 
 <!-- 스타일 -->
+<!-- 스타일 수정 -->
 <style>
   #header-wrapper header {
     background-color: #FFF3B0; /* 메인 헤더 컬러 - 파스텔 노랑 */
@@ -58,7 +71,8 @@
     margin: 0;
     padding: 0;
     position: relative;
-    flex-wrap: wrap;
+    flex-direction: row; /* 메뉴를 가로로 배치 */
+    flex-wrap: nowrap; /* 메뉴 항목들이 세로로 안 나가도록 설정 */
   }
 
   #header-wrapper .top-menu > li {
@@ -114,9 +128,7 @@
 
   @media (max-width: 768px) {
     #header-wrapper .top-menu {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column; /* 모바일에서는 세로로 */
       gap: 1rem;
     }
 
@@ -165,3 +177,13 @@
     });
   }
 </script>
+
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(!wcs_add) var wcs_add = {};
+wcs_add["wa"] = "8bcce9183d61c0";
+if(window.wcs) {
+wcs_do();
+}
+</script>
+</body>
