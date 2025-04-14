@@ -1,238 +1,238 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>퐁퐁코리아</title>
-    <style>
-        /* 기본 스타일 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>공공데이터 포털 - 퐁퐁코리아</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    :root {
+      --theme-color: #FADB5F; /* 파스텔 노랑 */
+      --theme-text: #333;
+      --card-bg: #FFFBEA;
+      --hover-bg: #FFF3C4;
+      --font: 'Segoe UI', sans-serif;
+    }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9e6e6; /* 부드러운 배경 색상 */
-            color: #333;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            flex: 1;
-        }
+    body {
+      font-family: var(--font);
+      background-color: #fffef7;
+      color: var(--theme-text);
+    }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-        h1 {
-            font-size: 36px;
-            color: #5a8f9e;
-            margin-bottom: 20px;
-        }
+    .hero {
+      max-width: 100%;
+      margin: 60px auto 40px auto;
+      padding: 20px;
+      text-align: center;
+      border-radius: 12px;
+      background: var(--card-bg);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
 
-        .sub-heading {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 30px;
-        }
+    .hero h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
 
-        /* 그리드 레이아웃 */
-        main {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
+    .hero p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            width: 100%;
-            max-width: 900px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    .intro114-cardwrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem auto;
+      max-width: 1200px;
+    }
 
-        /* 카드 스타일 */
-        .icon-card {
-            background-color: #ffcccb; /* 부드러운 배경 색상 */
-            border-radius: 12px;
-            text-align: center;
-            padding: 40px 20px;
-            font-size: 22px;
-            color: #333;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, background-color 0.3s;
-            width: 100%; /* 카드 폭을 100%로 설정하여 화면 꽉 차게 */
-        }
+    .intro114-card {
+      flex: 1 1 300px;
+      background-color: var(--card-bg);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s ease;
+    }
 
-        .icon-card:hover {
-            transform: scale(1.05);
-            background-color: #ffb3b3;
-        }
+    .intro114-card:hover {
+      background-color: var(--hover-bg);
+    }
 
-        /* 이모지 아이콘 */
-        .icon-card:nth-child(1) {
-            background-color: #f8d3b2; /* 전화번호 */
-        }
+    .intro114-card .text {
+      flex: 1;
+    }
 
-        .icon-card:nth-child(2) {
-            background-color: #f3e7b3; /* 지역정보 */
-        }
+    .intro114-card .title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
 
-        .icon-card:nth-child(3) {
-            background-color: #f4d2de; /* 공공기관 */
-        }
+    .intro114-card .desc {
+      font-size: 0.95rem;
+      color: #555;
+    }
 
-        .icon-card:nth-child(4) {
-            background-color: #a2c8e8; /* 음식점 */
-        }
+    .intro114-card .emoji {
+      font-size: 2rem;
+      margin-left: 1rem;
+    }
 
-        .icon-card:nth-child(5) {
-            background-color: #c9f0c2; /* 병원 */
-        }
+    @media (max-width: 600px) {
+      .intro114-card {
+        flex-direction: column;
+        text-align: center;
+      }
 
-        .icon-card:nth-child(6) {
-            background-color: #f7f0c5; /* 상가 */
-        }
+      .intro114-card .emoji {
+        margin: 1rem 0 0 0;
+      }
+    }
 
-        .icon-card:nth-child(7) {
-            background-color: #c2dbf4; /* 뉴스 */
-        }
+    .card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 40px auto;
+    }
 
-        .icon-card:nth-child(8) {
-            background-color: #d5c1f5; /* 뉴스 */
-        }
+    .card {
+      flex: 1 1 300px;
+      background-color: var(--card-bg);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      transition: background 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      min-height: 140px;
+    }
 
-        .icon-card:nth-child(9) {
-            background-color: #d8e1f5; /* 생활서비스 */
-        }
+    .card:hover {
+      background-color: var(--hover-bg);
+    }
 
-        /* 아이콘 스타일 */
-        .icon-card i {
-            font-size: 50px; /* 아이콘 크기 확대 */
-            margin-bottom: 15px;
-        }
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
 
-        .icon-card p {
-            font-size: 18px;
-            margin-top: 10px;
-        }
+    .card p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.6;
+    }
 
-        /* 모바일 최적화 (3x3 배열 유지) */
-        @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: repeat(3, 1fr); /* 3x3 배열 유지 */
-                gap: 20px;
-            }
-
-            h1 {
-                font-size: 28px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .grid {
-                grid-template-columns: repeat(3, 1fr); /* 모바일에서 3x3 배열 유지 */
-                gap: 10px;
-            }
-
-            .icon-card {
-                padding: 30px 15px;
-                font-size: 16px; /* 폰트 크기 수정 */
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-        }
-
-        /* 푸터 스타일 */
-        footer {
-            background-color: #5a8f9e;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            font-size: 14px;
-        }
-
-        footer a {
-            color: #f9e6e6;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-    </style>
+    @media (max-width: 768px) {
+      .card {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <!-- 이미지 배치 후 텍스트 아래로 추가 -->
-            <h1>퐁퐁코리아</h1>
-            <p class="sub-heading">생활정보를 한눈에, 퐁퐁코리아!</p>
-        </header>
-        <main>
-            <div class="grid">
-            <div class="icon-card">
-    <a href="/hairsalon"> <!-- 1번 미용실 예시 ID -->
-        <i>💇‍♀️</i> <!-- 미용실 이모지 -->
-        <p>미용실</p>
-    </a>
-</div>
-                <div class="icon-card">
-                    <i>📍</i> <!-- 지역정보 이모지 -->
-                    <p>지역정보</p>
-                </div>
-                <div class="icon-card">
-                    <i>🏛️</i> <!-- 공공기관 이모지 -->
-                    <p>공공기관</p>
-                </div>
-                <div class="icon-card">
-                    <i>🍽️</i> <!-- 음식점 이모지 -->
-                    <p>음식점</p>
-                </div>
-                <div class="icon-card">
-                    <i>🏥</i> <!-- 병원 이모지 -->
-                    <p>병원</p>
-                </div>
-                <div class="icon-card">
-                    <i>🏠</i> <!-- 상가 이모지 -->
-                    <p>상가</p>
-                </div>
-                <div class="icon-card">
-                    <i>📰</i> <!-- 뉴스 이모지 -->
-                    <p>뉴스</p>
-                </div>
-                <div class="icon-card">
-                    <i>📰</i> <!-- 뉴스 이모지 -->
-                    <p>뉴스</p>
-                </div>
-                <div class="icon-card">
-                    <i>🛠️</i> <!-- 생활서비스 이모지 -->
-                    <p>생활서비스</p>
-                </div>
-            </div>
-        </main>
+<?php include APPPATH . 'Views/includes/header.php'; ?>
+
+  <main>
+    <!-- 서비스 소개 본문 -->
+    <div class="hero">
+      <h2>💡 누구나 쉽게 생활데이터를 검색해보세요</h2>
+      <p>
+        원하는 정보를 빠르게 찾고 자유롭게 활용해보세요.
+      </p>
     </div>
 
-    <footer>
-        <p>이 데이터는 공공데이터 <a href="https://www.data.go.kr" target="_blank">www.data.go.kr</a>을 활용하여 만든 웹사이트 입니다. 사용 방법 혹은 정보 변경 요청은 <a href="mailto:gjqmaoslwj@naver.com">gjqmaoslwj@naver.com</a> 으로 연락 주시기 바랍니다.</p>
-    </footer>
+    <!-- 카드 섹션 1 -->
+    <div class="intro114-cardwrap">
+      <div class="intro114-card">
+        <div class="text">
+          <div class="title">편의시설</div>
+          <div class="desc">새로운 편의시설을 확인해보세요.</div>
+        </div>
+        <div class="emoji">📣</div>
+      </div>
+
+      <div class="intro114-card">
+        <div class="text">
+          <div class="title">재미있는 정보</div>
+          <div class="desc">심심하신가요 퐁퐁이가 책임져드려요!</div>
+        </div>
+        <div class="emoji">🌈</div>
+      </div>
+
+      <div class="intro114-card">
+        <div class="text">
+          <div class="title">생활시설 찾기</div>
+          <div class="desc">주변의 공공시설을 쉽게 검색!</div>
+        </div>
+        <div class="emoji">🧭</div>
+      </div>
+    </div>
+
+    <!-- 카드 섹션 2 -->
+    <div class="card-grid">
+      <div class="card">
+        <h3>🏞️ 주요 공원</h3>
+        <p>전국의 주요 공원, 산책로, 체험공간 등의 위치와 운영정보를 제공합니다.</p>
+      </div>
+      <div class="card">
+        <h3>👨‍👩‍👧 복지 서비스</h3>
+        <p>노인·장애인·청소년 등을 위한 맞춤형 공공서비스를 한눈에 확인해보세요.</p>
+      </div>
+      <div class="card">
+        <h3>🏛️ 행정기관 정보</h3>
+        <p>읍면동 주민센터부터 시청, 구청까지 다양한 기관의 위치와 연락처 제공.</p>
+      </div>
+    </div>
+
+<!-- 활용 대상 -->
+<section style="padding: 2rem 1rem; background-color: #f8fafc;">
+  <div style="max-width: 960px; margin: 0 auto;">
+    <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">👥 활용 대상</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+      
+      <div style="flex: 1 1 200px; background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <div style="font-size: 1.5rem;">🇰🇷</div>
+        <div style="margin-top: 8px; font-weight: bold;">대한민국 국민 누구나!</div>
+      </div>
+      
+      <div style="flex: 1 1 200px; background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <div style="font-size: 1.5rem;">🏛️</div>
+        <div style="margin-top: 8px; font-weight: bold;">공공기관은 정책 자료로</div>
+      </div>
+
+      <div style="flex: 1 1 200px; background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <div style="font-size: 1.5rem;">📊</div>
+        <div style="margin-top: 8px; font-weight: bold;">기업은 입지 선정 및 분석에</div>
+      </div>
+
+      <div style="flex: 1 1 200px; background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <div style="font-size: 1.5rem;">🙋</div>
+        <div style="margin-top: 8px; font-weight: bold;">시민은 정보 검색에 활용</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+  </div>
+</div>
+  </main>
+  <?php include APPPATH . 'Views/includes/footer.php'; ?>
 </body>
 </html>
