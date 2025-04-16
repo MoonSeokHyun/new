@@ -1,47 +1,9 @@
-<?php
-// 안전한 변수 초기화
-$storeName = trim(esc($salon['business_name'] ?? ''));
-$fullAddress = esc($salon['full_address'] ?? '');
-$storeId = esc($salon['id'] ?? '');
-
-// 지역명 추출 (예: 구, 읍, 면 포함)
-preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $fullAddress, $matches);
-$district_name = $matches[0] ?? '';
-
-// 기본값 보정
-$storeName = $storeName ?: '미용실';
-$districtText = $district_name ?: '인근';
-
-// SEO 최적화용 타이틀과 설명 설정
-$seoTitle = "{$storeName} - {$districtText} 미용실 상세 정보";
-$seoDescription = "{$storeName}의 미용실 상세 정보와 위치, 전화번호, 영업 상태를 확인해보세요. {$districtText}에 위치한 미용실입니다.";
-$seoKeywords = "미용실, {$storeName}, 헤어, 뷰티, {$districtText}, {$fullAddress}";
-?>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title><?= esc($seoTitle) ?></title> <!-- 동적으로 설정된 타이틀 -->
-  <meta name="description" content="<?= esc($seoDescription) ?>">
-  <meta name="keywords" content="<?= esc($seoKeywords) ?>">
-  <meta name="author" content="편잇 팀">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- 네이버 지도 API -->
-  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
-  
-  <!-- 광고 스크립트 (선택사항) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
-
-  <style>
-    /* CSS 스타일은 그대로 유지 */
-  </style>
-</head>
-<body>
+  <title>Installation Data List</title>
   <style>
     :root {
       --theme-color: #3eaf7c;  /* 새로운 색상 */
@@ -74,6 +36,16 @@ $seoKeywords = "미용실, {$storeName}, 헤어, 뷰티, {$districtText}, {$full
       text-decoration: none;
     }
 
+    /* 제목 스타일 */
+    .page-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
     .hero {
       max-width: 100%;
       margin: 60px auto 40px auto;
@@ -93,18 +65,6 @@ $seoKeywords = "미용실, {$storeName}, 헤어, 뷰티, {$districtText}, {$full
     .hero p {
       font-size: 16px;
       line-height: 1.6;
-    }
-
-    .top-bar {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-      background-color: var(--card-bg-1);
-      border-radius: 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     /* 검색 창 */
@@ -143,6 +103,11 @@ $seoKeywords = "미용실, {$storeName}, 헤어, 뷰티, {$districtText}, {$full
     @media (max-width: 768px) {
       .search-box {
         width: 80%; /* 모바일에서 너비를 80%로 설정 */
+      }
+
+      .page-title {
+        font-size: 24px; /* 모바일에서 제목 폰트 크기 조정 */
+        margin-top: 10px;
       }
     }
 
@@ -242,7 +207,6 @@ $seoKeywords = "미용실, {$storeName}, 헤어, 뷰티, {$districtText}, {$full
       border-color: var(--bs-pagination-active-border-color);
       font-weight: bold;
     }
-    
   </style>
 </head>
 <body>
@@ -257,16 +221,9 @@ $seoKeywords = "미용실, {$storeName}, 헤어, 뷰티, {$districtText}, {$full
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
   <main>
-  <!--
-    <div class="top-bar">
-      <div class="search-box">
-        <form method="get">
-          <input type="text" name="search" value="<?= esc($search) ?>" placeholder="검색...">
-          <button type="submit">검색</button>
-        </form>
-      </div>
-    </div>
--->
+    <!-- 제목 -->
+    <h1 class="page-title">미용실 정보를 확인해 보세요!</h1>
+
     <div class="grid">
       <?php foreach ($salons as $salon): ?>
       <div class="icon-card">

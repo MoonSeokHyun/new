@@ -1,12 +1,39 @@
+<?php
+// 미용실의 도로명 주소 예시
+$road_address = esc($salon['road_name_address'] ?? '');
+
+// 구 이름이나 읍 이름을 추출하기 위한 정규 표현식
+preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/', $road_address, $matches);
+
+// 구 또는 읍 이름을 추출
+$district_name = isset($matches[0]) ? $matches[0] : '지역';
+
+// 타이틀 생성 (사람들이 클릭하고 싶게끔 유도)
+$seoTitle = esc("{$salon['business_name']} - {$district_name}에 위치한 최고의 미용실, 전화번호, 서비스, 영업시간 확인!");
+?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title><?= esc($salon['business_name']) ?> - 미용실 상세 정보</title>
+<meta charset="UTF-8" />
+<title><?= $seoTitle ?></title>
   <meta name="description" content="<?= esc($salon['road_name_address'] ?? '') ?> 위치의 미용실 <?= esc($salon['open_service_name'] ?? '') ?>의 상세 정보, 전화번호, 영업 상태 등을 확인해보세요.">
   <meta name="keywords" content="미용실, <?= esc($salon['business_name'] ?? '') ?>, 헤어, 네일, 뷰티, <?= esc($salon['road_name_address'] ?? '') ?>">
   <meta name="author" content="편잇 팀">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- 네이버 SEO 최적화를 위한 메타 태그 추가 -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="<?= esc($salon['business_name']) ?> - 미용실 상세 정보" />
+  <meta property="og:description" content="<?= esc($salon['road_name_address'] ?? '') ?> 위치의 미용실 <?= esc($salon['open_service_name'] ?? '') ?>의 상세 정보, 전화번호, 영업 상태 등을 확인해보세요." />
+  <meta property="og:image" content="<?= esc($salon['image_url'] ?? '기본이미지 URL') ?>" /> <!-- 이미지는 동적으로 변경 -->
+  <meta property="og:url" content="<?= current_url() ?>" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<?= esc($salon['business_name']) ?> - 미용실 상세 정보" />
+  <meta name="twitter:description" content="<?= esc($salon['road_name_address'] ?? '') ?> 위치의 미용실 <?= esc($salon['open_service_name'] ?? '') ?>의 상세 정보, 전화번호, 영업 상태 등을 확인해보세요." />
+  <meta name="twitter:image" content="<?= esc($salon['image_url'] ?? '기본이미지 URL') ?>" />
+  
   
   <!-- 네이버 지도 API -->
   <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
@@ -33,20 +60,6 @@
       text-decoration: none;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    header h1 {
-      font-size: 28px;
-      margin-bottom: 1rem;
-    }
-
-    header p {
-      font-size: 16px;
-      color: #555;
-    }
 
     /* 미용실 상세 Section */
     .details {
@@ -202,7 +215,7 @@
         <tr><th>다중이용업소 여부</th><td><?= esc($salon['multi_use_business']) ?></td></tr>
       </table>
     </section>
-    <ins class="adsbygoogle"
+<ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-6686738239613464"
      data-ad-slot="1204098626"

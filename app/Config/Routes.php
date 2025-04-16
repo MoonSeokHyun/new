@@ -29,6 +29,11 @@ $routes->get('sitemap/page/(:num)', 'SitemapController::page/$1'); // 각 페이
 $routes->post('/posts/(:num)/ajaxLike', 'Posts::ajaxLike/$1');
 $routes->post('/posts/(:num)/ajaxDislike', 'Posts::ajaxDislike/$1');
 
+$routes->get('sitemap/hairSalonSitemap', 'SitemapController::index');
+$routes->get('sitemap/hairSalonPage/(:num)', 'SitemapController::hairSalonPage/$1');
+$routes->get('sitemap/installationSitemap', 'SitemapController::index');
+$routes->get('sitemap/installationPage/(:num)', 'SitemapController::installationPage/$1');
+
 //미용실
 
 $routes->get('/hairsalon', 'HairSalonController::index');  // 미용실 목록 페이지 (페이징 + 검색 기능 포함)
@@ -38,5 +43,11 @@ $routes->get('/hairsalon/detail/(:segment)', 'HairSalonController::detail/$1'); 
 $routes->get('/hairsalon/detail/(:num)', 'HairSalonController::detail/$1');
 
 $routes->get('/hairsalon/detail/(:segment)', 'SitemapController::addHairSalonSitemap/$1');
+
+$routes->get('/installation', 'InstallationController::index');
+$routes->get('/installation/show/(:num)', 'InstallationController::show/$1');
+
+
+
 
 

@@ -3,24 +3,31 @@
 namespace App\Controllers;
 
 use App\Models\HairSalonModel;
+use App\Models\InstallationModel;
 use CodeIgniter\Controller;
 
 class SitemapController extends Controller
 {
     public function index()
     {
-        $hairSalonModel = new HairSalonModel(); // HairSalonModel 인스턴스 생성
-        $totalSalons = $hairSalonModel->countAllSalons(); // 미용실 총 개수 가져오기
-        $itemsPerPage = 10000; // 한 페이지에 10000개의 미용실 항목 포함
-
-        $pages = ceil($totalSalons / $itemsPerPage); // 총 페이지 수 계산
+        // 미용실 사이트맵
+        $hairSalonPages = $this->getHairSalonPages();
+        // 설치장소 사이트맵
+        $installationPages = $this->getInstallationPages();
 
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xml .= "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
-        
-        // 미용실 디테일 페이지 URL을 추가
-        $salonPages = $this->getHairSalonPages();
-        foreach ($salonPages as $pageUrl) {
+
+        // 미용실 디테일 페이지 URL 추가
+        foreach ($hairSalonPages as $pageUrl) {
+            $xml .= "<sitemap>\n";
+            $xml .= "<loc>" . $pageUrl . "</loc>\n";
+            $xml .= "<lastmod>" . date('Y-m-d') . "</lastmod>\n";
+            $xml .= "</sitemap>\n";
+        }
+
+        // 설치장소 디테일 페이지 URL 추가
+        foreach ($installationPages as $pageUrl) {
             $xml .= "<sitemap>\n";
             $xml .= "<loc>" . $pageUrl . "</loc>\n";
             $xml .= "<lastmod>" . date('Y-m-d') . "</lastmod>\n";
@@ -34,7 +41,7 @@ class SitemapController extends Controller
             ->setBody($xml);
     }
 
-    // 10,000개씩 묶어 미용실 페이지 URL 목록을 반환하는 함수
+    // 미용실 페이지 URL 목록을 반환하는 함수
     private function getHairSalonPages()
     {
         $hairSalonModel = new HairSalonModel();
@@ -46,14 +53,32 @@ class SitemapController extends Controller
         
         $urls = [];
         for ($i = 1; $i <= $pages; $i++) {
-            $urls[] = base_url("sitemap/page/{$i}"); // 각 미용실 페이지 URL
+            $urls[] = base_url("sitemap/hairSalonPage/{$i}"); // 미용실 페이지 URL
         }
 
         return $urls;
     }
 
-    // 페이지 URL을 기반으로 한 사이트맵 생성
-    public function page($pageNumber)
+    // 설치장소 페이지 URL 목록을 반환하는 함수
+    private function getInstallationPages()
+    {
+        $installationModel = new InstallationModel();
+        
+        // 예시로 페이지 번호를 계산하는 방식 (10,000개씩 나누는 방식)
+        $totalInstallations = $installationModel->countAllResults(); 
+        $itemsPerPage = 10000;
+        $pages = ceil($totalInstallations / $itemsPerPage);
+        
+        $urls = [];
+        for ($i = 1; $i <= $pages; $i++) {
+            $urls[] = base_url("sitemap/installationPage/{$i}"); // 설치장소 페이지 URL
+        }
+
+        return $urls;
+    }
+
+    // 미용실 페이지 URL을 기반으로 한 사이트맵 생성
+    public function hairSalonPage($pageNumber)
     {
         $hairSalonModel = new HairSalonModel();
         $itemsPerPage = 10000; // 한 페이지당 10,000개 미용실
@@ -83,5 +108,36 @@ class SitemapController extends Controller
             ->setHeader('Content-Type', 'application/xml; charset=utf-8')
             ->setBody($xml);
     }
-}
 
+    // 설치장소 페이지 URL을 기반으로 한 사이트맵 생성
+    public function installationPage($pageNumber)
+    {
+        $installationModel = new InstallationModel();
+        $itemsPerPage = 10000; // 한 페이지당 10,000개 설치장소
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+
+        // 페이지에 맞는 설치장소 데이터 가져오기
+        $installations = $installationModel->findAll($itemsPerPage, $offset);
+
+        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
+
+        foreach ($installations as $installation) {
+            $url = base_url("installation/show/{$installation['id']}");
+            $lastMod = date('Y-m-d', strtotime($installation['Data Reference Date']));
+            
+            $xml .= "<url>\n";
+            $xml .= "<loc>{$url}</loc>\n";
+            $xml .= "<lastmod>{$lastMod}</lastmod>\n";
+            $xml .= "<changefreq>monthly</changefreq>\n";
+            $xml .= "<priority>0.8</priority>\n";
+            $xml .= "</url>\n";
+        }
+
+        $xml .= "</urlset>";
+
+        return $this->response
+            ->setHeader('Content-Type', 'application/xml; charset=utf-8')
+            ->setBody($xml);
+    }
+}

@@ -17,23 +17,12 @@
           <li><a href="/hairsalon">미용실</a></li>
         </ul>
       </li>
-
-      <!-- 이벤트 메뉴
       <li class="menu-group">
-        <a href="#" class="dropdown-toggle">🎉 공지사항▾</a>
+        <a href="#" class="dropdown-toggle">🎉 재활용▾</a>
         <ul class="sub-menu">
-          <li><a href="/posts?category=99">공지사항</a></li>
+          <li><a href="/installation">폐의약품수거함</a></li>
         </ul>
       </li>
-
-      <li class="menu-group">
-        <a href="#" class="dropdown-toggle">🎉 고급유머 ▾</a>
-        <ul class="sub-menu">
-          <li><a href="/posts?category=9">베스트</a></li>
-          <li><a href="/posts?category=7">레시피</a></li>
-        </ul>
-      </li>
-      -->
     </ul>
   </nav>
 </div>
