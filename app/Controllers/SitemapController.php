@@ -11,7 +11,7 @@ class SitemapController extends Controller
     {
         $hairSalonModel = new HairSalonModel(); // HairSalonModel 인스턴스 생성
         $totalSalons = $hairSalonModel->countAllSalons(); // 미용실 총 개수 가져오기
-        $itemsPerPage = 50000; // 한 페이지에 50000개의 미용실 항목 포함
+        $itemsPerPage = 10000; // 한 페이지에 10000개의 미용실 항목 포함
 
         $pages = ceil($totalSalons / $itemsPerPage); // 총 페이지 수 계산
 
@@ -34,14 +34,14 @@ class SitemapController extends Controller
             ->setBody($xml);
     }
 
-    // 50,000개씩 묶어 미용실 페이지 URL 목록을 반환하는 함수
+    // 10,000개씩 묶어 미용실 페이지 URL 목록을 반환하는 함수
     private function getHairSalonPages()
     {
         $hairSalonModel = new HairSalonModel();
         
-        // 예시로 페이지 번호를 계산하는 방식 (50000개씩 나누는 방식)
+        // 예시로 페이지 번호를 계산하는 방식 (10,000개씩 나누는 방식)
         $totalSalons = $hairSalonModel->countAllSalons(); 
-        $itemsPerPage = 50000;
+        $itemsPerPage = 10000;
         $pages = ceil($totalSalons / $itemsPerPage);
         
         $urls = [];
@@ -56,7 +56,7 @@ class SitemapController extends Controller
     public function page($pageNumber)
     {
         $hairSalonModel = new HairSalonModel();
-        $itemsPerPage = 50000; // 한 페이지당 50,000개 미용실
+        $itemsPerPage = 10000; // 한 페이지당 10,000개 미용실
         $offset = ($pageNumber - 1) * $itemsPerPage;
 
         // 페이지에 맞는 미용실 데이터 가져오기
@@ -84,3 +84,4 @@ class SitemapController extends Controller
             ->setBody($xml);
     }
 }
+
