@@ -21,6 +21,7 @@
         <a href="#" class="dropdown-toggle">🎉 재활용▾</a>
         <ul class="sub-menu">
           <li><a href="/installation">폐의약품수거함</a></li>
+          <li><a href="/clothingcollectionbin">폐의류수거함</a></li>
         </ul>
       </li>
     </ul>

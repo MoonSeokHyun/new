@@ -37,7 +37,12 @@ $seoKeywords = esc("설치장소, {$installationName}, 폐의약품, {$districtN
   <meta name="twitter:image" content="이미지 URL 또는 경로" />
   
   <!-- 네이버 지도 API -->
+  <!-- 네이버 지도 API -->
   <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
+  
+  <!-- 광고 스크립트 (선택사항) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
+
   
   <style>
     /* 기본 초기화 */

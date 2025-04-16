@@ -47,6 +47,9 @@ $routes->get('/hairsalon/detail/(:segment)', 'SitemapController::addHairSalonSit
 $routes->get('/installation', 'InstallationController::index');
 $routes->get('/installation/show/(:num)', 'InstallationController::show/$1');
 
+$routes->get('/clothingcollectionbin', 'ClothingCollectionBinController::index');
+$routes->get('/clothingcollectionbin/show/(:num)', 'ClothingCollectionBinController::show/$1');
+$routes->get('/sitemap/clothingCollectionBinPage/(:num)', 'SitemapController::clothingCollectionBinPage/$1');
 
 
 

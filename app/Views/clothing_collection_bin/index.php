@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <!-- 네이버 지도 API -->
   <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
   
   <!-- 광고 스크립트 (선택사항) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
 
-    <title>폐의약품수거</title>
+    <title>Clothing Collection Bins</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,36 +32,6 @@
             color: #333;
             margin-top: 20px;
             margin-bottom: 20px;
-        }
-
-        /* 검색바 */
-        .search-bar {
-            padding: 10px;
-            margin: 20px auto;
-            text-align: center;
-        }
-
-        .search-bar input {
-            padding: 10px;
-            font-size: 16px;
-            width: 60%; /* Adjust the width of the search bar */
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .search-bar button {
-            padding: 10px;
-            font-size: 16px;
-            background-color: #62D491;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .search-bar button:hover {
-            background-color: #55b379;
         }
 
         /* 카드 컨테이너 */
@@ -129,10 +99,6 @@
                 margin-top: 10px;
             }
 
-            .search-bar input {
-                width: 90%; /* Make search bar input full width on mobile */
-            }
-
             .card-container {
                 grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Stack cards on small screens */
             }
@@ -155,22 +121,24 @@
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
 <!-- 제목 -->
-
-
-<h1 class="page-title">페의약품수거함 정보를 만나보세요!</h1>
-
-
+<h1 class="page-title">폐의류수거함 정보를 만나보세요!</h1>
 
 <!-- 카드 컨테이너 -->
 <div class="card-container">
-    <?php foreach ($installations as $installation): ?>
-    <div class="card" onclick="window.location='/installation/show/<?= $installation['id'] ?>'">
-        <h3><?= $installation['Installation Location Name'] ?> 🚪</h3>
-        <p><?= $installation['Street Address'] ?> 🏠</p>
-        <p><?= $installation['District Name'] ?> 🏙️</p>
+    <?php foreach ($bins as $bin): ?>
+    <div class="card" onclick="window.location='/clothingcollectionbin/show/<?= $bin['id'] ?>'">
+        <h3><?= $bin['Installation Location Name'] ?> 🚪</h3>
+        <p><?= $bin['Street Address'] ?> 🏠</p>
+        <p><?= $bin['District Name'] ?> 🏙️</p>
     </div>
     <?php endforeach; ?>
+</div>
+
+<!-- 페이징 -->
+<div class="pagination">
+    <?= $pager->links() ?>
 </div>
 
 <?php include APPPATH . 'Views/includes/footer.php'; ?>

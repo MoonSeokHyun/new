@@ -148,7 +148,15 @@
 </head>
 <body>
 <?php include APPPATH . 'Views/includes/header.php'; ?>
-
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+  <script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
   <main>
     <!-- 서비스 소개 본문 -->
     <div class="hero">
