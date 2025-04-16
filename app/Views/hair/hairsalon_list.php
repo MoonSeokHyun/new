@@ -1,9 +1,47 @@
+<?php
+// 안전한 변수 초기화
+$storeName = trim(esc($salon['business_name'] ?? ''));
+$fullAddress = esc($salon['full_address'] ?? '');
+$storeId = esc($salon['id'] ?? '');
+
+// 지역명 추출 (예: 구, 읍, 면 포함)
+preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $fullAddress, $matches);
+$district_name = $matches[0] ?? '';
+
+// 기본값 보정
+$storeName = $storeName ?: '미용실';
+$districtText = $district_name ?: '인근';
+
+// SEO 최적화용 타이틀과 설명 설정
+$seoTitle = "{$storeName} - {$districtText} 미용실 상세 정보";
+$seoDescription = "{$storeName}의 미용실 상세 정보와 위치, 전화번호, 영업 상태를 확인해보세요. {$districtText}에 위치한 미용실입니다.";
+$seoKeywords = "미용실, {$storeName}, 헤어, 뷰티, {$districtText}, {$fullAddress}";
+?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>공공데이터 포털 - 퐁퐁코리아</title>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title><?= esc($seoTitle) ?></title> <!-- 동적으로 설정된 타이틀 -->
+  <meta name="description" content="<?= esc($seoDescription) ?>">
+  <meta name="keywords" content="<?= esc($seoKeywords) ?>">
+  <meta name="author" content="편잇 팀">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- 네이버 지도 API -->
+  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
+  
+  <!-- 광고 스크립트 (선택사항) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
+
+  <style>
+    /* CSS 스타일은 그대로 유지 */
+  </style>
+</head>
+<body>
   <style>
     :root {
       --theme-color: #3eaf7c;  /* 새로운 색상 */
@@ -209,7 +247,17 @@
 </head>
 <body>
   <?php include APPPATH . 'Views/includes/header.php'; ?>
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <main>
+  <!--
     <div class="top-bar">
       <div class="search-box">
         <form method="get">
@@ -218,7 +266,7 @@
         </form>
       </div>
     </div>
-
+-->
     <div class="grid">
       <?php foreach ($salons as $salon): ?>
       <div class="icon-card">

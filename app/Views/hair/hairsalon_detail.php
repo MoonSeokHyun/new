@@ -160,7 +160,15 @@
 
   <?php include APPPATH . 'Views/includes/header.php'; ?>
   
-
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
   <!-- 미용실 상세 정보 -->
   <div class="details">
@@ -194,11 +202,27 @@
         <tr><th>다중이용업소 여부</th><td><?= esc($salon['multi_use_business']) ?></td></tr>
       </table>
     </section>
-
+    <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
     <!-- 지도 -->
     <div id="map"></div>
   </div>
-
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <!-- 푸터 -->
   <?php include APPPATH . 'Views/includes/footer.php'; ?>
 
