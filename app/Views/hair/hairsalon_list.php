@@ -6,13 +6,13 @@
   <title>공공데이터 포털 - 퐁퐁코리아</title>
   <style>
     :root {
-      --theme-color: #FFD369;
+      --theme-color: #3eaf7c;  /* 새로운 색상 */
       --theme-text: #333;
       --card-bg-1: #FFF8E1;
       --card-bg-2: #FFF3E0;
       --card-bg-3: #FFFDE7;
       --hover-bg: #FFF0B2;
-      --badge-bg: #FFB74D;
+      --badge-bg: #81C784;  /* 톤을 맞춰서 변경 */
       --font: 'Segoe UI', sans-serif;
       --pagination-bg: #fff8e1;
       --pagination-hover: #ffecb3;
@@ -61,7 +61,7 @@
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       padding: 16px;
       background-color: var(--card-bg-1);
@@ -69,29 +69,46 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    .main-button {
-      background-color: var(--theme-color);
-      color: #333;
-      padding: 10px 16px;
-      border-radius: 6px;
-      font-weight: bold;
+    /* 검색 창 */
+    .search-box {
+      display: flex;
+      width: 50%; /* 화면 너비의 50%로 확장 */
+      margin: 40px auto;
+      background: white;
+      border-radius: 999px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 8px 16px;
     }
 
     .search-box input {
-      padding: 8px 12px;
+      flex-grow: 1; /* input이 버튼과 동일한 높이를 가지도록 */
+      padding: 16px 20px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 999px 0 0 999px; /* 왼쪽 테두리만 둥글게 */
+      font-size: 18px;
+      outline: none;
+      height: 100%;
     }
 
     .search-box button {
-      padding: 8px 12px;
-      background-color: var(--theme-color);
-      border-radius: 6px;
-      margin-left: 8px;
+      padding: 16px 20px;
+      background-color: var(--theme-color); /* 새로운 색상 */
+      border-radius: 0 999px 999px 0; /* 오른쪽 테두리만 둥글게 */
       font-weight: bold;
       cursor: pointer;
+      font-size: 18px;
+      border: none;
+      height: 100%;
     }
 
+    /* 모바일에서 두 줄로 나누어지지 않도록 설정 */
+    @media (max-width: 768px) {
+      .search-box {
+        width: 80%; /* 모바일에서 너비를 80%로 설정 */
+      }
+    }
+
+    /* 아이콘 카드 및 기타 스타일 */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -119,7 +136,7 @@
     .card-info h2 {
       font-size: 20px;
       margin-bottom: 12px;
-      background-color: var(--theme-color);
+      background-color: var(--theme-color); /* 새로운 색상 */
       padding: 8px;
       border-radius: 8px;
       text-align: center;
@@ -146,7 +163,7 @@
     .badge {
       display: inline-block;
       margin-top: 12px;
-      background-color: var(--badge-bg);
+      background-color: var(--badge-bg); /* 톤에 맞춘 배지 색상 */
       color: #222;
       font-size: 13px;
       padding: 6px 12px;
@@ -187,13 +204,13 @@
       border-color: var(--bs-pagination-active-border-color);
       font-weight: bold;
     }
+    
   </style>
 </head>
 <body>
   <?php include APPPATH . 'Views/includes/header.php'; ?>
   <main>
     <div class="top-bar">
-      <a href="/" class="main-button">메인으로 돌아가기</a>
       <div class="search-box">
         <form method="get">
           <input type="text" name="search" value="<?= esc($search) ?>" placeholder="검색...">

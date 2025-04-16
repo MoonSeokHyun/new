@@ -27,4 +27,16 @@ class HairSalonModel extends Model
         'open_service_id' => 'required|min_length[3]|max_length[255]',
         // 추가적인 유효성 검사 규칙
     ];
+
+    public function countAllSalons()
+    {
+        return $this->countAllResults();  // 전체 미용실 데이터 개수 반환
+    }
+
+    public function getHairSalons($limit, $offset)
+    {
+        return $this->table($this->table)
+                    ->limit($limit, $offset) // limit과 offset을 사용해 데이터 가져오기
+                    ->findAll();
+    }
 }

@@ -1,217 +1,226 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($salon['open_service_name']) ?> - 미용실 정보</title>
-    <style>
-        /* 기본 스타일 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <title><?= esc($salon['business_name']) ?> - 미용실 상세 정보</title>
+  <meta name="description" content="<?= esc($salon['road_name_address'] ?? '') ?> 위치의 미용실 <?= esc($salon['open_service_name'] ?? '') ?>의 상세 정보, 전화번호, 영업 상태 등을 확인해보세요.">
+  <meta name="keywords" content="미용실, <?= esc($salon['business_name'] ?? '') ?>, 헤어, 네일, 뷰티, <?= esc($salon['road_name_address'] ?? '') ?>">
+  <meta name="author" content="편잇 팀">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- 네이버 지도 API -->
+  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
+  
+  <!-- 광고 스크립트 (선택사항) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #fce0e0; /* 부드러운 핑크색 배경 */
-            color: #333;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+  <style>
+    /* 기본 초기화 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 0 15px;
+    }
 
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-        h1 {
-            font-size: 40px;
-            color: #d44f8c; /* 핑크 톤 색상 */
-            margin-bottom: 10px;
-        }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
 
-        .sub-heading {
-            font-size: 24px;
-            color: #777;
-            margin-bottom: 30px;
-        }
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 1rem;
+    }
 
-        /* "메인으로 돌아가기" 버튼 */
-        .main-button {
-            padding: 10px 25px;
-            font-size: 16px;
-            background-color: #d44f8c;
-            color: white;
-            border-radius: 30px;
-            cursor: pointer;
-            text-decoration: none;
-            margin-bottom: 20px;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
+    header p {
+      font-size: 16px;
+      color: #555;
+    }
 
-        .main-button:hover {
-            background-color: #c13e72;
-        }
+    /* 미용실 상세 Section */
+    .details {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
 
-        /* 상세 정보 스타일 */
-        .details p {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
+    .detail-section {
+      margin-bottom: 20px;
+    }
 
-        .details strong {
-            color: #d44f8c;
-        }
+    .detail-header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
 
-        /* 상세 정보 카드 스타일 */
-        .card {
-            background-color: #fce0e0;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    .facility-name {
+      font-size: 22px;
+      font-weight: bold;
+      color: #333;
+    }
 
-        /* 페이징 스타일 */
-        .pagination {
-            margin-top: 30px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-        }
+    .facility-type {
+      font-size: 16px;
+      color: #555;
+      margin: 5px 0;
+    }
 
-        .pagination a {
-            padding: 10px 15px;
-            background-color: #d44f8c;
-            color: white;
-            border-radius: 5px;
-            margin: 0 5px;
-            text-decoration: none;
-            font-size: 16px;
-        }
+    .sub-info {
+      font-size: 14px;
+      color: #777;
+    }
 
-        .pagination a:hover {
-            background-color: #c13e72;
-        }
+    .section-title {
+      font-size: 20px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
 
-        .pagination .active {
-            background-color: #ffb3b3;
-        }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-        footer {
-            background-color: #d44f8c;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            font-size: 14px;
-        }
+    .info-table th, .info-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
 
-        footer a {
-            color: #f9e6e6;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .info-table th {
+      background-color: #f5f5f5;
+    }
 
-        /* 모바일 최적화 */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
+    .main-button {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #62D491;
+      color: white;
+      text-align: center;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-top: 20px;
+    }
 
-            .main-button {
-                font-size: 14px;
-                width: 100%;
-            }
+    .main-button:hover {
+      background-color: #4db67d;
+    }
 
-            .grid {
-                grid-template-columns: repeat(2, 1fr); /* 2개씩 그리드로 변경 */
-            }
+    /* 지도 스타일 */
+    #map {
+      width: 100%;
+      height: 400px;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-            .pagination a {
-                font-size: 14px;
-                padding: 8px 12px;
-            }
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+    }
 
-            .icon-card {
-                height: auto; /* 모바일에서는 카드 높이 자동 조정 */
-                padding: 15px;
-            }
+    .details {
+    width: 70%; /* 데스크탑에서 70% */
+    margin: 0 auto; /* 가운데 정렬 */
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
 
-            .search-box input {
-                width: 100%; /* 모바일에서는 입력창을 가득 채우도록 */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .grid {
-                grid-template-columns: 1fr; /* 1개씩 그리드로 변경 */
-            }
-
-            .pagination a {
-                font-size: 12px;
-                padding: 6px 10px;
-            }
-        }
-    </style>
+/* 모바일에서 100%로 보이도록 */
+@media (max-width: 768px) {
+    .details {
+        width: 100%; /* 모바일에서 100% */
+        padding: 15px; /* 모바일에서는 약간의 패딩 조정 */
+    }
+}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><?= esc($salon['open_service_name']) ?> - 미용실 상세 정보</h1>
-            <p class="sub-heading"><?= esc($salon['business_name']) ?></p>
-        </header>
 
-        <!-- "메인으로 돌아가기" 버튼 -->
-        <a href="/" class="main-button">메인으로 돌아가기</a>
+  <?php include APPPATH . 'Views/includes/header.php'; ?>
+  
 
-        <div class="details">
-            <div class="card">
-                <p><strong>미용실 ID:</strong> <?= esc($salon['open_service_id']) ?></p>
-                <p><strong>전화번호:</strong> <?= esc($salon['contact_phone_number']) ?></p>
-                <p><strong>주소:</strong> <?= esc($salon['full_address']) ?></p>
-                <p><strong>도로명 주소:</strong> <?= esc($salon['road_name_address']) ?></p>
-                <p><strong>사업장 면적:</strong> <?= esc($salon['location_area']) ?> m²</p>
-                <p><strong>영업 상태:</strong> <?= esc($salon['business_status_name']) ?></p>
-                <p><strong>상세 영업 상태:</strong> <?= esc($salon['detailed_business_status_name']) ?></p>
-                <p><strong>폐업일자:</strong> <?= esc($salon['closure_date']) ?></p>
-                <p><strong>영업 시작일자:</strong> <?= esc($salon['permit_date']) ?></p>
-                <p><strong>재개업일자:</strong> <?= esc($salon['reopening_date']) ?></p>
-                <p><strong>최종 수정 시점:</strong> <?= esc($salon['last_modification_time']) ?></p>
-                <p><strong>업종명:</strong> <?= esc($salon['business_type_name']) ?></p>
-                <p><strong>위생업태명:</strong> <?= esc($salon['hygiene_business_type']) ?></p>
-                <p><strong>건물 지상층수:</strong> <?= esc($salon['building_upper_floors']) ?>층</p>
-                <p><strong>건물 지하층수:</strong> <?= esc($salon['building_lower_floors']) ?>층</p>
-                <p><strong>의자 수:</strong> <?= esc($salon['chair_count']) ?></p>
-                <p><strong>침대 수:</strong> <?= esc($salon['bed_count']) ?></p>
-                <p><strong>여성 종사자 수:</strong> <?= esc($salon['female_staff_count']) ?></p>
-                <p><strong>남성 종사자 수:</strong> <?= esc($salon['male_staff_count']) ?></p>
-                <p><strong>다중이용업소 여부:</strong> <?= esc($salon['multi_use_business']) ?></p>
-            </div>
-        </div>
 
-        <!-- "목록으로 돌아가기" 버튼 -->
-        <a href="/hairsalon" class="main-button">목록으로 돌아가기</a>
-    </div>
+  <!-- 미용실 상세 정보 -->
+  <div class="details">
+    <section class="detail-section">
+      <div class="detail-header">
+        <div class="facility-name"><?= esc($salon['business_name']) ?></div>
+        <div class="facility-type"><?= esc($salon['business_type_name']) ?> 미용실</div>
+        <div class="sub-info">📍 <?= esc($salon['road_name_address']); ?></div>
+      </div>
 
-    <footer>
-        <p>이 데이터는 공공데이터 <a href="https://www.data.go.kr" target="_blank">www.data.go.kr</a>을 활용하여 만든 웹사이트입니다. 사용 방법 혹은 정보 변경 요청은 <a href="mailto:gjqmaoslwj@naver.com">gjqmaoslwj@naver.com</a>으로 연락 주시기 바랍니다.</p>
-    </footer>
+      <h3 class="section-title">미용실 기본 정보</h3>
+      <table class="info-table">
+        <tr><th>전화번호</th><td><?= esc($salon['contact_phone_number']) ?></td></tr>
+        <tr><th>주소</th><td><?= esc($salon['full_address']) ?></td></tr>
+        <tr><th>도로명 주소</th><td><?= esc($salon['road_name_address']) ?></td></tr>
+        <tr><th>사업장 면적</th><td><?= esc($salon['location_area']) ?> m²</td></tr>
+        <tr><th>영업 상태</th><td><?= esc($salon['business_status_name']) ?></td></tr>
+        <tr><th>상세 영업 상태</th><td><?= esc($salon['detailed_business_status_name']) ?></td></tr>
+        <tr><th>폐업일자</th><td><?= esc($salon['closure_date']) ?></td></tr>
+        <tr><th>영업 시작일자</th><td><?= esc($salon['permit_date']) ?></td></tr>
+        <tr><th>재개업일자</th><td><?= esc($salon['reopening_date']) ?></td></tr>
+        <tr><th>최종 수정 시점</th><td><?= esc($salon['last_modification_time']) ?></td></tr>
+        <tr><th>업종명</th><td><?= esc($salon['business_type_name']) ?></td></tr>
+        <tr><th>위생업태명</th><td><?= esc($salon['hygiene_business_type']) ?></td></tr>
+        <tr><th>건물 지상층수</th><td><?= esc($salon['building_upper_floors']) ?>층</td></tr>
+        <tr><th>건물 지하층수</th><td><?= esc($salon['building_lower_floors']) ?>층</td></tr>
+        <tr><th>의자 수</th><td><?= esc($salon['chair_count']) ?></td></tr>
+        <tr><th>침대 수</th><td><?= esc($salon['bed_count']) ?></td></tr>
+        <tr><th>여성 종사자 수</th><td><?= esc($salon['female_staff_count']) ?></td></tr>
+        <tr><th>남성 종사자 수</th><td><?= esc($salon['male_staff_count']) ?></td></tr>
+        <tr><th>다중이용업소 여부</th><td><?= esc($salon['multi_use_business']) ?></td></tr>
+      </table>
+    </section>
+
+    <!-- 지도 -->
+    <div id="map"></div>
+  </div>
+
+  <!-- 푸터 -->
+  <?php include APPPATH . 'Views/includes/footer.php'; ?>
+
+  <script>
+    // 지도 초기화
+    (function() {
+      var lat = parseFloat("<?= esc($latitude); ?>");  // 변환된 위도 값
+      var lng = parseFloat("<?= esc($longitude); ?>"); // 변환된 경도 값
+      var name = "<?= esc($salon['open_service_name']); ?>";
+
+      var map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(lat, lng),
+        zoom: 16
+      });
+
+      var mainMarker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(lat, lng),
+        map: map,
+        title: name
+      });
+    })();
+  </script>
+
 </body>
 </html>

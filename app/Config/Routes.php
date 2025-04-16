@@ -34,5 +34,9 @@ $routes->post('/posts/(:num)/ajaxDislike', 'Posts::ajaxDislike/$1');
 $routes->get('/hairsalon', 'HairSalonController::index');  // 미용실 목록 페이지 (페이징 + 검색 기능 포함)
 $routes->get('/hairsalon/detail/(:segment)', 'HairSalonController::detail/$1');  // 미용실 디테일 페이지
 
+//사이트맵용 
+$routes->get('/hairsalon/detail/(:num)', 'HairSalonController::detail/$1');
+
+$routes->get('/hairsalon/detail/(:segment)', 'SitemapController::addHairSalonSitemap/$1');
 
 
