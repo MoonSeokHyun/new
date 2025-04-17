@@ -68,3 +68,10 @@ $routes->get('sitemap/campingPage/(:num)', 'SitemapController::campingPage/$1');
 $routes->get('world_res',          'WorldRes::index');
 $routes->get('world_res/(:num)',   'WorldRes::detail/$1');
 $routes->get('sitemap/worldResPage/(:num)', 'SitemapController::worldResPage/$1');
+
+
+// 체육시설
+$routes->get('sports_facilities',          'SportsFacility::index');
+$routes->get('sports_facilities/(:num)',   'SportsFacility::detail/$1');
+
+$routes->get('sitemap/sportsFacilitiesPage/(:num)', 'SitemapController::sportsFacilitiesPage/$1');

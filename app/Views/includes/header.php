@@ -23,16 +23,24 @@
     <li class="menu-group">
       <a href="#" class="dropdown-toggle">♻️ 재활용 ▾</a>
       <ul class="sub-menu">
-        <li><a href="/installation">💊 폐의약품 수거함</a></li>
-        <li><a href="/clothingcollectionbin">👕 폐의류 수거함</a></li>
+        <li><a href="/installation">💊 폐의약품</a></li>
+        <li><a href="/clothingcollectionbin">👕 폐의류</a></li>
       </ul>
     </li>
 
     <!-- 여행 메뉴 -->
     <li class="menu-group">
-      <a href="#" class="dropdown-toggle">🏕️ 여행 ▾</a>
+      <a href="#" class="dropdown-toggle">🏞️ 여행 ▾</a>
       <ul class="sub-menu">
         <li><a href="/camping">🏕️ 캠핑장</a></li>
+      </ul>
+    </li>
+
+    <!-- 공공시설 메뉴 -->
+    <li class="menu-group">
+      <a href="#" class="dropdown-toggle">🏛️ 공공시설 ▾</a>
+      <ul class="sub-menu">
+        <li><a href="/sports_facilities">🏟️ 체육시설</a></li>
       </ul>
     </li>
 
@@ -45,6 +53,7 @@
     </li>
   </ul>
 </nav>
+
 </div>
 
 <!-- 스타일 -->
