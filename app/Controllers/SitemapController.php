@@ -5,200 +5,229 @@ namespace App\Controllers;
 use App\Models\HairSalonModel;
 use App\Models\InstallationModel;
 use App\Models\ClothingCollectionBinModel;
+use App\Models\SeminarRoomModel;
 use CodeIgniter\Controller;
 
 class SitemapController extends Controller
 {
     public function index()
     {
-        // 미용실 사이트맵
-        $hairSalonPages = $this->getHairSalonPages();
-        // 설치장소 사이트맵
-        $installationPages = $this->getInstallationPages();
-        // 폐의약품 수거함 사이트맵
+        // 미용실 사이트맵 페이지 URL 목록
+        $hairSalonPages            = $this->getHairSalonPages();
+        // 설치장소 사이트맵 페이지 URL 목록
+        $installationPages         = $this->getInstallationPages();
+        // 폐의약품 수거함 사이트맵 페이지 URL 목록
         $clothingCollectionBinPages = $this->getClothingCollectionBinPages();
+        // 세미나룸 사이트맵 페이지 URL 목록
+        $seminarRoomPages          = $this->getSeminarRoomPages();
 
-        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xml .= "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
 
-        // 미용실 디테일 페이지 URL 추가
-        foreach ($hairSalonPages as $pageUrl) {
-            $xml .= "<sitemap>\n";
-            $xml .= "<loc>" . $pageUrl . "</loc>\n";
-            $xml .= "<lastmod>" . date('Y-m-d') . "</lastmod>\n";
-            $xml .= "</sitemap>\n";
+        foreach ($hairSalonPages as $url) {
+            $xml .= "  <sitemap>\n";
+            $xml .= "    <loc>{$url}</loc>\n";
+            $xml .= "    <lastmod>" . date('Y-m-d') . "</lastmod>\n";
+            $xml .= "  </sitemap>\n";
         }
 
-        // 설치장소 디테일 페이지 URL 추가
-        foreach ($installationPages as $pageUrl) {
-            $xml .= "<sitemap>\n";
-            $xml .= "<loc>" . $pageUrl . "</loc>\n";
-            $xml .= "<lastmod>" . date('Y-m-d') . "</lastmod>\n";
-            $xml .= "</sitemap>\n";
+        foreach ($installationPages as $url) {
+            $xml .= "  <sitemap>\n";
+            $xml .= "    <loc>{$url}</loc>\n";
+            $xml .= "    <lastmod>" . date('Y-m-d') . "</lastmod>\n";
+            $xml .= "  </sitemap>\n";
         }
 
-        // 폐의약품 수거함 디테일 페이지 URL 추가
-        foreach ($clothingCollectionBinPages as $pageUrl) {
-            $xml .= "<sitemap>\n";
-            $xml .= "<loc>" . $pageUrl . "</loc>\n";
-            $xml .= "<lastmod>" . date('Y-m-d') . "</lastmod>\n";
-            $xml .= "</sitemap>\n";
+        foreach ($clothingCollectionBinPages as $url) {
+            $xml .= "  <sitemap>\n";
+            $xml .= "    <loc>{$url}</loc>\n";
+            $xml .= "    <lastmod>" . date('Y-m-d') . "</lastmod>\n";
+            $xml .= "  </sitemap>\n";
+        }
+
+        foreach ($seminarRoomPages as $url) {
+            $xml .= "  <sitemap>\n";
+            $xml .= "    <loc>{$url}</loc>\n";
+            $xml .= "    <lastmod>" . date('Y-m-d') . "</lastmod>\n";
+            $xml .= "  </sitemap>\n";
         }
 
         $xml .= "</sitemapindex>";
 
         return $this->response
-            ->setHeader('Content-Type', 'application/xml; charset=utf-8')
-            ->setBody($xml);
+                    ->setHeader('Content-Type', 'application/xml; charset=utf-8')
+                    ->setBody($xml);
     }
 
-    // 미용실 페이지 URL 목록을 반환하는 함수
     private function getHairSalonPages()
     {
-        $hairSalonModel = new HairSalonModel();
-        
-        // 페이지 번호 계산
-        $totalSalons = $hairSalonModel->countAllSalons(); 
-        $itemsPerPage = 10000;
-        $pages = ceil($totalSalons / $itemsPerPage);
-        
-        $urls = [];
+        $model        = new HairSalonModel();
+        $total        = $model->countAllSalons();
+        $perPage      = 10000;
+        $pages        = (int) ceil($total / $perPage);
+        $urls         = [];
+
         for ($i = 1; $i <= $pages; $i++) {
-            $urls[] = base_url("sitemap/hairSalonPage/{$i}"); // 미용실 페이지 URL
+            $urls[] = base_url("sitemap/hairSalonPage/{$i}");
         }
 
         return $urls;
     }
 
-    // 설치장소 페이지 URL 목록을 반환하는 함수
     private function getInstallationPages()
     {
-        $installationModel = new InstallationModel();
-        
-        // 페이지 번호 계산
-        $totalInstallations = $installationModel->countAllResults(); 
-        $itemsPerPage = 10000;
-        $pages = ceil($totalInstallations / $itemsPerPage);
-        
-        $urls = [];
+        $model        = new InstallationModel();
+        $total        = $model->countAllResults();
+        $perPage      = 10000;
+        $pages        = (int) ceil($total / $perPage);
+        $urls         = [];
+
         for ($i = 1; $i <= $pages; $i++) {
-            $urls[] = base_url("sitemap/installationPage/{$i}"); // 설치장소 페이지 URL
+            $urls[] = base_url("sitemap/installationPage/{$i}");
         }
 
         return $urls;
     }
 
-    // 폐의약품 수거함 페이지 URL 목록을 반환하는 함수
     private function getClothingCollectionBinPages()
     {
-        $clothingCollectionBinModel = new ClothingCollectionBinModel();
-        
-        // 페이지 번호 계산
-        $totalBins = $clothingCollectionBinModel->countAllBins();
-        $itemsPerPage = 10000;
-        $pages = ceil($totalBins / $itemsPerPage);
-        
-        $urls = [];
+        $model        = new ClothingCollectionBinModel();
+        $total        = $model->countAllBins();
+        $perPage      = 10000;
+        $pages        = (int) ceil($total / $perPage);
+        $urls         = [];
+
         for ($i = 1; $i <= $pages; $i++) {
-            $urls[] = base_url("sitemap/clothingCollectionBinPage/{$i}"); // 폐의약품 수거함 페이지 URL
+            $urls[] = base_url("sitemap/clothingCollectionBinPage/{$i}");
         }
 
         return $urls;
     }
 
-    // 미용실 페이지 URL을 기반으로 한 사이트맵 생성
-    public function hairSalonPage($pageNumber)
+    private function getSeminarRoomPages()
     {
-        $hairSalonModel = new HairSalonModel();
-        $itemsPerPage = 10000; // 한 페이지당 10,000개 미용실
-        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $model        = new SeminarRoomModel();
+        $total        = $model->countAllResults();
+        $perPage      = 10000;
+        $pages        = (int) ceil($total / $perPage);
+        $urls         = [];
 
-        // 페이지에 맞는 미용실 데이터 가져오기
-        $salons = $hairSalonModel->getHairSalons($itemsPerPage, $offset);
+        for ($i = 1; $i <= $pages; $i++) {
+            $urls[] = base_url("sitemap/seminarRoomPage/{$i}");
+        }
 
-        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        return $urls;
+    }
+
+    public function hairSalonPage(int $pageNumber)
+    {
+        $model   = new HairSalonModel();
+        $limit   = 10000;
+        $offset  = ($pageNumber - 1) * $limit;
+        $salons  = $model->getHairSalons($limit, $offset);
+
+        $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
 
         foreach ($salons as $salon) {
-            $url = base_url("hairsalon/detail/{$salon['id']}");
-            $lastMod = date('Y-m-d', strtotime($salon['last_modification_time']));
-            
-            $xml .= "<url>\n";
-            $xml .= "<loc>{$url}</loc>\n";
-            $xml .= "<lastmod>{$lastMod}</lastmod>\n";
-            $xml .= "<changefreq>monthly</changefreq>\n";
-            $xml .= "<priority>0.8</priority>\n";
-            $xml .= "</url>\n";
+            $loc     = base_url("hairsalon/detail/{$salon->id}");
+            $lastmod = date('Y-m-d', strtotime($salon->last_modification_time));
+            $xml    .= "  <url>\n";
+            $xml    .= "    <loc>{$loc}</loc>\n";
+            $xml    .= "    <lastmod>{$lastmod}</lastmod>\n";
+            $xml    .= "    <changefreq>monthly</changefreq>\n";
+            $xml    .= "    <priority>0.8</priority>\n";
+            $xml    .= "  </url>\n";
         }
 
         $xml .= "</urlset>";
 
         return $this->response
-            ->setHeader('Content-Type', 'application/xml; charset=utf-8')
-            ->setBody($xml);
+                    ->setHeader('Content-Type', 'application/xml; charset=utf-8')
+                    ->setBody($xml);
     }
 
-    // 설치장소 페이지 URL을 기반으로 한 사이트맵 생성
-    public function installationPage($pageNumber)
+    public function installationPage(int $pageNumber)
     {
-        $installationModel = new InstallationModel();
-        $itemsPerPage = 10000; // 한 페이지당 10,000개 설치장소
-        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $model         = new InstallationModel();
+        $limit         = 10000;
+        $offset        = ($pageNumber - 1) * $limit;
+        $installations = $model->findAll($limit, $offset);
 
-        // 페이지에 맞는 설치장소 데이터 가져오기
-        $installations = $installationModel->findAll($itemsPerPage, $offset);
-
-        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
 
-        foreach ($installations as $installation) {
-            $url = base_url("installation/show/{$installation['id']}");
-            $lastMod = date('Y-m-d', strtotime($installation['Data Reference Date']));
-            
-            $xml .= "<url>\n";
-            $xml .= "<loc>{$url}</loc>\n";
-            $xml .= "<lastmod>{$lastMod}</lastmod>\n";
-            $xml .= "<changefreq>monthly</changefreq>\n";
-            $xml .= "<priority>0.8</priority>\n";
-            $xml .= "</url>\n";
+        foreach ($installations as $inst) {
+            $loc     = base_url("installation/show/{$inst['id']}");
+            $lastmod = date('Y-m-d', strtotime($inst['Data Reference Date']));
+            $xml    .= "  <url>\n";
+            $xml    .= "    <loc>{$loc}</loc>\n";
+            $xml    .= "    <lastmod>{$lastmod}</lastmod>\n";
+            $xml    .= "    <changefreq>monthly</changefreq>\n";
+            $xml    .= "    <priority>0.8</priority>\n";
+            $xml    .= "  </url>\n";
         }
 
         $xml .= "</urlset>";
 
         return $this->response
-            ->setHeader('Content-Type', 'application/xml; charset=utf-8')
-            ->setBody($xml);
+                    ->setHeader('Content-Type', 'application/xml; charset=utf-8')
+                    ->setBody($xml);
     }
 
-    // 폐의약품 수거함 페이지 URL을 기반으로 한 사이트맵 생성
-    public function clothingCollectionBinPage($pageNumber)
+    public function clothingCollectionBinPage(int $pageNumber)
     {
-        $clothingCollectionBinModel = new ClothingCollectionBinModel();
-        $itemsPerPage = 10000; // 한 페이지당 10,000개 수거함
-        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $model = new ClothingCollectionBinModel();
+        $limit = 10000;
+        $offset = ($pageNumber - 1) * $limit;
+        $bins   = $model->getAllBins($limit, $offset);
 
-        // 페이지에 맞는 폐의약품 수거함 데이터 가져오기
-        $bins = $clothingCollectionBinModel->getAllBins($itemsPerPage, $offset);
-
-        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
 
         foreach ($bins as $bin) {
-            $url = base_url("clothingcollectionbin/show/{$bin['id']}");
-            $lastMod = date('Y-m-d', strtotime($bin['Data Reference Date']));
-            
-            $xml .= "<url>\n";
-            $xml .= "<loc>{$url}</loc>\n";
-            $xml .= "<lastmod>{$lastMod}</lastmod>\n";
-            $xml .= "<changefreq>monthly</changefreq>\n";
-            $xml .= "<priority>0.8</priority>\n";
-            $xml .= "</url>\n";
+            $loc     = base_url("clothingcollectionbin/show/{$bin['id']}");
+            $lastmod = date('Y-m-d', strtotime($bin['Data Reference Date']));
+            $xml    .= "  <url>\n";
+            $xml    .= "    <loc>{$loc}</loc>\n";
+            $xml    .= "    <lastmod>{$lastmod}</lastmod>\n";
+            $xml    .= "    <changefreq>monthly</changefreq>\n";
+            $xml    .= "    <priority>0.8</priority>\n";
+            $xml    .= "  </url>\n";
         }
 
         $xml .= "</urlset>";
 
         return $this->response
-            ->setHeader('Content-Type', 'application/xml; charset=utf-8')
-            ->setBody($xml);
+                    ->setHeader('Content-Type', 'application/xml; charset=utf-8')
+                    ->setBody($xml);
+    }
+
+    public function seminarRoomPage(int $pageNumber)
+    {
+        $model = new SeminarRoomModel();
+        $limit = 10000;
+        $offset = ($pageNumber - 1) * $limit;
+        $rooms  = $model->orderBy('id', 'ASC')->findAll($limit, $offset);
+
+        $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
+
+        foreach ($rooms as $room) {
+            $loc     = base_url("seminar_rooms/{$room->id}");
+            $lastmod = date('Y-m-d', strtotime($room->LAST_UPDT_DE));
+            $xml    .= "  <url>\n";
+            $xml    .= "    <loc>{$loc}</loc>\n";
+            $xml    .= "    <lastmod>{$lastmod}</lastmod>\n";
+            $xml    .= "    <changefreq>monthly</changefreq>\n";
+            $xml    .= "    <priority>0.8</priority>\n";
+            $xml    .= "  </url>\n";
+        }
+
+        $xml .= "</urlset>";
+
+        return $this->response
+                    ->setHeader('Content-Type', 'application/xml; charset=utf-8')
+                    ->setBody($xml);
     }
 }

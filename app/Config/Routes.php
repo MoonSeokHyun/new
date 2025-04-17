@@ -51,6 +51,11 @@ $routes->get('/clothingcollectionbin', 'ClothingCollectionBinController::index')
 $routes->get('/clothingcollectionbin/show/(:num)', 'ClothingCollectionBinController::show/$1');
 $routes->get('/sitemap/clothingCollectionBinPage/(:num)', 'SitemapController::clothingCollectionBinPage/$1');
 
+// File: app/Config/Routes.php
+$routes->get('seminar_rooms',       'SeminarRooms::index');
+$routes->get('seminar_rooms/(:num)', 'SeminarRooms::detail/$1');
+$routes->get('sitemap/seminarRoomPage/(:num)',            'SitemapController::seminarRoomPage/$1');  // ← 추가
+
 
 
 

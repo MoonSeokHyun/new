@@ -15,6 +15,7 @@
         <a href="#" class="dropdown-toggle">🍩편의시설 ▾</a>
         <ul class="sub-menu">
           <li><a href="/hairsalon">미용실</a></li>
+          <li><a href="/seminar_rooms">공유회의실</a></li>
         </ul>
       </li>
       <li class="menu-group">
