@@ -63,3 +63,8 @@ $routes->get('camping/(:num)', 'Camping::detail/$1');
 $routes->get('sitemap/campingPage/(:num)', 'SitemapController::campingPage/$1');
 
 
+// 세계 식당 
+
+$routes->get('world_res',          'WorldRes::index');
+$routes->get('world_res/(:num)',   'WorldRes::detail/$1');
+$routes->get('sitemap/worldResPage/(:num)', 'SitemapController::worldResPage/$1');

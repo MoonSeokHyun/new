@@ -9,30 +9,42 @@
 
   <!-- 네비게이션 -->
   <nav class="main-nav">
-    <ul class="top-menu">
-      <!-- 편의점 메뉴 -->
-      <li class="menu-group">
-        <a href="#" class="dropdown-toggle">🍩편의시설 ▾</a>
-        <ul class="sub-menu">
-          <li><a href="/hairsalon">미용실</a></li>
-          <li><a href="/seminar_rooms">공유회의실</a></li>
-        </ul>
-      </li>
-      <li class="menu-group">
-        <a href="#" class="dropdown-toggle">🎉 재활용▾</a>
-        <ul class="sub-menu">
-          <li><a href="/installation">폐의약품수거함</a></li>
-          <li><a href="/clothingcollectionbin">폐의류수거함</a></li>
-        </ul>
-      </li>
-      <li class="menu-group">
-        <a href="#" class="dropdown-toggle">🎉 여행</a>
-        <ul class="sub-menu">
-          <li><a href="/camping">캠핑장</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+  <ul class="top-menu">
+    <!-- 편의시설 메뉴 -->
+    <li class="menu-group">
+      <a href="#" class="dropdown-toggle">💈 편의시설 ▾</a>
+      <ul class="sub-menu">
+        <li><a href="/hairsalon">💇 미용실</a></li>
+        <li><a href="/seminar_rooms">🏢 공유회의실</a></li>
+      </ul>
+    </li>
+
+    <!-- 재활용 메뉴 -->
+    <li class="menu-group">
+      <a href="#" class="dropdown-toggle">♻️ 재활용 ▾</a>
+      <ul class="sub-menu">
+        <li><a href="/installation">💊 폐의약품 수거함</a></li>
+        <li><a href="/clothingcollectionbin">👕 폐의류 수거함</a></li>
+      </ul>
+    </li>
+
+    <!-- 여행 메뉴 -->
+    <li class="menu-group">
+      <a href="#" class="dropdown-toggle">🏕️ 여행 ▾</a>
+      <ul class="sub-menu">
+        <li><a href="/camping">🏕️ 캠핑장</a></li>
+      </ul>
+    </li>
+
+    <!-- 맛집 메뉴 -->
+    <li class="menu-group">
+      <a href="#" class="dropdown-toggle">🍽️ 맛집 ▾</a>
+      <ul class="sub-menu">
+        <li><a href="/world_res">🌍 세계음식</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 </div>
 
 <!-- 스타일 -->
