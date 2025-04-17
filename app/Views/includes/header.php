@@ -25,6 +25,12 @@
           <li><a href="/clothingcollectionbin">폐의류수거함</a></li>
         </ul>
       </li>
+      <li class="menu-group">
+        <a href="#" class="dropdown-toggle">🎉 여행</a>
+        <ul class="sub-menu">
+          <li><a href="/camping">캠핑장</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
 </div>

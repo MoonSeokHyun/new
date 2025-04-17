@@ -56,6 +56,10 @@ $routes->get('seminar_rooms',       'SeminarRooms::index');
 $routes->get('seminar_rooms/(:num)', 'SeminarRooms::detail/$1');
 $routes->get('sitemap/seminarRoomPage/(:num)',            'SitemapController::seminarRoomPage/$1');  // ← 추가
 
+// 캠핑장 
 
+$routes->get('camping', 'Camping::index');
+$routes->get('camping/(:num)', 'Camping::detail/$1');
+$routes->get('sitemap/campingPage/(:num)', 'SitemapController::campingPage/$1');
 
 
