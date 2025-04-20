@@ -88,6 +88,7 @@
 <?php include APPPATH . 'Views/includes/header.php'; ?>
 
 <h1 class="page-title">공공 체육시설 목록</h1>
+
 <div class="card-container">
     <?php foreach ($facilities as $f): ?>
     <div class="card" onclick="window.location='<?= site_url('sports_facilities/' . $f['id']) ?>'">

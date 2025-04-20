@@ -105,6 +105,14 @@ $seoKeywords     = esc("세미나룸, {$facilityName}, {$district}, {$landLotAdd
         <?php endforeach; ?>
       </div>
     </div>
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
 
     <!-- 편의 시설 -->
     <div class="section">
@@ -126,6 +134,14 @@ $seoKeywords     = esc("세미나룸, {$facilityName}, {$district}, {$landLotAdd
             </div>
         <?php endforeach; ?>
       </div>
+    </div>
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
     </div>
 
     <!-- 지도 -->

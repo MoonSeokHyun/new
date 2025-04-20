@@ -1,263 +1,175 @@
 <?php
 // 미용실의 도로명 주소 예시
 $road_address = esc($salon['road_name_address'] ?? '');
+$full_address = esc($salon['full_address'] ?? '');
 
-// 구 이름이나 읍 이름을 추출하기 위한 정규 표현식
+// 구·읍·면 추출
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/', $road_address, $matches);
+$district_name = $matches[0] ?? '지역';
 
-// 구 또는 읍 이름을 추출
-$district_name = isset($matches[0]) ? $matches[0] : '지역';
-
-// 타이틀 생성 (사람들이 클릭하고 싶게끔 유도)
-$seoTitle = esc("{$salon['business_name']} - {$district_name}에 위치한 최고의 미용실, 전화번호, 서비스, 영업시간 확인!");
+// SEO용 메타: 클릭 유도형 타이틀로 변경
+$seoTitle = esc("{$salon['business_name']} - {$district_name} 고객만족도 1위 미용실! 리뷰 & 혜택 확인");
+$seoDescription = esc("{$salon['business_name']} 미용실 위치: {$district_name} {$road_address}. 전화번호, 서비스, 영업시간 등 모든 정보를 확인하세요.");
+$seoKeywords = implode(',', [$district_name, $salon['business_name'], '미용실', '뷰티', '헤어']);
+$canonicalUrl = current_url();
 ?>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<title><?= $seoTitle ?></title>
-  <meta name="description" content="<?= esc($salon['road_name_address'] ?? '') ?> 위치의 미용실 <?= esc($salon['open_service_name'] ?? '') ?>의 상세 정보, 전화번호, 영업 상태 등을 확인해보세요.">
-  <meta name="keywords" content="미용실, <?= esc($salon['business_name'] ?? '') ?>, 헤어, 네일, 뷰티, <?= esc($salon['road_name_address'] ?? '') ?>">
-  <meta name="author" content="편잇 팀">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- 네이버 SEO 최적화를 위한 메타 태그 추가 -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="<?= esc($salon['business_name']) ?> - 미용실 상세 정보" />
-  <meta property="og:description" content="<?= esc($salon['road_name_address'] ?? '') ?> 위치의 미용실 <?= esc($salon['open_service_name'] ?? '') ?>의 상세 정보, 전화번호, 영업 상태 등을 확인해보세요." />
-  <meta property="og:image" content="<?= esc($salon['image_url'] ?? '기본이미지 URL') ?>" /> <!-- 이미지는 동적으로 변경 -->
-  <meta property="og:url" content="<?= current_url() ?>" />
-  <meta property="og:locale" content="ko_KR" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="<?= esc($salon['business_name']) ?> - 미용실 상세 정보" />
-  <meta name="twitter:description" content="<?= esc($salon['road_name_address'] ?? '') ?> 위치의 미용실 <?= esc($salon['open_service_name'] ?? '') ?>의 상세 정보, 전화번호, 영업 상태 등을 확인해보세요." />
-  <meta name="twitter:image" content="<?= esc($salon['image_url'] ?? '기본이미지 URL') ?>" />
-  
-  
-  <!-- 네이버 지도 API -->
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title><?= esc($seoTitle) ?></title>
+  <meta name="description" content="<?= esc($seoDescription) ?>"/>
+  <meta name="keywords" content="<?= esc($seoKeywords) ?>"/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="<?= esc($canonicalUrl) ?>"/>
+
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="<?= esc($seoTitle) ?>"/>
+  <meta property="og:description" content="<?= esc($seoDescription) ?>"/>
+  <meta property="og:url" content="<?= esc($canonicalUrl) ?>"/>
+  <meta property="og:locale" content="ko_KR"/>
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="<?= esc($seoTitle) ?>"/>
+  <meta name="twitter:description" content="<?= esc($seoDescription) ?>"/>
+
+  <!-- Naver Map & AdSense -->
   <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
-  
-  <!-- 광고 스크립트 (선택사항) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
 
   <style>
-    /* 기본 초기화 */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      padding: 0 15px;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-
-    /* 미용실 상세 Section */
-    .details {
-      background: #fff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      margin-bottom: 2rem;
-    }
-
-    .detail-section {
-      margin-bottom: 20px;
-    }
-
-    .detail-header {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    .facility-name {
-      font-size: 22px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .facility-type {
-      font-size: 16px;
-      color: #555;
-      margin: 5px 0;
-    }
-
-    .sub-info {
-      font-size: 14px;
-      color: #777;
-    }
-
-    .section-title {
-      font-size: 20px;
-      margin-top: 20px;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .info-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .info-table th, .info-table td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .info-table th {
-      background-color: #f5f5f5;
-    }
-
-    .main-button {
-      display: inline-block;
-      padding: 10px 15px;
-      background-color: #62D491;
-      color: white;
-      text-align: center;
-      border-radius: 5px;
-      text-decoration: none;
-      margin-top: 20px;
-    }
-
-    .main-button:hover {
-      background-color: #4db67d;
-    }
-
-    /* 지도 스타일 */
-    #map {
-      width: 100%;
-      height: 400px;
-      margin-top: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    footer {
-      background: #333;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 3rem;
-    }
-
-    .details {
-    width: 70%; /* 데스크탑에서 70% */
-    margin: 0 auto; /* 가운데 정렬 */
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-}
-
-/* 모바일에서 100%로 보이도록 */
-@media (max-width: 768px) {
-    .details {
-        width: 100%; /* 모바일에서 100% */
-        padding: 15px; /* 모바일에서는 약간의 패딩 조정 */
-    }
-}
+    body { background:#f5f5f5; font-family:'Noto Sans KR',sans-serif; margin:0; padding:0; color:#333 }
+    a { color:#0078ff; text-decoration:none }
+    .container { max-width:800px; margin:2rem auto; padding:0 1rem }
+    .a { font-size:2rem; margin-bottom:.5rem; border-bottom:2px solid #0078ff; padding-bottom:.3rem }
+    .breadcrumb { font-size:.9rem; color:#555; margin-bottom:1.5rem }
+    .breadcrumb a:hover { text-decoration:underline }
+    .ad-box { margin:1.5rem 0; text-align:center }
+    .section { background:#fff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); margin-bottom:1.5rem; padding:1.5rem }
+    .section h2 { font-size:1.2rem; margin-bottom:1rem; color:#0078ff; border-left:4px solid #0078ff; padding-left:.5rem }
+    .detail-list { list-style:none; padding:0; margin:0 }
+    .detail-item { display:flex; justify-content:space-between; padding:.75rem 0; border-bottom:1px solid #eee }
+    .detail-item:last-child { border-bottom:none }
+    .label { font-weight:600 }
+    .value { color:#555; text-align:right }
+    #map { width:100%; height:300px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1) }
+    a.back { display:inline-block; margin-top:1rem }
+    a.back:hover { text-decoration:underline }
+    @media (max-width: 768px) { .container { margin:1rem auto; padding:0 .5rem } }
   </style>
 </head>
 <body>
 
   <?php include APPPATH . 'Views/includes/header.php'; ?>
-  
-  <ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6686738239613464"
-     data-ad-slot="1204098626"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 
-  <!-- 미용실 상세 정보 -->
-  <div class="details">
-    <section class="detail-section">
-      <div class="detail-header">
-        <div class="facility-name"><?= esc($salon['business_name']) ?></div>
-        <div class="facility-type"><?= esc($salon['business_type_name']) ?> 미용실</div>
-        <div class="sub-info">📍 <?= esc($salon['road_name_address']); ?></div>
-      </div>
+  <div class="container">
+    <h1 class="a"><?= esc($salon['business_name']) ?></h1>
+    <div class="breadcrumb">
+      <a href="<?= site_url() ?>">홈</a> &gt;
+      <a href="<?= site_url('salons') ?>">미용실 목록</a> &gt;
+      상세정보
+    </div>
 
-      <h3 class="section-title">미용실 기본 정보</h3>
-      <table class="info-table">
-        <tr><th>전화번호</th><td><?= esc($salon['contact_phone_number']) ?></td></tr>
-        <tr><th>주소</th><td><?= esc($salon['full_address']) ?></td></tr>
-        <tr><th>도로명 주소</th><td><?= esc($salon['road_name_address']) ?></td></tr>
-        <tr><th>사업장 면적</th><td><?= esc($salon['location_area']) ?> m²</td></tr>
-        <tr><th>영업 상태</th><td><?= esc($salon['business_status_name']) ?></td></tr>
-        <tr><th>상세 영업 상태</th><td><?= esc($salon['detailed_business_status_name']) ?></td></tr>
-        <tr><th>폐업일자</th><td><?= esc($salon['closure_date']) ?></td></tr>
-        <tr><th>영업 시작일자</th><td><?= esc($salon['permit_date']) ?></td></tr>
-        <tr><th>재개업일자</th><td><?= esc($salon['reopening_date']) ?></td></tr>
-        <tr><th>최종 수정 시점</th><td><?= esc($salon['last_modification_time']) ?></td></tr>
-        <tr><th>업종명</th><td><?= esc($salon['business_type_name']) ?></td></tr>
-        <tr><th>위생업태명</th><td><?= esc($salon['hygiene_business_type']) ?></td></tr>
-        <tr><th>건물 지상층수</th><td><?= esc($salon['building_upper_floors']) ?>층</td></tr>
-        <tr><th>건물 지하층수</th><td><?= esc($salon['building_lower_floors']) ?>층</td></tr>
-        <tr><th>의자 수</th><td><?= esc($salon['chair_count']) ?></td></tr>
-        <tr><th>침대 수</th><td><?= esc($salon['bed_count']) ?></td></tr>
-        <tr><th>여성 종사자 수</th><td><?= esc($salon['female_staff_count']) ?></td></tr>
-        <tr><th>남성 종사자 수</th><td><?= esc($salon['male_staff_count']) ?></td></tr>
-        <tr><th>다중이용업소 여부</th><td><?= esc($salon['multi_use_business']) ?></td></tr>
-      </table>
-    </section>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6686738239613464"
-     data-ad-slot="1204098626"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-    <!-- 지도 -->
-    <div id="map"></div>
+    <!-- 상단 광고 -->
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- 기본 정보 -->
+    <div class="section">
+      <h2>기본 정보</h2>
+      <ul class="detail-list">
+        <li class="detail-item"><span class="label">전체주소</span><span class="value"><?= $full_address ?></span></li>
+        <li class="detail-item"><span class="label">도로명주소</span><span class="value"><?= $road_address ?></span></li>
+        <li class="detail-item"><span class="label">지역</span><span class="value"><?= esc($district_name) ?></span></li>
+        <li class="detail-item"><span class="label">전화번호</span><span class="value"><?= esc($salon['contact_phone_number']) ?></span></li>
+        <li class="detail-item"><span class="label">영업 상태</span><span class="value"><?= esc($salon['business_status_name']) ?></span></li>
+        <li class="detail-item"><span class="label">상세 영업 상태</span><span class="value"><?= esc($salon['detailed_business_status_name']) ?></span></li>
+      </ul>
+    </div>
+
+    <!-- 중간 광고 -->
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- 상세 정보 -->
+    <div class="section">
+      <h2>상세 정보</h2>
+      <ul class="detail-list">
+        <li class="detail-item"><span class="label">사업장 면적</span><span class="value"><?= esc($salon['location_area']) ?> m²</span></li>
+        <li class="detail-item"><span class="label">영업 시작일</span><span class="value"><?= esc($salon['permit_date']) ?></span></li>
+        <li class="detail-item"><span class="label">재개업일</span><span class="value"><?= esc($salon['reopening_date']) ?></span></li>
+        <li class="detail-item"><span class="label">폐업일</span><span class="value"><?= esc($salon['closure_date']) ?></span></li>
+        <li class="detail-item"><span class="label">최종 수정 시점</span><span class="value"><?= esc($salon['last_modification_time']) ?></span></li>
+        <li class="detail-item"><span class="label">업종명</span><span class="value"><?= esc($salon['business_type_name']) ?></span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>추가 정보</h2>
+      <ul class="detail-list">
+        <li class="detail-item"><span class="label">위생업태명</span><span class="value"><?= esc($salon['hygiene_business_type']) ?></span></li>
+        <li class="detail-item"><span class="label">건물 지상층수</span><span class="value"><?= esc($salon['building_upper_floors']) ?>층</span></li>
+        <li class="detail-item"><span class="label">건물 지하층수</span><span class="value"><?= esc($salon['building_lower_floors']) ?>층</span></li>
+        <li class="detail-item"><span class="label">의자 수</span><span class="value"><?= esc($salon['chair_count']) ?></span></li>
+        <li class="detail-item"><span class="label">침대 수</span><span class="value"><?= esc($salon['bed_count']) ?></span></li>
+        <li class="detail-item"><span class="label">여성 종사자 수</span><span class="value"><?= esc($salon['female_staff_count']) ?></span></li>
+        <li class="detail-item"><span class="label">남성 종사자 수</span><span class="value"><?= esc($salon['male_staff_count']) ?></span></li>
+        <li class="detail-item"><span class="label">다중이용업소 여부</span><span class="value"><?= esc($salon['multi_use_business']) ?></span></li>
+      </ul>
+    </div>
+
+    <!-- 지도 섹션 -->
+    <div class="section">
+      <h2>지도</h2>
+      <div id="map"></div>
+    </div>
+
+    <!-- 하단 광고 -->
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
+    <a href="<?= site_url('salons') ?>" class="back">← 목록으로 돌아가기</a>
   </div>
-  <ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6686738239613464"
-     data-ad-slot="1204098626"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-  <!-- 푸터 -->
+
   <?php include APPPATH . 'Views/includes/footer.php'; ?>
 
   <script>
-    // 지도 초기화
-    (function() {
-      var lat = parseFloat("<?= esc($latitude); ?>");  // 변환된 위도 값
-      var lng = parseFloat("<?= esc($longitude); ?>"); // 변환된 경도 값
-      var name = "<?= esc($salon['open_service_name']); ?>";
-
+    (function(){
+      var lat = parseFloat("<?= esc($latitude); ?>");
+      var lng = parseFloat("<?= esc($longitude); ?>");
       var map = new naver.maps.Map('map', {
         center: new naver.maps.LatLng(lat, lng),
         zoom: 16
       });
-
-      var mainMarker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(lat, lng),
+      new naver.maps.Marker({
+        position: map.getCenter(),
         map: map,
-        title: name
+        title: "<?= esc($salon['business_name']); ?>"
       });
+      (adsbygoogle = window.adsbygoogle || []).push({});
     })();
   </script>
-
 </body>
 </html>

@@ -117,6 +117,14 @@ $canonicalUrl   = current_url();
         <li class="detail-item"><span class="label">전화번호</span><span class="value"><?= esc($facility['RSPNSBLTY_TEL_NO'] ?? '') ?></span></li>
       </ul>
     </div>
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
 
     <!-- 시설 정보 -->
     <div class="section">
@@ -145,6 +153,14 @@ $canonicalUrl   = current_url();
     <div class="section">
       <h2>지도</h2>
       <div id="map"></div>
+    </div>
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
     </div>
 
     <a href="<?= site_url('sports_facilities') ?>" class="back">← 목록으로 돌아가기</a>
