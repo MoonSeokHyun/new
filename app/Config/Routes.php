@@ -75,3 +75,9 @@ $routes->get('sports_facilities',          'SportsFacility::index');
 $routes->get('sports_facilities/(:num)',   'SportsFacility::detail/$1');
 
 $routes->get('sitemap/sportsFacilitiesPage/(:num)', 'SitemapController::sportsFacilitiesPage/$1');
+
+//도서관 
+
+$routes->get('LibraryInfo', 'LibraryInfoController::index');
+$routes->get('LibraryInfo/detail/(:num)', 'LibraryInfoController::detail/$1');
+$routes->get('sitemap/libraryInfoPage/(:num)', 'SitemapController::libraryInfoPage/$1');  // 도서관 사이트맵 라우터 추가

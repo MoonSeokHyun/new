@@ -10,6 +10,7 @@ use App\Models\SeminarRoomModel;
 use App\Models\CampingModel;
 use App\Models\WorldResModel;
 use App\Models\SportsFacilityModel;
+use App\Models\LibraryInfoModel;  // 도서관 모델 추가
 
 class SitemapController extends Controller
 {
@@ -21,6 +22,7 @@ class SitemapController extends Controller
         'campingPage'               => ['model' => CampingModel::class,                'count' => 'countAllCampings',    'fetch' => 'getCampings',            'route' => 'camping'],
         'worldResPage'              => ['model' => WorldResModel::class,               'count' => 'countAllRestaurants', 'fetch' => 'getRestaurants',         'route' => 'world_res'],
         'sportsFacilitiesPage'      => ['model' => SportsFacilityModel::class,         'count' => 'countAllFacilities',  'fetch' => 'getFacilities',          'route' => 'sports_facilities'],
+        'libraryInfoPage'           => ['model' => LibraryInfoModel::class,            'count' => 'countAllResults',     'fetch' => 'findAll',                'route' => 'LibraryInfo/detail'], // 도서관 추가
     ];
 
     protected $perPage = 10000;
@@ -58,6 +60,7 @@ class SitemapController extends Controller
     public function campingPage(int $pageNumber)              { return $this->renderUrls('campingPage',              $pageNumber); }
     public function worldResPage(int $pageNumber)             { return $this->renderUrls('worldResPage',             $pageNumber); }
     public function sportsFacilitiesPage(int $pageNumber)     { return $this->renderUrls('sportsFacilitiesPage',     $pageNumber); }
+    public function libraryInfoPage(int $pageNumber)          { return $this->renderUrls('libraryInfoPage',          $pageNumber); } // 도서관 페이지 메소드 추가
 
     protected function renderUrls(string $sectionKey, int $pageNumber)
     {

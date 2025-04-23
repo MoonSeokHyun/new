@@ -16,6 +16,7 @@
         <ul class="sub-menu">
           <li><a href="/hairsalon">💇 미용실</a></li>
           <li><a href="/seminar_rooms">🏢 공유회의실</a></li>
+          <li><a href="/LibraryInfo">📚 도서관</a></li>
         </ul>
       </li>
 
