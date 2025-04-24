@@ -1,9 +1,10 @@
+<!-- app/Views/open_service_info/index.php -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>전국 도서관 목록 퐁코</title>
+    <title>전국 안경점 목록 퐁코</title>
 
     <!-- 네이버 지도 API (필요 없으시면 제거) -->
     <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
@@ -18,14 +19,11 @@
             margin: 0;
             padding: 0;
         }
-
         .main-nav {
             background-color: #e6f7ef;
             padding: 0.7rem;
             text-align: center;
         }
-
-        /* 제목 스타일 */
         .page-title {
             text-align: center;
             font-size: 28px;
@@ -34,8 +32,6 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
-
-        /* 카드 그리드 */
         .card-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -44,7 +40,6 @@
             width: 80%;
             margin: 0 auto;
         }
-
         .card {
             background-color: #fff;
             border-radius: 10px;
@@ -54,63 +49,29 @@
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
         }
-
         .card:hover {
             transform: scale(1.05);
         }
-
         .card h3 {
             margin: 10px 0;
             color: #333;
         }
-
         .card p {
             font-size: 14px;
             color: #555;
+            margin: 5px 0;
         }
-
-        /* 페이징 */
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .pagination a {
-            padding: 8px 16px;
-            margin: 0 5px;
-            background-color: #62D491;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-        }
-
-        .pagination a:hover {
-            background-color: #55b379;
-        }
-
-        .pagination .active {
-            background-color: #4e9e68;
-        }
-
-        /* 모바일 최적화 */
         @media (max-width: 768px) {
             .page-title {
                 font-size: 24px;
                 margin-top: 10px;
             }
-
             .card-container {
-                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-            }
-
-            .pagination a {
-                padding: 6px 12px;
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
-
 <body>
     <?php include APPPATH . 'Views/includes/header.php'; ?>
     <?php include APPPATH . 'Views/includes/header.php'; ?>
@@ -123,20 +84,23 @@
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-    <h1 class="page-title">전국 도서관 목록을 확인하세요!</h1>
+    <h1 class="page-title">전국 안경점 목록을 확인하세요! 👓</h1>
 
+    <?php if (! empty($shops) && is_array($shops)): ?>
     <div class="card-container">
-        <?php foreach ($libraries as $library): ?>
-            <div class="card" onclick="window.location='<?= site_url('LibraryInfo/detail/' . $library['id']) ?>'">
-                <h3><?= esc($library['Library Name']) ?> 📚</h3>
-                <p><?= esc($library['Province/City']) ?> 🏙️</p>
-                <p><?= esc($library['City/County/District']) ?> 📍</p>
-                <p>도서관 종류: <?= esc($library['Library Type']) ?> 📖</p>
+        <?php foreach ($shops as $shop): ?>
+            <div class="card" onclick="window.location='<?= site_url('shops/' . $shop['id']) ?>'">
+                <h3><?= esc($shop['BusinessName']) ?> 👓</h3>
+                <p>지역: <?= esc($shop['Area']) ?> 📍</p>
+                <p>주소: <?= esc($shop['RoadAddress'] ?: $shop['FullAddress']) ?> 🏠</p>
+                <p>업종: <?= esc($shop['BusinessTypeName']) ?> 🛠️</p>
             </div>
         <?php endforeach; ?>
     </div>
+    <?php else: ?>
+        <p style="text-align:center; margin-top:20px;">등록된 안경점이 없습니다.</p>
+    <?php endif; ?>
 
     <?php include APPPATH . 'Views/includes/footer.php'; ?>
-
 </body>
 </html>

@@ -81,3 +81,10 @@ $routes->get('sitemap/sportsFacilitiesPage/(:num)', 'SitemapController::sportsFa
 $routes->get('LibraryInfo', 'LibraryInfoController::index');
 $routes->get('LibraryInfo/detail/(:num)', 'LibraryInfoController::detail/$1');
 $routes->get('sitemap/libraryInfoPage/(:num)', 'SitemapController::libraryInfoPage/$1');  // 도서관 사이트맵 라우터 추가
+
+//안경점
+
+// app/Config/Routes.php 에 추가
+$routes->get('shops', 'OpenServiceInfoController::index');
+$routes->get('shops/(:num)', 'OpenServiceInfoController::detail/$1');
+$routes->get('sitemap/shopsPage/(:num)', 'SitemapController::shopsPage/$1');
