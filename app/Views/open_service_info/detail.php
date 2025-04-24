@@ -114,7 +114,15 @@ $seoKeywords    = esc("안경점, {$shopName}, {$district}, {$fullAddress}, 서�
         <div class="detail-item"><div class="label">총 면적 (㎡)</div><div class="value"><?= esc($shop['TotalArea']) ?></div></div>
       </div>
     </div>
-
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
     <!-- Q&A 섹션 -->
     <div class="section">
       <h2>자주 묻는 질문 (Q&A)</h2>
@@ -143,14 +151,30 @@ $seoKeywords    = esc("안경점, {$shopName}, {$district}, {$fullAddress}, 서�
         <li>프로페셔널 코팅 서비스 ✨</li>
       </ul>
     </div>
-
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
     <!-- 지도 -->
     <div class="section">
       <h2>위치 지도</h2>
       <div id="map"></div>
     </div>
   </div><!-- /.container -->
-
+  <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6686738239613464"
+           data-ad-slot="1204098626"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
   <?php include APPPATH . 'Views/includes/footer.php'; ?>
 
   <script>
