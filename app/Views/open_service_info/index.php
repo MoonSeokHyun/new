@@ -74,7 +74,6 @@
 </head>
 <body>
     <?php include APPPATH . 'Views/includes/header.php'; ?>
-    <?php include APPPATH . 'Views/includes/header.php'; ?>
   <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-6686738239613464"
