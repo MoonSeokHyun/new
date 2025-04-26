@@ -88,3 +88,5 @@ $routes->get('sitemap/libraryInfoPage/(:num)', 'SitemapController::libraryInfoPa
 $routes->get('shops', 'OpenServiceInfoController::index');
 $routes->get('shops/(:num)', 'OpenServiceInfoController::detail/$1');
 $routes->get('sitemap/shopsPage/(:num)', 'SitemapController::shopsPage/$1');
+
+$routes->get('analytics', 'Analytics::index');
