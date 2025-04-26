@@ -41,15 +41,6 @@ if (window.location.hostname !== "localhost" && window.location.hostname !== "12
 </script>
 
 
-<?php if (!preg_match('/^localhost(:[0-9]*)?$/', $_SERVER['HTTP_HOST'])): ?>
-  <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
-  <script>
-    if (!wcs_add) var wcs_add = {};
-    wcs_add["wa"] = "8adec19974bed8";
-    if (window.wcs) wcs_do();
-  </script>
-<?php endif; ?>
-
 <!-- 스타일 -->
 <style>
   footer {
