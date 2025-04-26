@@ -20,12 +20,29 @@ class AccessLogger implements FilterInterface
 
         $ua  = $request->getServer('HTTP_USER_AGENT') ?? '';
         $bot = null;
-        if (stripos($ua, 'Googlebot') !== false) {
-            $bot = 'Googlebot';
-        } elseif (stripos($ua, 'Naverbot') !== false || stripos($ua, 'NaverBot') !== false) {
-            $bot = 'NaverBot';
+
+        // 1) 잘 알려진 봇 식별자 리스트
+        $botSignatures = [
+            'Googlebot','Naverbot','MJ12bot','Bingbot','YandexBot',
+            'AhrefsBot','SemrushBot','Baiduspider','Sogou','DuckDuckBot',
+            'Slurp','archive.org_bot','facebot','facebookexternalhit'
+        ];
+        foreach ($botSignatures as $sig) {
+            if (stripos($ua, $sig) !== false) {
+                $bot = $sig;
+                break;
+            }
         }
-        $isBot = $bot ? 1 : 0;
+
+        // 2) 흔한 키워드로 잡아내기
+        if (!$bot && preg_match('/(bot|crawler|spider|crawl|fetch|wget|curl|python-requests)/i', $ua)) {
+            $bot = 'UnknownBot';
+        }
+
+        // 3) 진짜 브라우저만 user 로 판단 (간단화)
+        //    - Chrome, Firefox, Safari, Edge, Opera 등
+        $isBrowser = preg_match('/(Mozilla\/\d+\.\d+|Chrome\/|Firefox\/|Safari\/|Edge\/|OPR\/)/i', $ua);
+        $isBot     = $bot !== null && !$isBrowser ? 1 : ( $bot !== null && $isBrowser ? 1 : 0 );
 
         // 로그 저장
         $model = new AccessLogModel();
