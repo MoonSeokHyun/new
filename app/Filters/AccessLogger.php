@@ -15,39 +15,53 @@ class AccessLogger implements FilterInterface
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
+        // 1) GET+네비게이션(document) 요청만
+        if ($request->getMethod() !== 'get'
+         || $request->getServer('HTTP_SEC_FETCH_MODE')   !== 'navigate'
+         || $request->getServer('HTTP_SEC_FETCH_DEST')   !== 'document'
+        ) {
+            return;
+        }
+
+        $uri = $request->getURI()->getPath();
+        // 2) 정적 리소스 파일 제외
+        if (preg_match('/\.(?:css|js|png|jpe?g|gif|svg|ico|woff2?)$/i', $uri)) {
+            return;
+        }
+
         $start    = (float) ($request->getServer('start_time') ?? microtime(true));
         $duration = intval(microtime(true) - $start);
+        $ua       = $request->getServer('HTTP_USER_AGENT') ?? '';
 
-        $ua  = $request->getServer('HTTP_USER_AGENT') ?? '';
-        $bot = null;
-
-        // 1) 잘 알려진 봇 식별자 리스트
+        // 3) 봇 감지
         $botSignatures = [
             'Googlebot','Naverbot','MJ12bot','Bingbot','YandexBot',
             'AhrefsBot','SemrushBot','Baiduspider','Sogou','DuckDuckBot',
             'Slurp','archive.org_bot','facebot','facebookexternalhit'
         ];
+        $bot = null;
         foreach ($botSignatures as $sig) {
             if (stripos($ua, $sig) !== false) {
                 $bot = $sig;
                 break;
             }
         }
-
-        // 2) 흔한 키워드로 잡아내기
-        if (!$bot && preg_match('/(bot|crawler|spider|crawl|fetch|wget|curl|python-requests)/i', $ua)) {
+        if (!$bot && preg_match('/\b(bot|crawler|spider|crawl|fetch|wget|curl|python-requests)\b/i', $ua)) {
             $bot = 'UnknownBot';
         }
 
-        // 3) 진짜 브라우저만 user 로 판단 (간단화)
-        //    - Chrome, Firefox, Safari, Edge, Opera 등
-        $isBrowser = preg_match('/(Mozilla\/\d+\.\d+|Chrome\/|Firefox\/|Safari\/|Edge\/|OPR\/)/i', $ua);
-        $isBot     = $bot !== null && !$isBrowser ? 1 : ( $bot !== null && $isBrowser ? 1 : 0 );
+        // 4) 브라우저 UA 패턴 확인
+        $isBrowser = preg_match('/\b(Chrome\/|Firefox\/|Safari\/|Edg\/|OPR\/|Trident\/|Mozilla\/)\b/i', $ua);
+        $isBot     = $bot ? 1 : 0;
 
-        // 로그 저장
-        $model = new AccessLogModel();
-        $model->insert([
-            'path'       => $request->getURI()->getPath(),
+        // 5) 실제 유저·봇만 기록
+        if (!$isBot && !$isBrowser) {
+            return; // 봇도 아니고, 브라우저도 아니면 스킵
+        }
+
+        // 6) 로그 저장
+        (new AccessLogModel())->insert([
+            'path'       => $uri,
             'referrer'   => $request->getServer('HTTP_REFERER'),
             'user_agent' => $ua,
             'ip_address' => $request->getIPAddress(),
