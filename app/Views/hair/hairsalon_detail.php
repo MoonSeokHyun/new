@@ -1,42 +1,60 @@
 <?php
-// 미용실의 도로명 주소 예시
-$road_address = esc($salon['road_name_address'] ?? '');
-$full_address = esc($salon['full_address'] ?? '');
+// SEO 동적 메타 정보 생성
+$road_address    = esc($salon['road_name_address'] ?? '');
+$full_address    = esc($salon['full_address'] ?? '');
 
 // 구·읍·면 추출
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/', $road_address, $matches);
-$district_name = $matches[0] ?? '지역';
+$district_name   = $matches[0] ?? '지역';
 
-// SEO용 메타: 클릭 유도형 타이틀로 변경
-$seoTitle = esc("{$salon['business_name']} - {$district_name} 고객만족도 1위 미용실! 리뷰 & 혜택 확인");
-$seoDescription = esc("{$salon['business_name']} 미용실 위치: {$district_name} {$road_address}. 전화번호, 서비스, 영업시간 등 모든 정보를 확인하세요.");
-$seoKeywords = implode(',', [$district_name, $salon['business_name'], '미용실', '뷰티', '헤어']);
-$canonicalUrl = current_url();
+// SEO 메타
+$seoTitle        = "{$salon['business_name']} - {$district_name} 고객만족도 1위 미용실! 리뷰 & 혜택 확인";
+$seoDescription  = "{$salon['business_name']} 위치: {$district_name} {$road_address}. 전화, 서비스, 영업시간 등 모든 정보를 확인하세요.";
+$canonicalUrl    = current_url();
+$imageUrl        = esc($salon['image_url'] ?? '/default-image.jpg');
 ?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <!-- 기본 메타 -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><?= esc($seoTitle) ?></title>
-  <meta name="description" content="<?= esc($seoDescription) ?>"/>
-  <meta name="keywords" content="<?= esc($seoKeywords) ?>"/>
-  <meta name="robots" content="index,follow"/>
-  <link rel="canonical" href="<?= esc($canonicalUrl) ?>"/>
-
+  <meta name="description" content="<?= esc($seoDescription) ?>" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="<?= esc($canonicalUrl) ?>" />
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website"/>
-  <meta property="og:title" content="<?= esc($seoTitle) ?>"/>
-  <meta property="og:description" content="<?= esc($seoDescription) ?>"/>
-  <meta property="og:url" content="<?= esc($canonicalUrl) ?>"/>
-  <meta property="og:locale" content="ko_KR"/>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="<?= esc($seoTitle) ?>" />
+  <meta property="og:description" content="<?= esc($seoDescription) ?>" />
+  <meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
+  <meta property="og:image" content="<?= esc($imageUrl) ?>" />
+  <meta property="og:locale" content="ko_KR" />
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:title" content="<?= esc($seoTitle) ?>"/>
-  <meta name="twitter:description" content="<?= esc($seoDescription) ?>"/>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
+  <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
+  <meta name="twitter:image" content="<?= esc($imageUrl) ?>" />
 
+  <!-- 구조화된 데이터 (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HairSalon",
+    "name": "<?= esc($salon['business_name']) ?>",
+    "image": "<?= esc($imageUrl) ?>",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "<?= esc($road_address) ?>",
+      "addressLocality": "<?= esc($district_name) ?>",
+      "addressRegion": "한국"
+    },
+    "telephone": "<?= esc($salon['contact_phone_number']) ?>",
+    "url": "<?= esc($canonicalUrl) ?>"
+  }
+  </script>
   <!-- Naver Map & AdSense -->
   <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
