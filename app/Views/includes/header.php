@@ -3,7 +3,7 @@
 <div id="header-wrapper">
   <!-- 사이트 타이틀 -->
   <header>
-    <h1>퐁퐁</h1>
+    <h2>퐁퐁</h2>
     <p>퐁퐁터지는 생황시설 정보</p>
   </header>
 
