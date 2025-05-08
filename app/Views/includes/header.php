@@ -12,14 +12,16 @@
     <ul class="top-menu">
       <!-- 서비스 -->
       <li class="menu-group">
-        <a href="#" class="dropdown-toggle">🛠️ 서비스 ▾</a>
-        <ul class="sub-menu">
-          <li><a href="/hairsalon">💇 미용실</a></li>
-          <li><a href="/seminar_rooms">🏢 공유회의실</a></li>
-          <li><a href="/LibraryInfo">📚 도서관</a></li>
-          <li><a href="/shops">👓 안경점</a></li>
-        </ul>
-      </li>
+      <a href="#" class="dropdown-toggle">🛠️ 서비스 ▾</a>
+      <ul class="sub-menu">
+        <li><a href="/hairsalon">💇 미용실</a></li>
+        <li><a href="/seminar_rooms">🏢 공유회의실</a></li>
+        <li><a href="/LibraryInfo">📚 도서관</a></li>
+        <li><a href="/shops">👓 안경점</a></li>
+        <li><a href="/animal-hospital">🐶 동물병원</a></li> <!-- 동물병원 추가 -->
+      </ul>
+    </li>
+
 
       <!-- 재활용 -->
       <li class="menu-group">

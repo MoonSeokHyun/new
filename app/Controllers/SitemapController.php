@@ -13,6 +13,7 @@ use App\Models\WorldResModel;
 use App\Models\SportsFacilityModel;
 use App\Models\LibraryInfoModel;       // 도서관 모델
 use App\Models\OpenServiceInfoModel;   // 안경점 모델 추가
+use App\Models\AnimalHospitalModel;    // 동물병원 모델 추가
 
 class SitemapController extends Controller
 {
@@ -71,6 +72,12 @@ class SitemapController extends Controller
             'fetch'  => 'findAll',
             'route'  => 'shops'
         ],
+        'animalHospitalPage'        => [  // 동물병원 추가
+            'model'  => AnimalHospitalModel::class,
+            'count'  => 'countAllHospitals', // 동물병원 수
+            'fetch'  => 'getHospitalsPagination', // 동물병원 목록
+            'route'  => 'animal-hospital/detail'
+        ],
     ];
 
     protected $perPage = 10000;
@@ -112,6 +119,7 @@ class SitemapController extends Controller
     public function sportsFacilitiesPage(int $pageNumber)      { return $this->renderUrls('sportsFacilitiesPage',      $pageNumber); }
     public function libraryInfoPage(int $pageNumber)           { return $this->renderUrls('libraryInfoPage',           $pageNumber); }
     public function shopsPage(int $pageNumber)                 { return $this->renderUrls('shopsPage',                 $pageNumber); }  // 안경점 메소드
+    public function animalHospitalPage(int $pageNumber)        { return $this->renderUrls('animalHospitalPage',        $pageNumber); } // 동물병원 메소드
 
     protected function renderUrls(string $sectionKey, int $pageNumber)
     {

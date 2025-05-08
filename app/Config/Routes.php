@@ -90,3 +90,10 @@ $routes->get('shops/(:num)', 'OpenServiceInfoController::detail/$1');
 $routes->get('sitemap/shopsPage/(:num)', 'SitemapController::shopsPage/$1');
 
 $routes->get('analytics', 'Analytics::index');
+
+$routes->get('/animal-hospital', 'AnimalHospitalController::index');
+$routes->get('/animal-hospital/detail/(:num)', 'AnimalHospitalController::detail/$1');
+// app/Config/Routes.php
+
+$routes->get('sitemap/animalHospitalPage/(:num)', 'SitemapController::animalHospitalPage/$1');
+
