@@ -127,7 +127,7 @@
 
 <div class="card-container">
     <?php foreach ($hospitals as $hospital): ?>
-    <div class="card" onclick="window.location='<?= site_url('animal_hospital/detail/' . $hospital['id']) ?>'">
+    <div class="card" onclick="window.location='<?= site_url('animal-hospital/detail/' . $hospital['id']) ?>'">
         <h3><?= esc($hospital['b_name']) ?> 🏥</h3>
         <p><?= esc($hospital['new_address']) ?> 🏠</p>
         <p>상태: <?= esc($hospital['b_status']) ?></p>
