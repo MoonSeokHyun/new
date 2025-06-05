@@ -11,9 +11,9 @@ use App\Models\SeminarRoomModel;
 use App\Models\CampingModel;
 use App\Models\WorldResModel;
 use App\Models\SportsFacilityModel;
-use App\Models\LibraryInfoModel;       // 도서관 모델
-use App\Models\OpenServiceInfoModel;   // 안경점 모델 추가
-use App\Models\AnimalHospitalModel;    // 동물병원 모델 추가
+use App\Models\LibraryInfoModel;
+use App\Models\OpenServiceInfoModel;
+use App\Models\AnimalHospitalModel;
 
 class SitemapController extends Controller
 {
@@ -66,16 +66,16 @@ class SitemapController extends Controller
             'fetch'  => 'findAll',
             'route'  => 'LibraryInfo/detail'
         ],
-        'shopsPage'                 => [  // 안경점 추가
+        'shopsPage'                 => [
             'model'  => OpenServiceInfoModel::class,
             'count'  => 'countAll',
             'fetch'  => 'findAll',
             'route'  => 'shops'
         ],
-        'animalHospitalPage'        => [  // 동물병원 추가
+        'animalHospitalPage'        => [
             'model'  => AnimalHospitalModel::class,
-            'count'  => 'countAllHospitals', // 동물병원 수
-            'fetch'  => 'getHospitalsPagination', // 동물병원 목록
+            'count'  => 'countAllHospitals',
+            'fetch'  => 'getHospitalsPagination',
             'route'  => 'animal-hospital/detail'
         ],
     ];
@@ -109,7 +109,6 @@ class SitemapController extends Controller
                     ->setBody($xml);
     }
 
-    // 개별 섹션 페이지 메소드
     public function hairSalonPage(int $pageNumber)             { return $this->renderUrls('hairSalonPage',             $pageNumber); }
     public function installationPage(int $pageNumber)          { return $this->renderUrls('installationPage',          $pageNumber); }
     public function clothingCollectionBinPage(int $pageNumber) { return $this->renderUrls('clothingCollectionBinPage', $pageNumber); }
@@ -118,8 +117,8 @@ class SitemapController extends Controller
     public function worldResPage(int $pageNumber)              { return $this->renderUrls('worldResPage',              $pageNumber); }
     public function sportsFacilitiesPage(int $pageNumber)      { return $this->renderUrls('sportsFacilitiesPage',      $pageNumber); }
     public function libraryInfoPage(int $pageNumber)           { return $this->renderUrls('libraryInfoPage',           $pageNumber); }
-    public function shopsPage(int $pageNumber)                 { return $this->renderUrls('shopsPage',                 $pageNumber); }  // 안경점 메소드
-    public function animalHospitalPage(int $pageNumber)        { return $this->renderUrls('animalHospitalPage',        $pageNumber); } // 동물병원 메소드
+    public function shopsPage(int $pageNumber)                 { return $this->renderUrls('shopsPage',                 $pageNumber); }
+    public function animalHospitalPage(int $pageNumber)        { return $this->renderUrls('animalHospitalPage',        $pageNumber); }
 
     protected function renderUrls(string $sectionKey, int $pageNumber)
     {
@@ -132,17 +131,16 @@ class SitemapController extends Controller
         $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
 
+        $today = date('Y-m-d'); // 오늘 날짜로 고정
+
         foreach ($items as $item) {
-            $id       = is_object($item) ? $item->id : $item['id'];
-            $lastDate = $item->LastModifiedTime ?? '';
-            $loc      = base_url("{$conf['route']}/{$id}");
-            $lastmod  = $lastDate ? date('Y-m-d', strtotime($lastDate)) : date('Y-m-d');
+            $id  = is_object($item) ? $item->id : $item['id'];
+            $loc = base_url("{$conf['route']}/{$id}");
 
             $xml .= "  <url>\n";
             $xml .= "    <loc>{$loc}</loc>\n";
-            $xml .= "    <lastmod>{$lastmod}</lastmod>\n";
-            $xml .= "    <changefreq>monthly</changefreq>\n";
-            $xml .= "    <priority>0.8</priority>\n";
+            $xml .= "    <lastmod>{$today}</lastmod>\n";
+            $xml .= "    <changefreq>daily</changefreq>\n";
             $xml .= "  </url>\n";
         }
 
