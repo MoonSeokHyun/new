@@ -170,15 +170,15 @@ $canonicalUrl   = current_url();
 
   <script>
     (function(){
-      var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(parseFloat("<?= $lat ?>"), parseFloat("<?= $lng ?>")),
-        zoom: 16
-      });
-      new naver.maps.Marker({
-        position: map.getCenter(),
-        map: map,
-        title: "<?= esc($facilityName) ?>"
-      });
+//       var map = new naver.maps.Map('map', {
+//         center: new naver.maps.LatLng(parseFloat("<?= $lat ?>"), parseFloat("<?= $lng ?>")),
+//         zoom: 16
+//       });
+//       new naver.maps.Marker({
+//         position: map.getCenter(),
+//         map: map,
+//         title: "<?= esc($facilityName) ?>"
+//       });
     })();
   </script>
 </body>

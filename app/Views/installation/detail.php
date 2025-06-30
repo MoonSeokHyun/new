@@ -179,15 +179,15 @@ $seoKeywords = esc("설치장소, {$installationName}, 폐의약품, {$districtN
     (function(){
       var lat = parseFloat("<?= esc($installation['Latitude']) ?>");
       var lng = parseFloat("<?= esc($installation['Longitude']) ?>");
-      var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(lat, lng),
-        zoom: 16
-      });
-      new naver.maps.Marker({
-        position: map.getCenter(),
-        map: map,
-        title: "<?= esc($installation['Installation Location Name']) ?>"
-      });
+//       var map = new naver.maps.Map('map', {
+//         center: new naver.maps.LatLng(lat, lng),
+//         zoom: 16
+//       });
+//       new naver.maps.Marker({
+//         position: map.getCenter(),
+//         map: map,
+//         title: "<?= esc($installation['Installation Location Name']) ?>"
+//       });
     })();
   </script>
 </body>

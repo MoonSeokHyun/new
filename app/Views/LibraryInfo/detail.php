@@ -153,15 +153,15 @@ $seoKeywords     = esc("도서관, {$facilityName}, {$district}, {$landLotAddres
 
   <script>
     (function(){
-      var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(parseFloat("<?= $library['Latitude'] ?>"), parseFloat("<?= $library['Longitude'] ?>")),
-        zoom: 16
-      });
-      new naver.maps.Marker({
-        position: map.getCenter(),
-        map: map,
-        title: "<?= esc($library['Library Name']) ?>"
-      });
+//       var map = new naver.maps.Map('map', {
+//         center: new naver.maps.LatLng(parseFloat("<?= $library['Latitude'] ?>"), parseFloat("<?= $library['Longitude'] ?>")),
+//         zoom: 16
+//       });
+//       new naver.maps.Marker({
+//         position: map.getCenter(),
+//         map: map,
+//         title: "<?= esc($library['Library Name']) ?>"
+//       });
     })();
   </script>
 

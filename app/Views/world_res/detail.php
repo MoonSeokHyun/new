@@ -128,14 +128,14 @@ $keywords   = implode(',', [$district, $name, '세계음식','맛집','세계음
 <?php include APPPATH . 'Views/includes/footer.php'; ?>
 
 <script>
-  const map = new naver.maps.Map('map', {
-    center: new naver.maps.LatLng(parseFloat("<?= $lat ?>"), parseFloat("<?= $lng ?>")),
-    zoom: 16
-  });
-  new naver.maps.Marker({
-    position: map.getCenter(),
-    map: map
-  });
+//   const map = new naver.maps.Map('map', {
+//     center: new naver.maps.LatLng(parseFloat("<?= $lat ?>"), parseFloat("<?= $lng ?>")),
+//     zoom: 16
+//   });
+//   new naver.maps.Marker({
+//     position: map.getCenter(),
+//     map: map
+//   });
 </script>
 </body>
 </html>

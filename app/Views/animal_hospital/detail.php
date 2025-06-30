@@ -165,18 +165,18 @@ $seoKeywords      = esc("동물병원, {$hospitalName}, {$district}, {$landLotAd
     var lng = <?= esc($hospital['x_value']); ?>;  // 경도 (x_value)
     var hospitalName = "<?= esc($hospital['b_name']); ?>";  // 병원 이름
 
-    // 네이버 맵을 초기화하고 병원 위치를 표시합니다.
-    var map = new naver.maps.Map('map', {
-      center: new naver.maps.LatLng(lat, lng),  // 위도와 경도를 사용하여 맵 중심 설정
-      zoom: 16
-    });
-
-    // 마커를 추가하여 병원 위치 표시
-    new naver.maps.Marker({
-      position: new naver.maps.LatLng(lat, lng),
-      map: map,
-      title: hospitalName
-    });
+//     // 네이버 맵을 초기화하고 병원 위치를 표시합니다.
+//     var map = new naver.maps.Map('map', {
+//       center: new naver.maps.LatLng(lat, lng),  // 위도와 경도를 사용하여 맵 중심 설정
+//       zoom: 16
+//     });
+// 
+//     // 마커를 추가하여 병원 위치 표시
+//     new naver.maps.Marker({
+//       position: new naver.maps.LatLng(lat, lng),
+//       map: map,
+//       title: hospitalName
+//     });
   })();
 </script>
 

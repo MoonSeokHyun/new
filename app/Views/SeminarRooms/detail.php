@@ -155,15 +155,15 @@ $seoKeywords     = esc("세미나룸, {$facilityName}, {$district}, {$landLotAdd
 
   <script>
     (function(){
-      var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(parseFloat("<?= $lat ?>"), parseFloat("<?= $lng ?>")),
-        zoom: 16
-      });
-      new naver.maps.Marker({
-        position: map.getCenter(),
-        map: map,
-        title: "<?= $facilityName ?>"
-      });
+//       var map = new naver.maps.Map('map', {
+//         center: new naver.maps.LatLng(parseFloat("<?= $lat ?>"), parseFloat("<?= $lng ?>")),
+//         zoom: 16
+//       });
+//       new naver.maps.Marker({
+//         position: map.getCenter(),
+//         map: map,
+//         title: "<?= $facilityName ?>"
+//       });
     })();
   </script>
 </body>
