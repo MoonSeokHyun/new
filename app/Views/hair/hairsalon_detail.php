@@ -177,15 +177,15 @@ $imageUrl        = esc($salon['image_url'] ?? '/default-image.jpg');
     (function(){
       var lat = parseFloat("<?= esc($latitude); ?>");
       var lng = parseFloat("<?= esc($longitude); ?>");
-      var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(lat, lng),
-        zoom: 16
-      });
-      new naver.maps.Marker({
-        position: map.getCenter(),
-        map: map,
-        title: "<?= esc($salon['business_name']); ?>"
-      });
+//       var map = new naver.maps.Map('map', {
+//         center: new naver.maps.LatLng(lat, lng),
+//         zoom: 16
+//       });
+//       new naver.maps.Marker({
+//         position: map.getCenter(),
+//         map: map,
+//         title: "<?= esc($salon['business_name']); ?>"
+//       });
       (adsbygoogle = window.adsbygoogle || []).push({});
     })();
   </script>

@@ -6,7 +6,7 @@
     <title>전국 도서관 목록 퐁코</title>
 
     <!-- 네이버 지도 API (필요 없으시면 제거) -->
-    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
+    <!-- <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script> -->
   
     <!-- 광고 스크립트 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>

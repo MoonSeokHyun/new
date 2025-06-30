@@ -181,15 +181,15 @@ $seoKeywords    = esc("안경점, {$shopName}, {$district}, {$fullAddress}, 서�
     (function(){
       var lat = parseFloat("<?= esc($shop['Latitude'] ?? '0') ?>");
       var lng = parseFloat("<?= esc($shop['Longitude'] ?? '0') ?>");
-      var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(lat, lng),
-        zoom: 16
-      });
-      new naver.maps.Marker({
-        position: map.getCenter(),
-        map: map,
-        title: "<?= $shopName ?>"
-      });
+//       var map = new naver.maps.Map('map', {
+//         center: new naver.maps.LatLng(lat, lng),
+//         zoom: 16
+//       });
+//       new naver.maps.Marker({
+//         position: map.getCenter(),
+//         map: map,
+//         title: "<?= $shopName ?>"
+//       });
     })();
   </script>
 

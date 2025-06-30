@@ -166,8 +166,8 @@ $seoKeywords = esc("폐의류 수거함, {$district_name}, 수거함, 위치, �
     (function(){
       var lat = parseFloat("<?= esc($bin['Latitude']) ?>");
       var lng = parseFloat("<?= esc($bin['Longitude']) ?>");
-      var map = new naver.maps.Map('map', { center: new naver.maps.LatLng(lat, lng), zoom:16 });
-      new naver.maps.Marker({ position: map.getCenter(), map: map, title: "<?= esc($bin['Clothing Collection Bin Location Name']) ?>" });
+//       var map = new naver.maps.Map('map', { center: new naver.maps.LatLng(lat, lng), zoom:16 });
+//       new naver.maps.Marker({ position: map.getCenter(), map: map, title: "<?= esc($bin['Clothing Collection Bin Location Name']) ?>" });
     })();
   </script>
 </body>
