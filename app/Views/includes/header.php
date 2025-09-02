@@ -57,8 +57,7 @@
 
     <!-- 상단 로고/타이틀 -->
     <div class="modal-header">
-      <img class="coupang-logo" src="https://www.google.com/imgres?q=%EC%BF%A0%ED%8C%A1&imgurl=https%3A%2F%2Fi.namu.wiki%2Fi%2F6ie-l4oYYPAs43NZ6sfoEonbvROUE4D4BC9tZy2wCWTPe9nbUFtInBCLKssNpBFM1KvLoHUo1mr4PBog2cAo9Q.svg&imgrefurl=https%3A%2F%2Fnamu.wiki%2Fw%2F%25EC%25BF%25A0%25ED%258C%25A1&docid=9r4aZiCtyzEGRM&tbnid=dUqUCmsVlPUfoM&vet=12ahUKEwjQ-L63mLqPAxWes1YBHRalHvkQM3oECBcQAA..i&w=1000&h=225&hcb=2&ved=2ahUKEwjQ-L63mLqPAxWes1YBHRalHvkQM3oECBcQAA" alt="coupang" />
-      <h3 id="coupang-modal-title">제철 특가</h3>
+          <h3 id="coupang-modal-title">제철 특가</h3>
     </div>
 
     <!-- 광고 이미지 (링크 + 이미지 교체됨) -->
