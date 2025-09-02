@@ -61,14 +61,13 @@
       <h3 id="coupang-modal-title">제철 특가</h3>
     </div>
 
-    <!-- 광고 이미지 -->
-    <a class="modal-link" href="https://link.coupang.com/a/cOmqqT" target="_blank" rel="noopener noreferrer nofollow sponsored">
-      <!-- 원하면 이미지 URL 교체 가능 -->
-      <img class="modal-hero" src="https://ads-partners.coupang.com/banners/2024/800x800_default.png" alt="쿠팡 특가 상품" />
+    <!-- 광고 이미지 (링크 + 이미지 교체됨) -->
+    <a class="modal-link" href="https://link.coupang.com/a/cOmD6P" target="_blank" rel="noopener noreferrer nofollow sponsored">
+      <img class="modal-hero" src="https://image14.coupangcdn.com/image/affiliate/event/promotion/2025/09/02/75aed5e5e3ab00900154b168f10fa550.png" alt="쿠팡 특가 배너" />
     </a>
 
     <!-- 하단 CTA 바 -->
-    <a class="modal-cta" href="https://link.coupang.com/a/cOmqqT" target="_blank" rel="noopener noreferrer nofollow sponsored">자세히 보기</a>
+    <a class="modal-cta" href="https://link.coupang.com/a/cOmD6P" target="_blank" rel="noopener noreferrer nofollow sponsored">자세히 보기</a>
 
     <!-- 고지문 -->
     <p class="disclaimer">※ 본 링크는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.</p>
