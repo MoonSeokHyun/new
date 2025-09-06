@@ -37,7 +37,7 @@ $keywords   = implode(',', [$district, $name, '세계음식','맛집','세계음
   <meta name="twitter:title"       content="<?= esc($title) ?>" />
   <meta name="twitter:description" content="<?= esc($description) ?>" />
 
-  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
+  <!-- <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script> -->
   <style>
     body { background:#f1f1f1; font-family:Arial,sans-serif; color:#333; margin:0; padding:0; }
     /* 헤더 내부 h1 스타일과 충돌 방지 */

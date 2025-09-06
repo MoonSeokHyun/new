@@ -91,7 +91,7 @@ $canonical  = current_url();
   }
   </script>
 
-  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script>
+  <!-- <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script> -->
   <style>
     body { background:#f5f5f5; font-family:'Noto Sans KR',sans-serif; margin:0; padding:0; color:#333; }
     a { color:#0078ff; text-decoration:none; }
