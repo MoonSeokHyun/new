@@ -60,7 +60,7 @@
         <a class="banner-cta" href="https://link.coupang.com/a/cPfAe6" target="_blank" rel="noopener noreferrer nofollow sponsored">자세히 보기</a>
         <button class="banner-close" type="button" aria-label="배너 닫기">×</button>
       </div>
-      <p class="banner-disclaimer">※ 본 링크는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.</p>
+      <p class="banner-disclaimer">이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
     </div>
   </section>
 </div>
