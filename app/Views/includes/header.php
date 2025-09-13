@@ -52,15 +52,15 @@
   <!-- ✅ 쿠팡 파트너스 배너 (정적/비플로팅/비모달) -->
   <section class="coupang-banner" role="region" aria-label="쿠팡 파트너스 배너" id="coupang-banner" hidden>
     <div class="banner-inner">
-      <a class="banner-link" href="https://link.coupang.com/a/cPfAe6" target="_blank" rel="noopener noreferrer nofollow sponsored" aria-label="쿠팡 제철 특가 자세히 보기">
+      <a class="banner-link" href="https://link.coupang.com/a/cPfAe6" target="_blank" rel="noopener noreferrer nofollow sponsored" >
         <img class="banner-hero" src="https://image8.coupangcdn.com/image/affiliate/event/promotion/2025/09/05/7162093536a5003c01e713ab6fc6faf3.png" alt="쿠팡 제철 특가 배너" loading="lazy" />
       </a>
-      <div class="banner-cta-row">
-        <strong class="banner-title">제철 특가</strong>
-        <a class="banner-cta" href="https://link.coupang.com/a/cPfAe6" target="_blank" rel="noopener noreferrer nofollow sponsored">자세히 보기</a>
-        <button class="banner-close" type="button" aria-label="배너 닫기">×</button>
-      </div>
-      <p class="banner-disclaimer">이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
+      <!-- ✅ 광고 표기 강조 (가이드 충족) -->
+      <p class="banner-disclaimer" style="text-align:center; margin:8px 0 0;">
+        <span style="font-size:15px; font-weight:bold; color:#d32f2f; background:#fff4f4; padding:6px 10px; border-radius:4px; display:inline-block;">
+          광고 · 이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
+        </span>
+      </p>
     </div>
   </section>
 </div>
@@ -79,7 +79,6 @@
   .sub-menu { display:none; position:absolute; top:100%; left:0; background:#fff; border:1px solid #ccc; border-radius:6px; padding:.5rem 0; min-width:180px; list-style:none; box-shadow:0 4px 8px rgba(0,0,0,.1); z-index:10; }
   .menu-group:hover .sub-menu { display:block; }
   .sub-menu li a { display:block; padding:8px 16px; color:#3eaf7c; font-size:14px; text-decoration:none; }
-  .sub-menu li a:hover { background-color:#f0fdf8; }
 
   @media (max-width:768px){
     #header-wrapper .top-menu{ flex-direction:row; flex-wrap:wrap; justify-content:center; gap:1rem; }
