@@ -49,20 +49,18 @@
     </ul>
   </nav>
 
-  <!-- ✅ 쿠팡 파트너스 배너 (정적/비플로팅/비모달) -->
-  <section class="coupang-banner" role="region" aria-label="쿠팡 파트너스 배너" id="coupang-banner" hidden>
-    <div class="banner-inner">
-      <a class="banner-link" href="https://link.coupang.com/a/cPfAe6" target="_blank" rel="noopener noreferrer nofollow sponsored" >
-        <img class="banner-hero" src="https://image8.coupangcdn.com/image/affiliate/event/promotion/2025/09/05/7162093536a5003c01e713ab6fc6faf3.png" alt="쿠팡 제철 특가 배너" loading="lazy" />
-      </a>
-      <!-- ✅ 광고 표기 강조 (가이드 충족) -->
-      <p class="banner-disclaimer" style="text-align:center; margin:8px 0 0;">
-        <span style="font-size:15px; font-weight:bold; color:#d32f2f; background:#fff4f4; padding:6px 10px; border-radius:4px; display:inline-block;">
-          광고 · 이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
-        </span>
-      </p>
-    </div>
-  </section>
+  <!-- Google AdSense 광고 -->
+  <div class="header-ad-container">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-6686738239613464"
+         data-ad-slot="1204098626"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
 </div>
 <!-- 헤더 끝 -->
 
@@ -91,38 +89,17 @@
 
   .adsbygoogle{ display:block; text-align:center; margin:0 auto; }
 
-  /* ====== 배너 (정적) ====== */
-  .coupang-banner { background:#fff; border-top:1px solid #eaeaea; border-bottom:1px solid #eaeaea; }
-  .coupang-banner[hidden]{ display:none !important; }
-  .coupang-banner .banner-inner { max-width:1100px; margin:0 auto; padding:12px 16px 10px; }
-
-  /* 이미지는 높이 과다로 본문 가림 방지 */
-  .banner-hero{
-    width:100%; display:block;
-    aspect-ratio: 16 / 9;         /* 고정 비율 */
-    object-fit: cover;             /* 과도한 세로 길이 방지 */
-    max-height: 240px;             /* 1차 안전장치 */
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,.06);
-    background:#f3f3f3;
+  /* ====== 헤더 광고 ====== */
+  .header-ad-container {
+    background:#fff; 
+    border-top:1px solid #eaeaea; 
+    border-bottom:1px solid #eaeaea; 
+    padding:10px 0; 
+    text-align:center;
   }
-
-  .banner-cta-row { display:flex; align-items:center; gap:10px; margin-top:10px; }
-  .banner-title{ font-size:15px; color:#333; }
-  .banner-cta {
-    margin-left:auto; display:inline-block; padding:10px 14px;
-    font-weight:700; background:#1677ff; color:#fff; text-decoration:none; border-radius:8px;
-  }
-  .banner-close {
-    appearance:none; border:none; background:#f2f3f5; color:#222;
-    width:32px; height:32px; line-height:32px; border-radius:50%; cursor:pointer; font-size:18px;
-  }
-  .banner-disclaimer { margin:8px 0 0; font-size:12px; color:#666; }
-
-  @media (max-width:520px){
-    .banner-cta{ padding:9px 12px; font-size:14px; }
-    .banner-close{ width:28px; height:28px; font-size:16px; }
-    .banner-hero{ max-height: 200px; } /* 모바일에서 더 낮춤 */
+  .header-ad-container ins {
+    max-width:100%;
+    height:auto;
   }
 </style>
 
@@ -139,37 +116,6 @@
     });
   }
 
-  /* ====== 쿠키 유틸 ====== */
-  function setCookie(name, value, maxAgeSeconds) {
-    var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + ";path=/;SameSite=Lax";
-    if (maxAgeSeconds) cookie += ";max-age=" + maxAgeSeconds;
-    document.cookie = cookie;
-  }
-  function getCookie(name) {
-    var m = document.cookie.match(new RegExp('(?:^|; )' + encodeURIComponent(name) + '=([^;]*)'));
-    return m ? decodeURIComponent(m[1]) : null;
-  }
-
-  /* ====== 배너 동작 (정적/가림 방지) ====== */
-  (function initCoupangBanner(){
-    var banner = document.getElementById("coupang-banner");
-    if (!banner) return;
-
-    var closeBtn = banner.querySelector(".banner-close");
-    var HIDE_COOKIE = "hide_coupang_banner";
-    var HIDE_SECONDS = 60 * 60 * 2; // 2시간
-
-    // 닫은 적 없으면 표시
-    if (!getCookie(HIDE_COOKIE)) {
-      banner.hidden = false;
-    }
-
-    // 닫기 시 2시간 숨김
-    if (closeBtn) {
-      closeBtn.addEventListener("click", function(){
-        banner.hidden = true;
-        setCookie(HIDE_COOKIE, "1", HIDE_SECONDS);
-      });
-    }
-  })();
+  // Google AdSense 자동 로드
+  (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
