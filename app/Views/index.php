@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="naver-site-verification" content="3364bf3d26f95db9c37f59a7acb7f4523cc8c823" />
   <title>공공데이터 포털 - 퐁퐁코리아</title>
   <link rel="stylesheet" href="/assets/css/main.css">
   <style>
