@@ -1,4 +1,5 @@
 <!-- 헤더 시작 -->
+<meta name="naver-site-verification" content="3364bf3d26f95db9c37f59a7acb7f4523cc8c823" />
 <div id="header-wrapper">
   <!-- 사이트 타이틀 -->
   <header>
