@@ -148,6 +148,11 @@ a{text-decoration:none;color:inherit}
 .sep{height:1px;background:var(--bd);margin:10px 0}
 .kv{display:flex;gap:8px;flex-wrap:wrap}
 .pill{display:inline-flex;gap:6px;align-items:center;background:#eef2ff;color:#1e3a8a;font-weight:900;font-size:12px;padding:6px 10px;border-radius:999px}
+.near-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.near-item{border:1px solid var(--bd);border-radius:14px;padding:12px;background:#fff}
+.near-title{font-weight:900;margin:0 0 4px}
+.near-meta{color:var(--sub);font-size:13px;line-height:1.5}
+
 </style>
 </head>
 <body>
@@ -227,6 +232,38 @@ a{text-decoration:none;color:inherit}
         주소 검색이 안 걸리는 케이스가 있어서 **네이버 지도 링크는 상호 없이 “주소만”** 검색합니다.
       </p>
     </div>
+    <div id="ad">
+    <ins class="adsbygoogle" style="display:block"
+      data-ad-client="ca-pub-6686738239613464"
+      data-ad-slot="1204098626"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+    <div class="card">
+  <h2>근처 동물병원 (<?= esc($district) ?>)</h2>
+
+  <?php if (!empty($nearby_hospitals)): ?>
+    <div class="near-grid">
+      <?php foreach ($nearby_hospitals as $n): ?>
+        <?php
+          $nName = esc($n['b_name'] ?? '동물병원');
+          $nAddr = esc(($n['new_address'] ?? '') ?: ($n['old_address'] ?? ''));
+          $nUrl  = esc($n['url'] ?? '#');
+        ?>
+        <div class="near-item">
+          <div class="near-title"><a href="<?= $nUrl ?>"><?= $nName ?></a></div>
+          <div class="near-meta">📍 <?= $nAddr ?: '-' ?></div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  <?php else: ?>
+    <p class="note">
+      근처 병원을 찾지 못했습니다.
+      <a href="<?= site_url('animal-hospital?search=' . urlencode($district)) ?>">같은 지역 병원 더 보기</a>
+    </p>
+  <?php endif; ?>
+</div>
+
 
     <!-- ✅ 광고(3) 중간 자동 -->
     <div id="ad">
