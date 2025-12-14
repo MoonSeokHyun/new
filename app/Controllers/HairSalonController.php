@@ -2,9 +2,6 @@
 
 use App\Models\HairSalonModel;
 use CodeIgniter\Controller;
-use proj4php\Proj4php;
-use proj4php\Point;
-use proj4php\Proj;
 
 class HairSalonController extends Controller
 {
@@ -12,63 +9,139 @@ class HairSalonController extends Controller
     {
         $model = new HairSalonModel();
 
-        // 검색어 처리
         $search = $this->request->getVar('search');
+        $page   = $this->request->getVar('page') ?: 1;
 
-        // 기본 페이지 번호 (페이징 처리)
-        $page = $this->request->getVar('page') ?: 1;
-
-        // 검색어가 있을 경우 쿼리 수정
         if ($search) {
-            $salons = $model->like('open_service_name', $search)
-                            ->orLike('business_name', $search)
-                            ->paginate(12, 'salons'); // 12개씩 표시
+            $salons = $model
+                ->groupStart()
+                    ->like('business_name', $search)
+                    ->orLike('road_name_address', $search)
+                ->groupEnd()
+                ->paginate(12, 'salons');
         } else {
-            // 검색어가 없으면 전체 목록에서 페이징 처리
-            $salons = $model->paginate(12, 'salons'); // 12개씩 표시
+            $salons = $model->paginate(12, 'salons');
         }
 
-        // 페이지 네비게이션 데이터
-        $data = [
+        return view('hair/hairsalon_list', [
             'salons' => $salons,
-            'pager' => $model->pager,
-            'search' => $search
-        ];
-
-        return view('hair/hairsalon_list', $data); // 미용실 목록 페이지를 보여줍니다
+            'pager'  => $model->pager,
+            'search' => $search,
+        ]);
     }
 
     public function detail($id)
     {
         $model = new HairSalonModel();
-        $data['salon'] = $model->find($id);
+        $salon = $model->find($id);
 
-        if (!$data['salon']) {
+        if (!$salon) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('미용실을 찾을 수 없습니다.');
         }
 
-        // 좌표 변환 (UTM -> 위도, 경도)
-        $utm_x = $data['salon']['x_coordinate']; // UTM X 좌표
-        $utm_y = $data['salon']['y_coordinate']; // UTM Y 좌표
+        // -------------------------
+        // ✅ 좌표 처리 (중요)
+        // -------------------------
+        $lat = null;
+        $lng = null;
 
-        // Proj4php 객체 생성
-        $proj4php = new Proj4php();
+        // 1️⃣ DB 좌표 우선 사용 (이미 WGS84라고 가정)
+        if (
+            is_numeric($salon['y_coordinate'] ?? null) &&
+            is_numeric($salon['x_coordinate'] ?? null)
+        ) {
+            $lat = (float)$salon['y_coordinate'];
+            $lng = (float)$salon['x_coordinate'];
+        }
 
-        // UTM 좌표계 정의 (예: EPSG:32652, UTM Zone 52N)
-        // 예시: 서울이나 전라남도 순천시의 경우 EPSG:32652
-        $utm = new Proj('EPSG:32652', $proj4php); // 서울/순천 UTM Zone (EPSG:32652)
-        $wgs84 = new Proj('EPSG:4326', $proj4php); // WGS84
+        // -------------------------
+        // 2️⃣ DB 좌표 없으면 네이버 REST 지오코딩
+        // -------------------------
+        if (!$lat || !$lng) {
+            $query = trim(
+                $salon['road_name_address']
+                ?: $salon['full_address']
+                ?: ''
+            );
 
-        // UTM 좌표를 Point로 생성
-        $utmPoint = new Point($utm_x, $utm_y, $utm);
+            if ($query) {
+                $geo = $this->naverGeocode($query);
+                if ($geo) {
+                    $lat = $geo['lat'];
+                    $lng = $geo['lng'];
+                }
+            }
+        }
 
-        // 변환을 위해 Point 객체를 직접 변환
-        $wgs84Point = $proj4php->transform($utm, $wgs84, $utmPoint); // Proj4php 객체를 통해 좌표 변환
+        // -------------------------
+        // 3️⃣ 근처 미용실 (좌표 있을 때만)
+        // -------------------------
+        $nearby = [];
+        if ($lat && $lng) {
+            $range = 0.01; // 약 1km
+            $nearby = $model
+                ->where('id !=', $id)
+                ->where('y_coordinate >=', $lat - $range)
+                ->where('y_coordinate <=', $lat + $range)
+                ->where('x_coordinate >=', $lng - $range)
+                ->where('x_coordinate <=', $lng + $range)
+                ->limit(6)
+                ->findAll();
 
-        // 변환된 위도, 경도 값을 배열로 전달
-        $data['latitude'] = $wgs84Point->y;
-        $data['longitude'] = $wgs84Point->x;
+            // URL 보강
+            foreach ($nearby as &$n) {
+                $n['url'] = site_url('hairsalon/' . $n['id']);
+            }
+        }
 
-        return view('hair/hairsalon_detail', $data);
+        return view('hair/hairsalon_detail', [
+            'salon'         => $salon,
+            'latitude'      => $lat,
+            'longitude'     => $lng,
+            'nearby_salons' => $nearby,
+        ]);
+    }
+
+    /**
+     * ✅ 네이버 REST 지오코딩
+     */
+    private function naverGeocode(string $query): ?array
+    {
+        $keyId  = getenv('NAVER_MAPS_API_KEY_ID');
+        $secret = getenv('NAVER_MAPS_API_KEY');
+
+        if (!$keyId || !$secret) return null;
+
+        $url = 'https://maps.apigw.ntruss.com/map-geocode/v2/geocode?'
+             . http_build_query([
+                 'query' => $query,
+                 'count' => 1,
+             ]);
+
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 5,
+            CURLOPT_HTTPHEADER => [
+                'Accept: application/json',
+                'x-ncp-apigw-api-key-id: ' . $keyId,
+                'x-ncp-apigw-api-key: ' . $secret,
+            ],
+        ]);
+
+        $res = curl_exec($ch);
+        curl_close($ch);
+
+        if (!$res) return null;
+
+        $json = json_decode($res, true);
+        $addr = $json['addresses'][0] ?? null;
+
+        if (!$addr) return null;
+
+        return [
+            'lat' => (float)$addr['y'],
+            'lng' => (float)$addr['x'],
+        ];
     }
 }
