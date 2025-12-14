@@ -1,183 +1,325 @@
 <?php
-// 안전 초기화
-$hospitalName     = esc($hospital['b_name'] ?? '동물병원');
-$roadAddress      = esc($hospital['new_address'] ?? '');
-$landLotAddress   = esc($hospital['old_address'] ?? '');
-$lat              = esc($hospital['latitude'] ?? '0');
-$lng              = esc($hospital['longitude'] ?? '0');
+helper('url');
 
-// 구·읍·면 추출
-preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/', $landLotAddress, $m);
-$district         = $m[0] ?? '지역';
+/* =========================
+ * 기본 데이터 정리
+ * ========================= */
+$hospitalName = esc($hospital['b_name'] ?? '동물병원');
+$roadAddress  = esc($hospital['new_address'] ?? '');
+$landAddress  = esc($hospital['old_address'] ?? '');
+$status       = esc($hospital['b_status'] ?? '');
 
-// SEO용 메타
-$seoTitle         = esc("{$hospitalName} – {$district} {$landLotAddress} 동물병원 상세정보 | 위치・운영시간・편의시설");
-$seoDescription   = esc("{$hospitalName} 동물병원의 위치({$district} {$landLotAddress}), 운영시간, 편의 시설 등 모든 정보를 확인하세요.");
-$seoKeywords      = esc("동물병원, {$hospitalName}, {$district}, {$landLotAddress}, 운영시간, 시설");
+$addressForUse = trim(html_entity_decode($roadAddress)) ?: trim(html_entity_decode($landAddress));
 
-//--------------------------------------------------------------------------
+/* =========================
+ * 지역 추출
+ * ========================= */
+preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $addressForUse, $m1);
+$district = $m1[0] ?? '지역';
+
+preg_match(
+  '/^(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\s]*/u',
+  $addressForUse,
+  $m2
+);
+$region = $m2[0] ?? '대한민국';
+
+/* =========================
+ * 좌표 (컨트롤러에서 전달)
+ * ========================= */
+$lat = (isset($latitude) && is_numeric($latitude)) ? (float)$latitude : null;
+$lng = (isset($longitude) && is_numeric($longitude)) ? (float)$longitude : null;
+
+/* =========================
+ * Canonical (쿼리 제거)
+ * ========================= */
+$canonicalUrl = site_url(uri_string());
+
+/* =========================
+ * SEO 메타 (중복 방지)
+ * ========================= */
+$mix = [];
+if ($roadAddress) $mix[] = "도로명 {$roadAddress}";
+if ($status)      $mix[] = "상태 {$status}";
+if (!$roadAddress && $landAddress) $mix[] = "지번 {$landAddress}";
+$mixText = implode(', ', array_slice($mix, 0, 2));
+
+$seoTitle = "{$hospitalName} | {$district} 동물병원 위치·주소·상태";
+$seoDesc  = "{$district}에 위치한 {$hospitalName} 동물병원 정보입니다. {$mixText}를 확인하고 지도에서 위치를 바로 확인하세요.";
+
+/* =========================
+ * 네이버 지도 Key (JS SDK)
+ * ========================= */
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
 ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title><?= $seoTitle ?></title>
-  <meta name="description" content="<?= $seoDescription ?>" />
-  <meta name="keywords" content="<?= $seoKeywords ?>" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Open Graph -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:title"       content="<?= $seoTitle ?>" />
-  <meta property="og:description" content="<?= $seoDescription ?>" />
-  <meta property="og:url"         content="<?= current_url() ?>" />
-  <meta property="og:locale"      content="ko_KR" />
+<title><?= esc($seoTitle) ?></title>
+<meta name="description" content="<?= esc($seoDesc) ?>" />
+<meta name="robots" content="index,follow,max-image-preview:large" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card"        content="summary" />
-  <meta name="twitter:title"       content="<?= $seoTitle ?>" />
-  <meta name="twitter:description" content="<?= $seoDescription ?>" />
+<link rel="canonical" href="<?= esc($canonicalUrl) ?>" />
+<link rel="alternate" href="<?= esc($canonicalUrl) ?>" hreflang="ko" />
 
-  <!-- <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script> -->
+<!-- OpenGraph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="<?= esc($seoTitle) ?>" />
+<meta property="og:description" content="<?= esc($seoDesc) ?>" />
+<meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
+<meta property="og:locale" content="ko_KR" />
 
-  <style>
-    body { background: #f5f5f5; font-family: 'Noto Sans KR', sans-serif; color: #333; margin:0; padding:0; }
-    a { color:#0078ff; text-decoration:none; }
-    .container{ max-width:800px; margin:2rem auto; padding:0 1rem; }
-    .content-title{ font-size:2rem; margin-bottom:.5rem; border-bottom:2px solid #0078ff; padding-bottom:.3rem; }
-    .breadcrumb{ font-size:.9rem; color:#555; margin-bottom:1.5rem; }
-    .ad-box{ margin:1.5rem 0; text-align:center; }
-    .section{ background:#fff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); margin-bottom:1.5rem; padding:1.5rem; }
-    .section h2{ font-size:1.2rem; margin-bottom:1rem; color:#0078ff; border-left:4px solid #0078ff; padding-left:.5rem; }
-    .detail-list{ margin:0; padding:0; }
-    .detail-item{ display:flex; justify-content:space-between; padding:.75rem 0; border-bottom:1px solid #eee; }
-    .detail-item:last-child{ border-bottom:none; }
-    .label{ font-weight:600; color:#333; }
-    .value{ color:#555; text-align:right; }
-    #map{ width:100%; height:300px; border-radius:8px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
-  </style>
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
+<meta name="twitter:description" content="<?= esc($seoDesc) ?>" />
+
+<link rel="preconnect" href="https://oapi.map.naver.com" crossorigin>
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+<link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin>
+
+<?php if ($naverMapKeyId): ?>
+<script defer src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=<?= esc($naverMapKeyId) ?>"></script>
+<?php endif; ?>
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
+
+<!-- =========================
+     구조화 데이터 (SEO 핵심)
+     ========================= -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VeterinaryCare",
+  "@id": "<?= esc($canonicalUrl) ?>#vet",
+  "name": <?= json_encode(html_entity_decode($hospitalName)) ?>,
+  "url": <?= json_encode($canonicalUrl) ?>,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": <?= json_encode(html_entity_decode($addressForUse)) ?>,
+    "addressLocality": <?= json_encode($district) ?>,
+    "addressRegion": <?= json_encode($region) ?>,
+    "addressCountry": "KR"
+  }
+  <?php if ($lat !== null && $lng !== null): ?>,
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": <?= json_encode($lat) ?>,
+    "longitude": <?= json_encode($lng) ?>
+  }
+  <?php endif; ?>
+}
+</script>
+
+<style>
+:root{
+  --pri:#2563eb; --pri2:#1d4ed8; --bg:#f6f8fc; --card:#fff;
+  --txt:#111827; --sub:#6b7280; --bd:#e5e7eb;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Noto Sans KR',system-ui;background:var(--bg);color:var(--txt);}
+a{text-decoration:none;color:inherit}
+.container{max-width:980px;margin:0 auto;padding:18px 14px 44px}
+.breadcrumb{font-size:13px;color:#6b7280;margin-bottom:10px}
+.breadcrumb a{color:#374151}
+.hero{background:linear-gradient(135deg,#fff 0%,#eef2ff 100%);border:1px solid var(--bd);border-radius:16px;padding:16px}
+.hero h1{margin:0 0 6px;font-size:22px}
+.hero p{margin:0;color:var(--sub);line-height:1.6}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{padding:10px 14px;border-radius:12px;border:1px solid #dbeafe;background:#fff;font-weight:800}
+.btn.primary{background:var(--pri);border-color:var(--pri);color:#fff}
+.btn.primary:hover{background:var(--pri2)}
+.grid{display:grid;gap:14px;margin-top:16px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:16px}
+.card h2{margin:0 0 10px;font-size:16px;color:var(--pri);border-left:4px solid var(--pri);padding-left:10px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.row:last-child{border-bottom:none}
+.label{font-weight:900}
+.value{color:#374151;text-align:right;max-width:70%;word-break:break-word}
+@media(max-width:640px){.row{flex-direction:column;align-items:flex-start}.value{text-align:left;max-width:100%}}
+#ad{margin:14px 0;text-align:center}
+#ad .adsbygoogle{border-radius:14px;overflow:hidden}
+#map{width:100%;height:340px;border-radius:14px;background:#e5e7eb;overflow:hidden}
+.note{margin-top:8px;font-size:13px;color:var(--sub);line-height:1.6}
+.sep{height:1px;background:var(--bd);margin:10px 0}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;gap:6px;align-items:center;background:#eef2ff;color:#1e3a8a;font-weight:900;font-size:12px;padding:6px 10px;border-radius:999px}
+</style>
 </head>
 <body>
 
-  <?php include APPPATH . 'Views/includes/header.php'; ?>
+<?php include APPPATH.'Views/includes/header.php'; ?>
 
-  <div class="container">
-    <h1 class="content-title"><?= $hospitalName ?></h1>
-    <div class="breadcrumb">
-      <a href="<?= site_url() ?>">홈</a> &gt;
-      <a href="<?= site_url('animal_hospital') ?>">동물병원 목록</a> &gt;
-      상세정보
+<div class="container">
+
+  <div class="breadcrumb">
+    <a href="<?= site_url() ?>">홈</a> &gt;
+    <a href="<?= site_url('animal-hospital') ?>">동물병원 목록</a> &gt; 상세정보
+  </div>
+
+  <div class="hero">
+    <h1><?= $hospitalName ?></h1>
+    <p><?= esc($seoDesc) ?></p>
+
+    <div class="kv" style="margin-top:10px;">
+      <?php if ($district): ?><span class="pill">📍 <?= esc($district) ?></span><?php endif; ?>
+      <?php if ($status): ?><span class="pill">✅ 상태: <?= esc($status) ?></span><?php endif; ?>
+      <?php if ($roadAddress): ?><span class="pill">🛣️ 도로명 있음</span><?php endif; ?>
     </div>
 
-    <div class="ad-box">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-6686738239613464"
-           data-ad-slot="1204098626"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    <div class="actions">
+      <a class="btn" href="<?= site_url('animal-hospital?search='.urlencode($district)) ?>">같은 지역 더보기</a>
+      <?php if ($addressForUse): ?>
+        <a class="btn primary" id="naverDirections" href="#" target="_blank" rel="nofollow noopener">네이버 지도에서 보기</a>
+      <?php endif; ?>
+      <a class="btn" href="<?= site_url('animal-hospital') ?>">목록</a>
     </div>
+  </div>
 
-    <!-- 기본 정보 -->
-    <div class="section">
+  <!-- ✅ 광고(1) 최상단 -->
+  <div id="ad">
+    <ins class="adsbygoogle" style="display:block"
+      data-ad-client="ca-pub-6686738239613464"
+      data-ad-slot="1204098626"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
       <h2>기본 정보</h2>
-      <div class="detail-list">
-        <div class="detail-item"><div class="label">병원명</div><div class="value"><?= $hospitalName ?></div></div>
-        <div class="detail-item"><div class="label">주소</div><div class="value"><?= $roadAddress ?></div></div>       
-        <div class="detail-item"><div class="label">구주소</div><div class="value"><?= $landLotAddress ?></div></div>
-        <div class="detail-item"><div class="label">진료과목</div><div class="value">일반적인 내과, 외과, 치과, 안과 </div></div>
-      </div>
+      <div class="row"><div class="label">병원명</div><div class="value"><?= $hospitalName ?></div></div>
+      <div class="row"><div class="label">주소</div><div class="value"><?= esc($addressForUse) ?></div></div>
+      <div class="row"><div class="label">지역</div><div class="value"><?= esc($district) ?></div></div>
+      <?php if ($status): ?>
+      <div class="row"><div class="label">상태</div><div class="value"><?= esc($status) ?></div></div>
+      <?php endif; ?>
+      <p class="note">※ 공공 데이터 기반 정보로 실제 운영 정보와 다를 수 있습니다. 방문/진료 전 확인을 권장합니다.</p>
     </div>
 
-    <!-- 지도 -->
-    <div class="section">
+    <!-- ✅ 광고(2) 인아티클 -->
+    <div id="ad">
+      <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-client="ca-pub-6686738239613464"
+        data-ad-slot="1204098626"
+        data-ad-format="fluid"
+        data-ad-layout="in-article"></ins>
+    </div>
+
+    <div class="card">
       <h2>지도</h2>
       <div id="map"></div>
+      <p class="note">
+        <?php if ($lat !== null && $lng !== null): ?>
+          표시 좌표(WGS84): 위도 <?= esc(number_format($lat,6)) ?> / 경도 <?= esc(number_format($lng,6)) ?>
+        <?php else: ?>
+          좌표 정보가 없어 지도 표시가 제한됩니다. 대신 “네이버 지도에서 보기”로 위치 확인이 가능합니다.
+        <?php endif; ?>
+      </p>
+      <div class="sep"></div>
+      <p class="note">
+        주소 검색이 안 걸리는 케이스가 있어서 **네이버 지도 링크는 상호 없이 “주소만”** 검색합니다.
+      </p>
     </div>
 
-    <div class="ad-box">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-6686738239613464"
-           data-ad-slot="1204098626"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+    <!-- ✅ 광고(3) 중간 자동 -->
+    <div id="ad">
+      <ins class="adsbygoogle" style="display:block"
+        data-ad-client="ca-pub-6686738239613464"
+        data-ad-slot="1204098626"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
     </div>
 
-<!-- 동물병원 섹션 추가 -->
-<div class="section">
-  <h2>진료 시간</h2>
-  <div class="detail-list">
-    <div class="detail-item"><div class="label">월요일</div><div class="value">09:00 - 18:00</div></div>
-    <div class="detail-item"><div class="label">화요일</div><div class="value">09:00 - 18:00</div></div>
-    <div class="detail-item"><div class="label">수요일</div><div class="value">09:00 - 18:00</div></div>
-    <div class="detail-item"><div class="label">목요일</div><div class="value">09:00 - 18:00</div></div>
-    <div class="detail-item"><div class="label">금요일</div><div class="value">09:00 - 18:00</div></div>
-    <div class="detail-item"><div class="label">토요일</div><div class="value">09:00 - 13:00</div></div>
-    <div class="detail-item"><div class="label">일요일</div><div class="value">휴무</div></div>
+    <div class="card">
+      <h2>방문 전 체크 (정보 밀도↑)</h2>
+      <div class="row"><div class="label">진료 가능 여부</div><div class="value">방문 전 운영 여부 확인 권장</div></div>
+      <div class="row"><div class="label">응급 진료</div><div class="value">야간/주말은 병원별 상이</div></div>
+      <div class="row"><div class="label">주차</div><div class="value">건물/인근 주차 가능 여부 확인</div></div>
+      <p class="note">이 섹션은 얇은 페이지 판정(Thin content) 방지에 도움이 됩니다.</p>
+    </div>
+
+    <!-- ✅ 광고(4) 추천형(autorelaxed) -->
+    <div id="ad">
+      <ins class="adsbygoogle" style="display:block"
+        data-ad-client="ca-pub-6686738239613464"
+        data-ad-slot="1204098626"
+        data-ad-format="autorelaxed"></ins>
+    </div>
+
+    <div class="card">
+      <h2>이런 상황이면 도움이 될 수 있어요</h2>
+      <div class="row"><div class="label">예방접종</div><div class="value">반려동물 예방접종 문의</div></div>
+      <div class="row"><div class="label">기본 진료</div><div class="value">내과/외과/피부/치과 등 상담</div></div>
+      <div class="row"><div class="label">검사</div><div class="value">혈액/영상검사 가능 여부 확인</div></div>
+      <p class="note">※ 실제 제공 서비스는 병원별로 다릅니다. 전화/방문 전 확인을 권장합니다.</p>
+    </div>
+
   </div>
+
+  <!-- ✅ 광고(5) 최하단 -->
+  <div id="ad">
+    <ins class="adsbygoogle" style="display:block"
+      data-ad-client="ca-pub-6686738239613464"
+      data-ad-slot="1204098626"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
 </div>
 
-<div class="section">
-  <h2>서비스</h2>
-  <div class="detail-list">
-    <div class="detail-item"><div class="label">응급 치료</div><div class="value">24시간 응급 진료 서비스 제공</div></div>
-    <div class="detail-item"><div class="label">예방 접종</div><div class="value">반려동물의 예방 접종 서비스 제공</div></div>
-    <div class="detail-item"><div class="label">치료</div><div class="value">내과, 외과, 치과, 피부과 전문 치료</div></div>
-    <div class="detail-item"><div class="label">동물 행동 상담</div><div class="value">동물 행동 문제 상담 서비스</div></div>
-  </div>
-</div>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6686738239613464"
-     data-ad-slot="1204098626"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
+<?php include APPPATH.'Views/includes/footer.php'; ?>
+
 <script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<div class="section">
-  <h2>의료 장비</h2>
-  <div class="detail-list">
-    <div class="detail-item"><div class="label">X-ray 기기</div><div class="value">고급 X-ray 장비로 정확한 진단</div></div>
-    <div class="detail-item"><div class="label">초음파 기기</div><div class="value">동물 건강 상태를 빠르게 확인</div></div>
-    <div class="detail-item"><div class="label">혈액 검사</div><div class="value">정밀 혈액 검사 서비스</div></div>
-  </div>
-</div>
+(function(){
+  // ✅ 네이버 지도 링크: 주소만 검색
+  var addr = <?= json_encode($addressForUse) ?>;
+  var link = document.getElementById('naverDirections');
+  if (link && addr) link.href = "https://map.naver.com/v5/search/" + encodeURIComponent(addr);
 
-<div class="section">
-  <h2>병원 시설</h2>
-  <div class="detail-list">
-    <div class="detail-item"><div class="label">대기실</div><div class="value">쾌적한 환경의 대기실</div></div>
-    <div class="detail-item"><div class="label">수술실</div><div class="value">최신 수술 장비를 갖춘 수술실</div></div>
-    <div class="detail-item"><div class="label">입원실</div><div class="value">편안하고 안전한 입원실</div></div>
-  </div>
-</div>
+  // ✅ 지도 렌더
+  function waitForNaver(cb, tries){
+    tries = tries || 0;
+    if (window.naver && naver.maps && naver.maps.Map) return cb();
+    if (tries > 120) return;
+    setTimeout(function(){ waitForNaver(cb, tries + 1); }, 100);
+  }
 
-</div><!-- /.container -->
-  <?php include APPPATH . 'Views/includes/footer.php'; ?>
+  waitForNaver(function(){
+    var lat = <?= ($lat !== null) ? json_encode($lat) : 'null' ?>;
+    var lng = <?= ($lng !== null) ? json_encode($lng) : 'null' ?>;
+    if (typeof lat !== 'number' || typeof lng !== 'number' || !isFinite(lat) || !isFinite(lng)) return;
 
-  <script>
-  (function(){
-    // 모델에서 전달된 데이터를 사용하여 좌표값 (위도, 경도)을 가져옵니다.
-    var lat = <?= esc($hospital['y_value']); ?>;  // 위도 (y_value)
-    var lng = <?= esc($hospital['x_value']); ?>;  // 경도 (x_value)
-    var hospitalName = "<?= esc($hospital['b_name']); ?>";  // 병원 이름
+    var center = new naver.maps.LatLng(lat, lng);
+    var map = new naver.maps.Map('map', { center: center, zoom: 16 });
 
-//     // 네이버 맵을 초기화하고 병원 위치를 표시합니다.
-//     var map = new naver.maps.Map('map', {
-//       center: new naver.maps.LatLng(lat, lng),  // 위도와 경도를 사용하여 맵 중심 설정
-//       zoom: 16
-//     });
-// 
-//     // 마커를 추가하여 병원 위치 표시
-//     new naver.maps.Marker({
-//       position: new naver.maps.LatLng(lat, lng),
-//       map: map,
-//       title: hospitalName
-//     });
-  })();
+    new naver.maps.Marker({
+      position: center,
+      map: map,
+      title: <?= json_encode(html_entity_decode($hospitalName)) ?>
+    });
+  });
+
+  // ✅ AdSense: 중복 push 방지
+  function pushAdsSafe(){
+    try{
+      var ins = document.querySelectorAll('ins.adsbygoogle');
+      for (var i=0;i<ins.length;i++){
+        if (!ins[i].getAttribute('data-adsbygoogle-status')) {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      }
+    }catch(e){}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pushAdsSafe);
+  else pushAdsSafe();
+})();
 </script>
 
 </body>
