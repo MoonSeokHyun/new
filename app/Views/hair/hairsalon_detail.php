@@ -29,7 +29,8 @@ $mix = $parts ? implode(', ', array_slice($parts, 0, 2)) : "{$district_name} 지
 $seoTitle = "{$bizName} | {$district_name} 미용실 위치·전화번호·영업정보";
 $seoDescription = "{$district_name}에 위치한 {$bizName} 미용실 정보. {$mix}를 확인하고 네이버 지도로 위치도 바로 확인하세요.";
 
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+// 환경변수가 있으면 사용, 없으면 기본값 사용 (서버에서 .env 없을 때 대비)
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
 
 $nearby_salons = $nearby_salons ?? [];
 
