@@ -29,7 +29,7 @@ $mix = $parts ? implode(', ', array_slice($parts, 0, 2)) : "{$district_name} 지
 $seoTitle = "{$bizName} | {$district_name} 미용실 위치·전화번호·영업정보";
 $seoDescription = "{$district_name}에 위치한 {$bizName} 미용실 정보. {$mix}를 확인하고 네이버 지도로 위치도 바로 확인하세요.";
 
-$naverMapKeyId = 'c3hsihbnx3';
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
 
 $nearby_salons = $nearby_salons ?? [];
 
@@ -68,6 +68,7 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
 
+  <?php if (!empty($naverMapKeyId)): ?>
   <script>
     window.navermap_authFailure = function () {
       console.error('네이버 지도 인증 실패: ncpKeyId 또는 Web 서비스 URL 등록을 확인하세요.');
@@ -75,6 +76,7 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   </script>
 
   <script defer src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=<?= esc($naverMapKeyId) ?>"></script>
+  <?php endif; ?>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
 
