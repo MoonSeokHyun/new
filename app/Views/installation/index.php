@@ -49,7 +49,6 @@ $robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
 
   <style>
     :root{
@@ -100,6 +99,8 @@ $robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large
       min-height: 130px;
     }
     .card:hover{ transform: translateY(-2px); }
+    .card a{ text-decoration:none; }
+    .btn-detail:hover{ background:#1556d6 !important; opacity:0.9; }
 
     .name{ font-size:16px; font-weight:900; margin:0 0 8px; }
     .meta{ color:var(--sub); font-size:13px; line-height:1.45; }
@@ -144,15 +145,6 @@ $robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large
     </form>
   </div>
 
-  <div class="ad">
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-6686738239613464"
-      data-ad-slot="1204098626"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-  </div>
-
   <div class="grid">
     <?php if (!empty($installations) && is_array($installations)): ?>
       <?php 
@@ -170,7 +162,7 @@ $robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large
           $district = esc($inst['District Name'] ?? '');
           $url   = site_url('installation/show/' . $id);
         ?>
-        <a class="card" href="<?= esc($url) ?>">
+        <div class="card">
           <h2 class="name"><?= $name ?></h2>
           <div class="meta">
             <?php if ($addr): ?>📍 <?= $addr ?><br><?php endif; ?>
@@ -178,39 +170,21 @@ $robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large
           </div>
           <div class="chips">
             <?php if ($district): ?><span class="chip"><?= $district ?></span><?php endif; ?>
-            <?php if ($inst['Managing Institution Name'] ?? ''): ?>
+            <?php if (($inst['Managing Institution Name'] ?? '') !== ''): ?>
               <span class="chip"><?= esc($inst['Managing Institution Name']) ?></span>
             <?php endif; ?>
           </div>
-        </a>
-        
-        <!-- 광고 중간 삽입 (6개 카드 후) -->
-        <?php if ($count === 6): ?>
-          <div class="ad" style="grid-column:1/-1; margin:1rem 0;">
-            <ins class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-pub-6686738239613464"
-              data-ad-slot="1204098626"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
+          <div style="margin-top:12px;">
+            <a href="<?= esc($url) ?>" class="btn-detail" style="display:inline-block; padding:8px 16px; background:#1b6cff; color:#fff; border-radius:8px; font-size:14px; font-weight:700; text-decoration:none;">상세보기</a>
           </div>
-        <?php endif; ?>
+        </div>
+        
       <?php endforeach; ?>
     <?php else: ?>
       <div class="card" style="grid-column:1/-1;">
         검색 결과가 없습니다.
       </div>
     <?php endif; ?>
-  </div>
-
-  <!-- 광고(하단) -->
-  <div class="ad">
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-6686738239613464"
-      data-ad-slot="1204098626"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
   </div>
 
   <div class="pager-wrap">
@@ -223,25 +197,6 @@ $robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large
 
 <?php include APPPATH . 'Views/includes/footer.php'; ?>
 
-<script>
-(function(){
-  function pushAdsSafe(){
-    try{
-      var ins = document.querySelectorAll('ins.adsbygoogle');
-      for (var i=0;i<ins.length;i++){
-        if (!ins[i].getAttribute('data-adsbygoogle-status')) {
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        }
-      }
-    }catch(e){}
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', pushAdsSafe);
-  } else {
-    pushAdsSafe();
-  }
-})();
-</script>
 
 </body>
 </html>

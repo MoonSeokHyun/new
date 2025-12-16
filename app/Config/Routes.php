@@ -48,7 +48,9 @@ $routes->get('/installation', 'InstallationController::index');
 $routes->get('/installation/show/(:num)', 'InstallationController::show/$1');
 
 $routes->get('/clothingcollectionbin', 'ClothingCollectionBinController::index');
+$routes->get('/clothing-collection-bin', 'ClothingCollectionBinController::index'); // 하이픈 버전
 $routes->get('/clothingcollectionbin/show/(:num)', 'ClothingCollectionBinController::show/$1');
+$routes->get('/clothing-collection-bin/show/(:num)', 'ClothingCollectionBinController::show/$1'); // 하이픈 버전
 $routes->get('/sitemap/clothingCollectionBinPage/(:num)', 'SitemapController::clothingCollectionBinPage/$1');
 
 // File: app/Config/Routes.php

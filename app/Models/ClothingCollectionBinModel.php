@@ -8,6 +8,7 @@ class ClothingCollectionBinModel extends Model
 {
     protected $table = 'clothing_collection_bins';
     protected $primaryKey = 'id';
+    protected $returnType = 'array'; // 배열로 반환
     protected $allowedFields = [
         'Province Name', 'Clothing Collection Bin Location Name', 'District Name',
         'Street Address', 'Land Lot Address', 'Latitude', 'Longitude',
@@ -17,15 +18,15 @@ class ClothingCollectionBinModel extends Model
     ];
     protected $useTimestamps = false;
 
-    // 검색 기능
+    // 검색 기능 (deprecated - use controller's search instead)
     public function search($query)
     {
         $db = \Config\Database::connect();
         $builder = $db->table($this->table);
-        $builder->like('`Clothing Collection Bin Location Name`', $query);
-        $builder->orLike('`Street Address`', $query);
+        $builder->like('Clothing Collection Bin Location Name', $query);
+        $builder->orLike('Street Address', $query);
         $queryResult = $builder->get();
-        return $queryResult->getResult();
+        return $queryResult->getResultArray();
     }
 
     // 모든 데이터 가져오기 (인덱스 페이지)

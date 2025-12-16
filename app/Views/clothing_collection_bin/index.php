@@ -35,7 +35,6 @@ $robots = 'index,follow,max-image-preview:large';
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
   <style>
     :root{ --bg:#f6f7fb; --card:#fff; --txt:#222; --sub:#555; --bd:#e9ecf2; --blue:#1b6cff; --chip:#eef4ff; }
     *{ box-sizing:border-box; }
@@ -79,9 +78,6 @@ $robots = 'index,follow,max-image-preview:large';
       <button type="submit">검색</button>
     </form>
   </div>
-  <div class="ad">
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  </div>
   <div class="grid">
     <?php if (!empty($bins) && is_array($bins)): ?>
       <?php 
@@ -108,17 +104,6 @@ $robots = 'index,follow,max-image-preview:large';
           </div>
         </a>
         
-        <!-- 광고 중간 삽입 (6개 카드 후) -->
-        <?php if ($count === 6): ?>
-          <div class="ad" style="grid-column:1/-1; margin:1rem 0;">
-            <ins class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-pub-6686738239613464"
-              data-ad-slot="1204098626"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-          </div>
-        <?php endif; ?>
       <?php endforeach; ?>
     <?php else: ?>
       <div class="card" style="grid-column:1/-1;">
@@ -127,41 +112,12 @@ $robots = 'index,follow,max-image-preview:large';
     <?php endif; ?>
   </div>
   
-  <!-- 광고(하단) -->
-  <div class="ad">
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-6686738239613464"
-      data-ad-slot="1204098626"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-  </div>
-  
   <div class="pager-wrap">
     <?php if (isset($pager) && $pager): ?>
-      <?= $pager->links() ?>
+      <?= $pager->links('bins', 'default_full') ?>
     <?php endif; ?>
   </div>
 </div>
 <?php include APPPATH . 'Views/includes/footer.php'; ?>
-<script>
-(function(){
-  function pushAdsSafe(){
-    try{
-      var ins = document.querySelectorAll('ins.adsbygoogle');
-      for (var i=0;i<ins.length;i++){
-        if (!ins[i].getAttribute('data-adsbygoogle-status')) {
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        }
-      }
-    }catch(e){}
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', pushAdsSafe);
-  } else {
-    pushAdsSafe();
-  }
-})();
-</script>
 </body>
 </html>

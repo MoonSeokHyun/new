@@ -63,7 +63,6 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   </script>
   <script defer src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=<?= esc($naverMapKeyId) ?>"></script>
   <?php endif; ?>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -159,9 +158,6 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   </div>
   <h1 class="title"><?= esc($instName) ?></h1>
   <p class="subtitle"><?= esc($seoDescription) ?></p>
-  <div class="ad">
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  </div>
   <div class="grid">
     <div class="card">
       <h2>핵심 요약</h2>
@@ -177,9 +173,6 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
         <a class="btn" href="<?= $installationsUrl ?>">수거장소 목록</a>
       </div>
     </div>
-    <div class="ad">
-      <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="fluid" data-ad-layout="in-article"></ins>
-    </div>
     <div class="card">
       <h2>기본 정보</h2>
       <ul class="detail">
@@ -193,9 +186,6 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
         <li class="row"><span class="label">데이터 기준일</span><span class="value"><?= esc($installation['Data Reference Date'] ?? '') ?></span></li>
       </ul>
       <p class="note">※ 공개 데이터 기반 정보로 실제 운영 정보는 변동될 수 있습니다.</p>
-    </div>
-    <div class="ad">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
     <div class="card" id="mapSection">
       <h2>지도</h2>
@@ -216,19 +206,21 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
         <a class="btn muted" href="<?= $districtUrl ?>">같은 지역 더 보기</a>
       </div>
     </div>
-    <div class="ad">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="autorelaxed"></ins>
-    </div>
     <div class="card" id="nearbySection">
       <h2>근처 폐의약품 수거장소 보기</h2>
-      <?php if (!empty($nearby_installations)): ?>
+      <?php if (!empty($nearby_installations) && is_array($nearby_installations)): ?>
         <div class="near-grid">
           <?php foreach ($nearby_installations as $n): ?>
             <?php
-              $nName = esc($n['Installation Location Name'] ?? '수거장소');
-              $nUrl  = esc($n['url'] ?? '#');
-              $nRoad = esc($n['Street Address'] ?? '');
-              $nLot  = esc($n['Land Lot Address'] ?? '');
+              // Ensure $n is an array
+              $item = is_object($n) ? (array)$n : $n;
+              $nId = $item['id'] ?? null;
+              if (!$nId) continue;
+              
+              $nName = esc($item['Installation Location Name'] ?? '수거장소');
+              $nUrl  = esc($item['url'] ?? site_url('installation/show/' . $nId));
+              $nRoad = esc($item['Street Address'] ?? '');
+              $nLot  = esc($item['Land Lot Address'] ?? '');
               $addr  = $nRoad ?: $nLot;
             ?>
             <div class="near-item">
@@ -245,29 +237,11 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
         </p>
       <?php endif; ?>
     </div>
-    <div class="ad">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    </div>
   </div>
 </div>
 <?php include APPPATH . 'Views/includes/footer.php'; ?>
 <script>
 (function(){
-  function pushAdsSafe(){
-    try{
-      var ins = document.querySelectorAll('ins.adsbygoogle');
-      for (var i=0;i<ins.length;i++){
-        if (!ins[i].getAttribute('data-adsbygoogle-status')) {
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        }
-      }
-    }catch(e){}
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', pushAdsSafe);
-  } else {
-    pushAdsSafe();
-  }
   var qAddr = <?= json_encode($mapQuery) ?>;
   var el = document.getElementById("naverDirections");
   if (el) {

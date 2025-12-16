@@ -69,7 +69,7 @@ class LibraryInfoController extends BaseController
         $nearby = [];
         if ($district) {
             $nearby = $model
-                ->like('`Address (Road Name)`', $district)
+                ->like('Address (Road Name)', $district)
                 ->where('id !=', $id)
                 ->limit(6)
                 ->findAll();

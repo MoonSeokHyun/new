@@ -10,36 +10,56 @@ class ClothingCollectionBinController extends Controller
     // 인덱스 페이지
     public function index()
     {
-        $model = new ClothingCollectionBinModel();
-
-        // 검색 기능 (선택적)
-        $query = $this->request->getVar('search');
+        helper('url');
         
-        // 검색 시, 해당 query로 데이터 검색
-        if ($query) {
-            $bins = $model->search($query); // search 메서드를 통해 데이터 검색
-        } else {
-            // 페이징 처리
-            $page = $this->request->getVar('page') ?? 1; // 현재 페이지
-            $perPage = 12; // 한 페이지에 표시할 항목 수
-            $offset = ($page - 1) * $perPage; // 페이지에 맞는 offset 계산
+        $model = new ClothingCollectionBinModel();
+        $query = trim((string)($this->request->getGet('search') ?? ''));
+        $perPage = 12;
 
-            // 해당 페이지에 맞는 수거함 데이터 가져오기
-            $bins = $model->getAllBins($perPage, $offset);
+        // 검색 시에도 페이징 지원
+        if ($query !== '') {
+            // 공백이 있는 컬럼명은 where()에 SQL 문자열을 직접 사용
+            $db = \Config\Database::connect();
+            $builder = $db->table($model->table);
+            $escapedQuery = $db->escapeLikeString($query);
+            $escapedQueryValue = $db->escape('%' . $escapedQuery . '%');
+            $builder->groupStart()
+                ->where('`Clothing Collection Bin Location Name` LIKE ' . $escapedQueryValue, null, false)
+                ->orWhere('`Street Address` LIKE ' . $escapedQueryValue, null, false)
+                ->orWhere('`Land Lot Address` LIKE ' . $escapedQueryValue, null, false)
+                ->orWhere('`District Name` LIKE ' . $escapedQueryValue, null, false)
+                ->orWhere('`Managing Institution Name` LIKE ' . $escapedQueryValue, null, false)
+            ->groupEnd();
+            
+            // 페이징을 위해 Model의 paginate를 사용
+            $total = $builder->countAllResults(false);
+            $page = (int)($this->request->getGet('page') ?? 1);
+            $offset = ($page - 1) * $perPage;
+            
+            $bins = $builder->orderBy('id', 'ASC')->limit($perPage, $offset)->get()->getResultArray();
+            
+            // Pager 설정
+            $pager = \Config\Services::pager();
+            $pager->store('bins', $page, $perPage, $total);
+            $model->pager = $pager;
+        } else {
+            $bins = $model->orderBy('id', 'ASC')->paginate($perPage, 'bins');
         }
 
-        // 전체 데이터 개수 (페이징을 위해)
-        $totalBins = $model->countAllBins();
-        
-        // Pager 설정
-        $pager = \Config\Services::pager();
+        // Ensure all items are arrays
+        if (!empty($bins)) {
+            foreach ($bins as &$bin) {
+                if (is_object($bin)) {
+                    $bin = (array)$bin;
+                }
+            }
+            unset($bin);
+        }
 
-        // 인덱스 페이지에 필요한 데이터 뷰로 전달
         return view('clothing_collection_bin/index', [
-            'bins' => $bins,    // 수거함 목록
-            'pager' => $pager,  // 페이징
-            'totalBins' => $totalBins,  // 전체 데이터 개수
-            'search' => $query, // 검색어 전달
+            'bins' => $bins,
+            'pager' => $model->pager,
+            'search' => $query,
         ]);
     }
 
@@ -54,6 +74,11 @@ class ClothingCollectionBinController extends Controller
         // 수거함이 없다면 404 에러 발생
         if (!$bin) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException("Collection Bin with ID $id not found");
+        }
+        
+        // Ensure bin is an array
+        if (is_object($bin)) {
+            $bin = (array)$bin;
         }
 
         // ✅ 주소 우선순위: 도로명 -> 지번
@@ -111,19 +136,26 @@ class ClothingCollectionBinController extends Controller
 
         $nearby = [];
         if ($district) {
-            $nearby = $model
+            // 공백이 있는 컬럼명은 where()에 SQL 문자열을 직접 사용
+            $db = \Config\Database::connect();
+            $builder = $db->table($model->table);
+            $escapedDistrict = $db->escapeLikeString($district);
+            $escapedDistrictValue = $db->escape('%' . $escapedDistrict . '%');
+            $nearbyResults = $builder
                 ->groupStart()
-                    ->like('`Street Address`', $district)
-                    ->orLike('`Land Lot Address`', $district)
+                    ->where('`Street Address` LIKE ' . $escapedDistrictValue, null, false)
+                    ->orWhere('`Land Lot Address` LIKE ' . $escapedDistrictValue, null, false)
                 ->groupEnd()
                 ->where('id !=', $id)
                 ->limit(6)
-                ->findAll();
+                ->get()
+                ->getResultArray();
 
-            foreach ($nearby as &$n) {
-                $n['url'] = site_url('clothing-collection-bin/show/' . $n['id']);
+            foreach ($nearbyResults as $n) {
+                $item = is_object($n) ? (array)$n : $n;
+                $item['url'] = site_url('clothing-collection-bin/show/' . ($item['id'] ?? 0));
+                $nearby[] = $item;
             }
-            unset($n);
         }
 
         return view('clothing_collection_bin/detail', [
