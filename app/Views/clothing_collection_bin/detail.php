@@ -1,174 +1,307 @@
 <?php
-// 폐의류 수거함의 도로명 주소 예시
+$binName = esc($bin['Clothing Collection Bin Location Name'] ?? '폐의류 수거함');
 $road_address = esc($bin['Street Address'] ?? '');
-
-// 구 이름이나 읍 이름을 추출하기 위한 정규 표현식
-preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/', $road_address, $matches);
-
-// 구 또는 읍 이름을 추출
-$district_name = isset($matches[0]) ? $matches[0] : '지역';
-
-// 'Detailed Location'도 추가하여 타이틀을 더욱 구체적으로 작성
+$lot_address = esc($bin['Land Lot Address'] ?? '');
+$full_address = $road_address ?: $lot_address;
 $detailedLocation = esc($bin['Detailed Location'] ?? '');
+$managingInst = esc($bin['Managing Institution Name'] ?? '');
+$phone = esc($bin['Managing Institution Phone Number'] ?? '');
+$province = esc($bin['Province Name'] ?? '');
+$district_name = $district ?? '지역';
 
-// 타이틀 생성 (사람들이 클릭하고 싶게끔 유도)
-$seoTitle = esc("{$detailedLocation}폐의류 수거함 - {$district_name}에 위치한 수거함 정보, 위치, 세부 위치, 전화번호, 관리기관 확인!");
+$canonicalUrl = current_url();
 
-// SEO 설명 추가
-$seoDescription = esc("폐의류 수거함 상세 정보 - 위치, 세부 위치, 전화번호, 관리기관, 제공기관 정보 등 확인해보세요.");
-$seoKeywords = esc("폐의류 수거함, {$district_name}, 수거함, 위치, 세부위치, 전화번호, 제공기관");
+preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $road_address ?: $lot_address, $matches);
+if (!$district_name || $district_name === '지역') {
+    $district_name = $matches[0] ?? '지역';
+}
+
+preg_match('/^(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\s]*/u', $full_address, $m2);
+$region_guess = $m2[0] ?? '대한민국';
+
+// ✅ 컨트롤러에서 넘어온 WGS84
+$latitude  = (is_numeric($latitude)  ? (float)$latitude  : null);
+$longitude = (is_numeric($longitude) ? (float)$longitude : null);
+
+$seoTitle = "{$binName} | {$district_name} 폐의류 수거함 위치·전화번호·관리기관";
+$seoDescription = "{$district_name}에 위치한 {$binName} 폐의류 수거함 정보. {$full_address} 위치, 관리기관({$managingInst}), 전화번호를 확인하고 네이버 지도로 위치도 바로 확인하세요.";
+
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
+$nearby_bins = $nearby_bins ?? [];
+$districtUrl = site_url('clothing-collection-bin?district=' . urlencode($district_name));
+$binsUrl = site_url('clothing-collection-bin');
+$mapQuery = trim(html_entity_decode($road_address ?: $lot_address));
 ?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><?= esc($seoTitle) ?></title>
   <meta name="description" content="<?= esc($seoDescription) ?>" />
-  <meta name="keywords" content="<?= esc($seoKeywords) ?>" />
-  <meta name="author" content="편잇 팀" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Open Graph & Twitter Card -->
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="<?= esc($canonicalUrl) ?>" />
+  <link rel="alternate" href="<?= esc($canonicalUrl) ?>" hreflang="ko" />
+  <link rel="preconnect" href="https://oapi.map.naver.com" crossorigin>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin>
   <meta property="og:type" content="website" />
   <meta property="og:title" content="<?= esc($seoTitle) ?>" />
   <meta property="og:description" content="<?= esc($seoDescription) ?>" />
-  <meta property="og:url" content="<?= current_url() ?>" />
+  <meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
   <meta property="og:locale" content="ko_KR" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
-
-  <!-- <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script> -->
-
+  <?php if (!empty($naverMapKeyId)): ?>
+  <script>
+    window.navermap_authFailure = function () {
+      console.error('네이버 지도 인증 실패: ncpKeyId 또는 Web 서비스 URL 등록을 확인하세요.');
+    };
+  </script>
+  <script defer src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=<?= esc($naverMapKeyId) ?>"></script>
+  <?php endif; ?>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"WebPage",
+        "@id":"<?= esc($canonicalUrl) ?>#webpage",
+        "url":"<?= esc($canonicalUrl) ?>",
+        "name":"<?= esc($seoTitle) ?>",
+        "description":"<?= esc($seoDescription) ?>",
+        "inLanguage":"ko-KR"
+      },
+      {
+        "@type":"BreadcrumbList",
+        "@id":"<?= esc($canonicalUrl) ?>#breadcrumb",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"홈","item":"<?= esc(site_url()) ?>"},
+          {"@type":"ListItem","position":2,"name":"폐의류 수거함 목록","item":"<?= esc($binsUrl) ?>"},
+          {"@type":"ListItem","position":3,"name":"<?= esc($district_name) ?>","item":"<?= esc($districtUrl) ?>"},
+          {"@type":"ListItem","position":4,"name":"<?= esc($binName) ?>","item":"<?= esc($canonicalUrl) ?>"}
+        ]
+      },
+      {
+        "@type":"RecyclingCenter",
+        "@id":"<?= esc($canonicalUrl) ?>#location",
+        "name":"<?= esc($binName) ?>",
+        "url":"<?= esc($canonicalUrl) ?>",
+        "telephone":"<?= esc($phone) ?>",
+        "address":{
+          "@type":"PostalAddress",
+          "streetAddress":"<?= esc($full_address) ?>",
+          "addressLocality":"<?= esc($district_name) ?>",
+          "addressRegion":"<?= esc($region_guess) ?>",
+          "addressCountry":"KR"
+        }
+        <?php if ($latitude !== null && $longitude !== null): ?>,
+        "geo": {
+          "@type":"GeoCoordinates",
+          "latitude": <?= json_encode($latitude) ?>,
+          "longitude": <?= json_encode($longitude) ?>
+        }
+        <?php endif; ?>
+      }
+    ]
+  }
+  </script>
   <style>
-    body { background: #f5f5f5; font-family: 'Noto Sans KR', sans-serif; color: #333; margin:0; padding:0; }
-    a { color:#0078ff; text-decoration:none; }
-    .container{ max-width:800px; margin:2rem auto; padding:0 1rem; }
-    .content-title{ font-size:2rem; margin-bottom:.5rem; border-bottom:2px solid #0078ff; padding-bottom:.3rem; }
-    .breadcrumb{ font-size:.9rem; color:#555; margin-bottom:1.5rem; }
-    .ad-box{ margin:1.5rem 0; text-align:center; }
-    .detail-card, .section{ background:#fff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); margin-bottom:1.5rem; padding:1.5rem; }
-    .detail-card h3, .section h2{ font-size:1.5rem; color:#0078ff; margin-bottom:1rem; border-left:4px solid #0078ff; padding-left:.5rem; }
-    .detail-card p, .section p, .section ul, .section ol{ margin:.5rem 0; }
-    .section ul, .section ol{ margin-left:1.2rem; }
-    .detail-card p strong, .section p strong{ color:#333; }
-    .info-table{ width:100%; border-collapse:collapse; margin-top:1rem; }
-    .info-table th, .info-table td{ padding:.75rem; text-align:left; border-bottom:1px solid #eee; }
-    .info-table th{ background:#f5f5f5; font-weight:600; }
-    .main-button{ display:inline-block; margin-top:1rem; padding:.75rem 1.25rem; background:#62D491; color:#fff; border-radius:5px; }
-    .main-button:hover{ background:#4db67d; }
-    #map{ width:100%; height:300px; border-radius:8px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.1); margin-top:1.5rem; }
-    @media (max-width:768px){ .container{ padding:0 1rem; } #map{ height:200px; } }
+    :root{ --blue:#0078ff; --bg:#f5f5f5; --txt:#333; --sub:#666; --card:#fff; --bd:#eee; }
+    body{ background:var(--bg); font-family:'Noto Sans KR',system-ui,-apple-system,sans-serif; margin:0; color:var(--txt); }
+    a{ color:var(--blue); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    .container{ max-width:900px; margin:1.5rem auto; padding:0 1rem; }
+    .title{ font-size:2rem; margin:.5rem 0 0; }
+    .subtitle{ color:var(--sub); margin:.25rem 0 1rem; line-height:1.5; }
+    .breadcrumb{ font-size:.9rem; color:#555; margin-bottom:1rem; }
+    .grid{ display:grid; grid-template-columns: 1fr; gap:1rem; }
+    .card{ background:var(--card); border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,.08); padding:1.25rem; }
+    .card h2{ font-size:1.15rem; margin:0 0 .75rem; color:var(--blue); border-left:4px solid var(--blue); padding-left:.5rem; }
+    .kv{ display:flex; flex-wrap:wrap; gap:.5rem; }
+    .pill{ background:#eef5ff; color:#0b3d91; border-radius:999px; padding:.35rem .7rem; font-size:.85rem; }
+    .detail{ list-style:none; padding:0; margin:0; }
+    .row{ display:flex; justify-content:space-between; gap:1rem; padding:.65rem 0; border-bottom:1px solid var(--bd); }
+    .row:last-child{ border-bottom:none; }
+    .label{ font-weight:700; }
+    .value{ color:#555; text-align:right; word-break:break-word; }
+    .actions{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.75rem; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.4rem; padding:.6rem .9rem; border-radius:10px; border:1px solid #dbe7ff; background:#fff; color:#0b3d91; font-weight:700; }
+    .btn.primary{ background:var(--blue); border-color:var(--blue); color:#fff; }
+    .btn.muted{ background:#f7f9ff; }
+    #map{ width:100%; height:340px; border-radius:12px; overflow:hidden; background:#e9eef7; }
+    .note{ margin-top:.5rem; color:var(--sub); font-size:.9rem; line-height:1.5; }
+    .ad{ margin:1rem 0; text-align:center; }
+    .small{ font-size:.92rem; color:#555; line-height:1.7; }
+    .sep{ height:1px; background:var(--bd); margin:1rem 0; }
+    .near-grid{ display:grid; grid-template-columns:1fr; gap:.6rem; }
+    .near-item{ padding:.85rem 1rem; border:1px solid var(--bd); border-radius:12px; background:#fff; }
+    .near-title{ font-weight:800; font-size:1rem; margin:0 0 .25rem; }
+    .near-meta{ color:#666; font-size:.92rem; line-height:1.5; }
+    @media (max-width:640px){
+      .row{ flex-direction:column; align-items:flex-start; }
+      .value{ text-align:left; }
+    }
   </style>
 </head>
 <body>
-
-  <?php include APPPATH . 'Views/includes/header.php'; ?>
-
-  <div class="container">
-    <h1 class="content-title"><?= esc($bin['Clothing Collection Bin Location Name']) ?> 수거함 위치 정보</h1>
-    <div class="breadcrumb">
-      <a href="<?= site_url() ?>">홈</a> &gt;
-      <a href="<?= site_url('clothing_bins') ?>">폐의류 수거함</a> &gt;
-      상세정보
-    </div>
-
-    <div class="ad-box">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
-    </div>
-
-    <!-- 상세 카드 -->
-    <div class="detail-card">
-      <h3><?= esc($bin['Clothing Collection Bin Location Name']) ?> 🚪</h3>
-      <p><strong>주소:</strong> <?= esc($bin['Street Address']) ?></p>
-      <p><strong>세부 위치:</strong> <?= esc($bin['Detailed Location']) ?></p>
-      <p><strong>관리 기관:</strong> <?= esc($bin['Managing Institution Name']) ?></p>
-      <p><strong>전화번호:</strong> <?= esc($bin['Managing Institution Phone Number']) ?></p>
-      <p><strong>데이터 기준일자:</strong> <?= esc($bin['Data Reference Date']) ?></p>
-
-      <table class="info-table">
-        <tr><th>제공기관명</th><td><?= esc($bin['Provider Institution Name']) ?></td></tr>
-        <tr><th>제공기관 코드</th><td><?= esc($bin['Provider Institution Code']) ?></td></tr>
-        <tr><th>취급 품목</th><td>헌옷, 신발, 가방, 침대커버, 인형, 홑이불, 가정용 카펫, 커튼, 담요</td></tr>
-      </table>
-
-      <a href="<?= site_url('clothing_bins') ?>" class="main-button">목록으로 돌아가기</a>
-    </div>
-
-    <!-- 수거 안내 섹션 -->
-    <div class="section">
-      <h2>수거 안내</h2>
-      <ul>
-        <li>깨끗하게 세탁된 의류만 배출해 주세요.</li>
-        <li>오염 심한 의류나 침구류는 수거가 제한될 수 있습니다.</li>
-        <li>대형 가전이나 전자제품은 별도 전용 수거함을 이용해 주세요.</li>
-        <li>분리수거를 위해 옷 종류별로 지퍼백에 담아 가져오시면 편리합니다.</li>
-        <li>수거함이 가득 찼을 경우, 관리자에게 문의 바랍니다.</li>
-      </ul>
-    </div>
-
-    <!-- 수거 가능 품목 섹션 -->
-    <div class="section">
-      <h2>수거 가능 품목</h2>
-      <ul>
-        <li>헌 옷: 셔츠, 바지, 코트, 드레스 등</li>
-        <li>신발: 운동화, 구두 (끈을 묶거나 한 짝씩 분리하여 배출)</li>
-        <li>가방: 백팩, 토트백, 지갑 등</li>
-        <li>침구류: 홑이불, 배개커버 (작은 크기로 접어 배출)</li>
-        <li>커튼, 담요, 카펫 등 가정용 섬유류</li>
-      </ul>
-    </div>
-
-    <!-- 이용 방법 섹션 -->
-    <div class="section">
-      <h2>이용 방법</h2>
-      <ol>
-        <li>운영 시간 확인: 방문 전 운영 시간과 휴일을 확인합니다.</li>
-        <li>품목 분류: 수거 가능 품목을 종류별로 분류합니다.</li>
-        <li>포장 준비: 비닐 봉투나 상자에 담아 밀봉합니다.</li>
-        <li>배출: 수거함 입구에 정해진 방법대로 넣습니다.</li>
-        <li>문의: 문제가 있을 경우 전화번호로 연락합니다.</li>
-      </ol>
-    </div>
-
-    <!-- 자주 묻는 질문 섹션 -->
-    <div class="section">
-      <h2>자주 묻는 질문(FAQ)</h2>
-      <ul>
-        <li><strong>Q:</strong> 오염된 옷은 어떻게 하나요?<br><strong>A:</strong> 오염이 심할 경우 별도 폐기물로 처리해 주세요.</li>
-        <li><strong>Q:</strong> 큰 가방도 수거 가능한가요?<br><strong>A:</strong> 크기가 너무 클 경우 관리자에게 문의 바랍니다.</li>
-        <li><strong>Q:</strong> 비닐에 담지 않고 배출해도 되나요?<br><strong>A:</strong> 환경 보호를 위해 봉투에 담아 배출하시는 것을 권장합니다.</li>
-        <li><strong>Q:</strong> 옷 개수 제한이 있나요?<br><strong>A:</strong> 일일 배출량에 제한은 없으나, 과도한 경우 관리자에게 알려주세요.</li>
-        <li><strong>Q:</strong> 전자제품은 함께 배출 가능한가요?<br><strong>A:</strong> 전자제품 전용 수거함을 이용해 주세요.</li>
-      </ul>
-    </div>
-
-    <!-- 주의 사항 섹션 -->
-    <div class="section">
-      <h2>주의 사항</h2>
-      <ul>
-        <li>수거함 문을 막거나 파손하지 마세요.</li>
-        <li>생활 폐기물이나 음식물은 섞어 배출하지 마세요.</li>
-        <li>야간이나 운영 시간 외에는 물품을 놓지 마세요.</li>
-        <li>화재 위험 물질은 절대 배출하지 마세요.</li>
-        <li>문의 시 전화: <?= esc($bin['Managing Institution Phone Number']) ?>.</li>
-      </ul>
-    </div>
-
-    <!-- 지도 섹션 -->
-    <div id="map"></div>
+<?php include APPPATH . 'Views/includes/header.php'; ?>
+<div class="container">
+  <div class="breadcrumb">
+    <a href="<?= site_url() ?>">홈</a> &gt;
+    <a href="<?= $binsUrl ?>">폐의류 수거함 목록</a> &gt;
+    <a href="<?= $districtUrl ?>"><?= esc($district_name) ?></a> &gt;
+    상세정보
   </div>
-
-  <?php include APPPATH . 'Views/includes/footer.php'; ?>
-
-  <script>
-    (function(){
-      var lat = parseFloat("<?= esc($bin['Latitude']) ?>");
-      var lng = parseFloat("<?= esc($bin['Longitude']) ?>");
-//       var map = new naver.maps.Map('map', { center: new naver.maps.LatLng(lat, lng), zoom:16 });
-//       new naver.maps.Marker({ position: map.getCenter(), map: map, title: "<?= esc($bin['Clothing Collection Bin Location Name']) ?>" });
-    })();
-  </script>
+  <h1 class="title"><?= esc($binName) ?></h1>
+  <p class="subtitle"><?= esc($seoDescription) ?></p>
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h2>핵심 요약</h2>
+      <div class="kv">
+        <?php if ($district_name): ?><span class="pill"><?= esc($district_name) ?></span><?php endif; ?>
+        <?php if ($managingInst): ?><span class="pill">관리: <?= esc($managingInst) ?></span><?php endif; ?>
+        <?php if ($phone): ?><span class="pill">전화 가능</span><?php endif; ?>
+      </div>
+      <div class="actions">
+        <?php if ($phone): ?><a class="btn primary" href="tel:<?= preg_replace('/[^0-9]/', '', $phone) ?>" rel="nofollow">전화하기</a><?php endif; ?>
+        <a class="btn muted" href="#mapSection">지도 보기</a>
+        <a class="btn" href="<?= $districtUrl ?>">같은 지역 수거함</a>
+        <a class="btn" href="<?= $binsUrl ?>">수거함 목록</a>
+      </div>
+    </div>
+    <div class="ad">
+      <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="fluid" data-ad-layout="in-article"></ins>
+    </div>
+    <div class="card">
+      <h2>기본 정보</h2>
+      <ul class="detail">
+        <li class="row"><span class="label">수거함명</span><span class="value"><?= esc($binName) ?></span></li>
+        <li class="row"><span class="label">도로명주소</span><span class="value"><?= $road_address ?></span></li>
+        <li class="row"><span class="label">지번주소</span><span class="value"><?= $lot_address ?></span></li>
+        <li class="row"><span class="label">세부 위치</span><span class="value"><?= $detailedLocation ?></span></li>
+        <li class="row"><span class="label">관리기관</span><span class="value"><?= $managingInst ?></span></li>
+        <li class="row"><span class="label">전화번호</span><span class="value"><?= $phone ?></span></li>
+        <li class="row"><span class="label">시도</span><span class="value"><?= $province ?></span></li>
+        <li class="row"><span class="label">데이터 기준일</span><span class="value"><?= esc($bin['Data Reference Date'] ?? '') ?></span></li>
+      </ul>
+      <p class="note">※ 공개 데이터 기반 정보로 실제 운영 정보는 변동될 수 있습니다.</p>
+    </div>
+    <div class="ad">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+    <div class="card" id="mapSection">
+      <h2>지도</h2>
+      <?php if ($latitude !== null && $longitude !== null): ?>
+        <div id="map"></div>
+        <p class="note" id="mapNote">
+          표시 좌표(WGS84): 위도 <?= esc(number_format($latitude, 6)) ?> / 경도 <?= esc(number_format($longitude, 6)) ?>
+        </p>
+      <?php else: ?>
+        <div style="padding:14px; border:1px dashed #cfd8ea; border-radius:12px; background:#fff;">
+          <strong>좌표 정보가 없습니다.</strong><br>
+          서버 지오코딩(API Key) 설정이 안 됐거나, 주소가 지오코딩 결과가 없는 형태일 수 있습니다.<br>
+          <span class="note">현재 주소: <?= esc($mapQuery ?: '없음') ?></span>
+        </div>
+      <?php endif; ?>
+      <div class="actions" style="margin-top:.5rem;">
+        <a class="btn" id="naverDirections" href="#" target="_blank" rel="nofollow noopener">네이버 지도에서 보기</a>
+        <a class="btn muted" href="<?= $districtUrl ?>">같은 지역 더 보기</a>
+      </div>
+    </div>
+    <div class="ad">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="autorelaxed"></ins>
+    </div>
+    <div class="card" id="nearbySection">
+      <h2>근처 폐의류 수거함 보기</h2>
+      <?php if (!empty($nearby_bins)): ?>
+        <div class="near-grid">
+          <?php foreach ($nearby_bins as $n): ?>
+            <?php
+              $nName = esc($n['Clothing Collection Bin Location Name'] ?? '수거함');
+              $nUrl  = esc($n['url'] ?? '#');
+              $nRoad = esc($n['Street Address'] ?? '');
+              $nLot  = esc($n['Land Lot Address'] ?? '');
+              $addr  = $nRoad ?: $nLot;
+            ?>
+            <div class="near-item">
+              <div class="near-title"><a href="<?= $nUrl ?>"><?= $nName ?></a></div>
+              <div class="near-meta">
+                <?php if ($addr): ?>주소: <?= $addr ?><?php endif; ?>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php else: ?>
+        <p class="note">
+          가까운 수거함을 찾지 못했습니다. <a href="<?= $districtUrl ?>"><?= esc($district_name) ?> 수거함 목록</a>에서 더 찾아보세요.
+        </p>
+      <?php endif; ?>
+    </div>
+    <div class="ad">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+  </div>
+</div>
+<?php include APPPATH . 'Views/includes/footer.php'; ?>
+<script>
+(function(){
+  function pushAdsSafe(){
+    try{
+      var ins = document.querySelectorAll('ins.adsbygoogle');
+      for (var i=0;i<ins.length;i++){
+        if (!ins[i].getAttribute('data-adsbygoogle-status')) {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      }
+    }catch(e){}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', pushAdsSafe);
+  } else {
+    pushAdsSafe();
+  }
+  var qAddr = <?= json_encode($mapQuery) ?>;
+  var el = document.getElementById("naverDirections");
+  if (el) {
+    el.href = "https://map.naver.com/v5/search/" + encodeURIComponent(qAddr || "");
+  }
+  var lat = <?= $latitude !== null ? json_encode($latitude) : 'null' ?>;
+  var lng = <?= $longitude !== null ? json_encode($longitude) : 'null' ?>;
+  function waitForNaver(cb, tries){
+    tries = tries || 0;
+    if (window.naver && naver.maps && naver.maps.Map) return cb();
+    if (tries > 120) return;
+    setTimeout(function(){ waitForNaver(cb, tries + 1); }, 100);
+  }
+  if (typeof lat === 'number' && typeof lng === 'number' && isFinite(lat) && isFinite(lng)) {
+    waitForNaver(function(){
+      var center = new naver.maps.LatLng(lat, lng);
+      var map = new naver.maps.Map('map', { center: center, zoom: 16 });
+      var marker = new naver.maps.Marker({
+        position: center,
+        map: map,
+        title: <?= json_encode(html_entity_decode($binName)) ?>
+      });
+      var info = new naver.maps.InfoWindow({
+        content:
+          '<div style="padding:10px 12px; font-size:13px; line-height:1.4;">' +
+          '<strong><?= esc($binName) ?></strong><br/>' +
+          '<?= esc($full_address) ?>' +
+          '</div>'
+      });
+      naver.maps.Event.addListener(marker, "click", function(){
+        if(info.getMap()) info.close();
+        else info.open(map, marker);
+      });
+    });
+  }
+})();
+</script>
 </body>
 </html>

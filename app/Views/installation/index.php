@@ -1,179 +1,247 @@
+<?php
+helper(['url']);
+
+$search = isset($search) ? trim((string)$search) : '';
+$page   = isset($page) ? (int)$page : 1;
+
+$listUrl = site_url('installation');
+
+$canonical = $listUrl;
+if ($search !== '') {
+  $canonical = $listUrl . '?search=' . urlencode($search);
+} elseif ($page > 1) {
+  $canonical = $listUrl;
+}
+
+$seoTitle = ($search !== '')
+  ? "{$search} 폐의약품 수거장소 검색 결과 | 수거장소 목록"
+  : "폐의약품 수거장소 목록 | 지역별 수거장소 정보";
+
+$seoDescParts = [];
+if ($search !== '') $seoDescParts[] = "검색어: {$search}";
+$seoDescParts[] = "전국 폐의약품 수거장소 주소/전화번호/관리기관 정보를 확인하세요.";
+$seoDescription = implode(' · ', $seoDescParts);
+
+$robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
+?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <!-- 네이버 지도 API -->
-  <!-- <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script> -->
-  
-  <!-- 광고 스크립트 (선택사항) -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title><?= esc($seoTitle) ?></title>
+  <meta name="description" content="<?= esc($seoDescription) ?>" />
+  <meta name="robots" content="<?= esc($robots) ?>" />
+  <link rel="canonical" href="<?= esc($canonical) ?>" />
+  <link rel="alternate" href="<?= esc($canonical) ?>" hreflang="ko" />
+
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin>
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="<?= esc($seoTitle) ?>" />
+  <meta property="og:description" content="<?= esc($seoDescription) ?>" />
+  <meta property="og:url" content="<?= esc($canonical) ?>" />
+  <meta property="og:locale" content="ko_KR" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
+  <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
 
-    <title>폐의약품수거</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
-            margin: 0;
-            padding: 0;
-        }
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#fff; --txt:#222; --sub:#555; --bd:#e9ecf2;
+      --blue:#1b6cff; --chip:#eef4ff;
+    }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family: system-ui,-apple-system,'Noto Sans KR',sans-serif; background:var(--bg); color:var(--txt); }
+    a{ color:inherit; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
 
-        .main-nav {
-            background-color: #e6f7ef;
-            padding: 0.7rem;
-            text-align: center;
-        }
+    .container{ max-width:1100px; margin:0 auto; padding:18px 14px 40px; }
 
-        /* 제목 스타일 */
-        .page-title {
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
+    .top{
+      display:flex; gap:12px; align-items:flex-end; justify-content:space-between;
+      padding:16px; background:var(--card); border:1px solid var(--bd); border-radius:16px;
+      box-shadow:0 1px 6px rgba(0,0,0,.05);
+    }
+    .top h1{ margin:0; font-size:22px; }
+    .top p{ margin:6px 0 0; color:var(--sub); font-size:14px; line-height:1.5; }
 
-        /* 검색바 */
-        .search-bar {
-            padding: 10px;
-            margin: 20px auto;
-            text-align: center;
-        }
+    .search{
+      display:flex; gap:8px; align-items:center; width:420px; max-width:100%;
+    }
+    .search input{
+      width:100%; padding:12px 14px; border-radius:999px;
+      border:1px solid var(--bd); outline:none; background:#fff;
+    }
+    .search button{
+      padding:12px 14px; border-radius:999px; border:1px solid var(--bd);
+      background:var(--blue); color:#fff; font-weight:800; cursor:pointer;
+    }
 
-        .search-bar input {
-            padding: 10px;
-            font-size: 16px;
-            width: 60%; /* Adjust the width of the search bar */
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
+    .ad{ margin:14px 0; text-align:center; }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--bd);
+      border-radius:16px;
+      padding:14px 14px 12px;
+      box-shadow:0 1px 6px rgba(0,0,0,.05);
+      transition: transform .15s ease;
+      min-height: 130px;
+    }
+    .card:hover{ transform: translateY(-2px); }
 
-        .search-bar button {
-            padding: 10px;
-            font-size: 16px;
-            background-color: #62D491;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .name{ font-size:16px; font-weight:900; margin:0 0 8px; }
+    .meta{ color:var(--sub); font-size:13px; line-height:1.45; }
+    .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+    .chip{
+      background:var(--chip); color:#0b3d91;
+      border-radius:999px; padding:6px 10px; font-size:12px; font-weight:800;
+      border:1px solid #dbe7ff;
+    }
 
-        .search-bar button:hover {
-            background-color: #55b379;
-        }
+    .pager-wrap{
+      margin-top:18px;
+      padding:12px;
+      background:var(--card);
+      border:1px solid var(--bd);
+      border-radius:16px;
+    }
 
-        /* 카드 컨테이너 */
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
-            gap: 20px;
-            padding: 20px;
-            width: 80%; /* Set the width of the card container */
-            margin: 0 auto; /* Center the card container */
-        }
-
-        .card {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .card:hover {
-            transform: scale(1.05);
-        }
-
-        .card h3 {
-            margin: 10px 0;
-            color: #333;
-        }
-
-        .card p {
-            font-size: 14px;
-            color: #555;
-        }
-
-        /* 페이징 */
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .pagination a {
-            padding: 8px 16px;
-            margin: 0 5px;
-            background-color: #62D491;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-        }
-
-        .pagination a:hover {
-            background-color: #55b379;
-        }
-
-        .pagination .active {
-            background-color: #4e9e68;
-        }
-
-        /* 모바일 최적화 */
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 24px; /* Adjust title font size for mobile */
-                margin-top: 10px;
-            }
-
-            .search-bar input {
-                width: 90%; /* Make search bar input full width on mobile */
-            }
-
-            .card-container {
-                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Stack cards on small screens */
-            }
-
-            .pagination a {
-                padding: 6px 12px; /* Adjust pagination size for smaller screens */
-            }
-        }
-    </style>
+    @media (max-width:980px){ .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width:620px){
+      .top{ flex-direction:column; align-items:stretch; }
+      .grid{ grid-template-columns: 1fr; }
+      .search{ width:100%; }
+    }
+  </style>
 </head>
 <body>
 
 <?php include APPPATH . 'Views/includes/header.php'; ?>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6686738239613464"
-     data-ad-slot="1204098626"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<!-- 제목 -->
 
+<div class="container">
 
-<h1 class="page-title">페의약품수거함 정보를 만나보세요!</h1>
-
-
-
-<!-- 카드 컨테이너 -->
-<div class="card-container">
-    <?php foreach ($installations as $installation): ?>
-    <div class="card" onclick="window.location='/installation/show/<?= $installation['id'] ?>'">
-        <h3><?= $installation['Installation Location Name'] ?> 🚪</h3>
-        <p><?= $installation['Street Address'] ?> 🏠</p>
-        <p><?= $installation['District Name'] ?> 🏙️</p>
+  <div class="top">
+    <div>
+      <h1><?= esc($search !== '' ? "“{$search}” 검색 결과" : "폐의약품 수거장소 목록") ?></h1>
+      <p>주소/전화/관리기관 정보를 빠르게 확인하고 상세 페이지에서 지도와 근처 수거장소도 보세요.</p>
     </div>
-    <?php endforeach; ?>
+
+    <form class="search" method="get" action="<?= esc($listUrl) ?>">
+      <input type="text" name="search" value="<?= esc($search) ?>" placeholder="수거장소명/주소로 검색" />
+      <button type="submit">검색</button>
+    </form>
+  </div>
+
+  <div class="ad">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-6686738239613464"
+      data-ad-slot="1204098626"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
+  <div class="grid">
+    <?php if (!empty($installations) && is_array($installations)): ?>
+      <?php 
+        $count = 0;
+        foreach ($installations as $inst): 
+          $count++;
+      ?>
+        <?php
+          $id    = $inst['id'] ?? null;
+          if (!$id) continue;
+
+          $name  = esc($inst['Installation Location Name'] ?? '수거장소');
+          $addr  = esc($inst['Street Address'] ?? ($inst['Land Lot Address'] ?? ''));
+          $phone = esc($inst['Managing Institution Phone Number'] ?? '');
+          $district = esc($inst['District Name'] ?? '');
+          $url   = site_url('installation/show/' . $id);
+        ?>
+        <a class="card" href="<?= esc($url) ?>">
+          <h2 class="name"><?= $name ?></h2>
+          <div class="meta">
+            <?php if ($addr): ?>📍 <?= $addr ?><br><?php endif; ?>
+            <?php if ($phone): ?>📞 <?= $phone ?><?php endif; ?>
+          </div>
+          <div class="chips">
+            <?php if ($district): ?><span class="chip"><?= $district ?></span><?php endif; ?>
+            <?php if ($inst['Managing Institution Name'] ?? ''): ?>
+              <span class="chip"><?= esc($inst['Managing Institution Name']) ?></span>
+            <?php endif; ?>
+          </div>
+        </a>
+        
+        <!-- 광고 중간 삽입 (6개 카드 후) -->
+        <?php if ($count === 6): ?>
+          <div class="ad" style="grid-column:1/-1; margin:1rem 0;">
+            <ins class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-6686738239613464"
+              data-ad-slot="1204098626"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+          </div>
+        <?php endif; ?>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <div class="card" style="grid-column:1/-1;">
+        검색 결과가 없습니다.
+      </div>
+    <?php endif; ?>
+  </div>
+
+  <!-- 광고(하단) -->
+  <div class="ad">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-6686738239613464"
+      data-ad-slot="1204098626"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
+  <div class="pager-wrap">
+    <?php if (isset($pager) && $pager): ?>
+      <?= $pager->links('installations', 'default_full') ?>
+    <?php endif; ?>
+  </div>
+
 </div>
 
 <?php include APPPATH . 'Views/includes/footer.php'; ?>
+
+<script>
+(function(){
+  function pushAdsSafe(){
+    try{
+      var ins = document.querySelectorAll('ins.adsbygoogle');
+      for (var i=0;i<ins.length;i++){
+        if (!ins[i].getAttribute('data-adsbygoogle-status')) {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      }
+    }catch(e){}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', pushAdsSafe);
+  } else {
+    pushAdsSafe();
+  }
+})();
+</script>
 
 </body>
 </html>

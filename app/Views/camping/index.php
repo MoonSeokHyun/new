@@ -157,13 +157,39 @@
 <h1 class="page-title">캠핑장 목록</h1>
 
 <div class="card-container">
-    <?php foreach ($campings as $camping): ?>
+    <?php 
+      $count = 0;
+      foreach ($campings as $camping): 
+        $count++;
+    ?>
     <div class="card" onclick="window.location='<?= site_url('camping/' . $camping['id']) ?>'">
         <h3><?= esc($camping['FCLTY_NM']) ?> ⛺</h3>
         <p><?= esc($camping['RDNMADR_NM']) ?> 📍</p>
         <p>Last updated: <?= esc($camping['LAST_UPDT_DE']) ?> ⏰</p>
     </div>
+    
+    <!-- 광고 중간 삽입 (6개 카드 후) -->
+    <?php if ($count === 6): ?>
+      <div style="grid-column:1/-1; margin:1rem 0; text-align:center;">
+        <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-6686738239613464"
+          data-ad-slot="1204098626"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </div>
+    <?php endif; ?>
     <?php endforeach; ?>
+</div>
+
+<!-- 광고(하단) -->
+<div style="text-align:center; margin:2rem 0;">
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-6686738239613464"
+    data-ad-slot="1204098626"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
 </div>
 
 <?php include APPPATH . 'Views/includes/footer.php'; ?>

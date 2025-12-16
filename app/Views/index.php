@@ -4,8 +4,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="naver-site-verification" content="3364bf3d26f95db9c37f59a7acb7f4523cc8c823" />
-  <title>공공데이터 포털 - 퐁퐁코리아</title>
+  <title>공공데이터 포털 - 퐁퐁코리아 | 전국 생활시설 정보 검색</title>
+  <meta name="description" content="전국 미용실, 도서관, 안경점, 동물병원, 캠핑장, 체육시설, 세계음식점 등 생활시설 정보를 한눈에 검색하세요. 공공데이터 기반 정확한 위치, 전화번호, 운영정보 제공." />
+  <meta name="keywords" content="공공데이터, 생활시설, 미용실, 도서관, 안경점, 동물병원, 캠핑장, 체육시설, 세계음식점, 위치검색, 전화번호" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="<?= current_url() ?>" />
+  <link rel="alternate" href="<?= current_url() ?>" hreflang="ko" />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="공공데이터 포털 - 퐁퐁코리아 | 전국 생활시설 정보 검색" />
+  <meta property="og:description" content="전국 미용실, 도서관, 안경점, 동물병원, 캠핑장, 체육시설, 세계음식점 등 생활시설 정보를 한눈에 검색하세요." />
+  <meta property="og:url" content="<?= current_url() ?>" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:site_name" content="퐁퐁코리아" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="공공데이터 포털 - 퐁퐁코리아" />
+  <meta name="twitter:description" content="전국 생활시설 정보를 한눈에 검색하세요." />
+  
+  <!-- 네이버 검색 최적화 -->
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  
+  <!-- 성능 최적화 -->
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin>
+  <link rel="preconnect" href="https://oapi.map.naver.com" crossorigin>
+  
   <link rel="stylesheet" href="/assets/css/main.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
+  
+  <!-- 구조화된 데이터: 공공데이터 포털 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "<?= site_url() ?>#website",
+        "url": "<?= site_url() ?>",
+        "name": "퐁퐁코리아",
+        "description": "전국 생활시설 정보 검색 포털",
+        "inLanguage": "ko-KR",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "<?= site_url('hairsalon?search={search_term_string}') ?>"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "GovernmentOrganization",
+        "@id": "<?= site_url() ?>#organization",
+        "name": "퐁퐁코리아",
+        "url": "<?= site_url() ?>",
+        "description": "공공데이터 기반 생활시설 정보 제공 서비스"
+      },
+      {
+        "@type": "Dataset",
+        "@id": "<?= site_url() ?>#dataset",
+        "name": "전국 생활시설 데이터",
+        "description": "미용실, 도서관, 안경점, 동물병원, 캠핑장, 체육시설, 세계음식점 등 생활시설 정보",
+        "keywords": "공공데이터, 생활시설, 위치정보",
+        "license": "https://www.data.go.kr/",
+        "publisher": {
+          "@type": "GovernmentOrganization",
+          "name": "공공데이터포털"
+        }
+      }
+    ]
+  }
+  </script>
   <style>
     :root {
       --theme-color: #FADB5F; /* 파스텔 노랑 */

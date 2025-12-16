@@ -50,7 +50,7 @@ $seoDesc  = "{$district}에 위치한 {$hospitalName} 동물병원 정보입니�
 /* =========================
  * 네이버 지도 Key (JS SDK)
  * ========================= */
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
 ?>
 <!doctype html>
 <html lang="ko">

@@ -1,2 +1,23 @@
 User-agent: *
-Disallow: 
+Allow: /
+Disallow: /posts/create
+Disallow: /posts/*/edit
+Disallow: /crawler/
+Disallow: /dcinside/crawl
+
+# 네이버 봇 최적화
+User-agent: Yeti
+Allow: /
+Crawl-delay: 1
+
+User-agent: NaverBot
+Allow: /
+Crawl-delay: 1
+
+# 구글 봇
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# 사이트맵
+Sitemap: https://pongpongkorea.com/sitemap.xml

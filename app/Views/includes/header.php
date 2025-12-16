@@ -1,5 +1,10 @@
 <!-- 헤더 시작 -->
+<!-- 네이버 검색 최적화 -->
 <meta name="naver-site-verification" content="3364bf3d26f95db9c37f59a7acb7f4523cc8c823" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <div id="header-wrapper">
   <!-- 사이트 타이틀 -->
   <header>

@@ -157,10 +157,11 @@ class AnimalHospitalController extends BaseController
      */
     private function naverGeocode(string $query): ?array
     {
-        $apiKeyId = (string)getenv('NAVER_MAPS_API_KEY_ID');
-        $apiKey   = (string)getenv('NAVER_MAPS_API_KEY');
+        // 환경변수가 있으면 사용, 없으면 기본값 사용 (서버에서 .env 없을 때 대비)
+        $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
+        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: 'iyBYir1BVYhy4bW5XWB1wHGfUNyOit2Pz4g413ce';
 
-        if ($apiKeyId === '' || $apiKey === '') return null;
+        if (!$apiKey) return null;
 
         $url = 'https://maps.apigw.ntruss.com/map-geocode/v2/geocode?' . http_build_query([
             'query' => $query,

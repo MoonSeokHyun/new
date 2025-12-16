@@ -52,8 +52,10 @@ $routes->get('/clothingcollectionbin/show/(:num)', 'ClothingCollectionBinControl
 $routes->get('/sitemap/clothingCollectionBinPage/(:num)', 'SitemapController::clothingCollectionBinPage/$1');
 
 // File: app/Config/Routes.php
-$routes->get('seminar_rooms',       'SeminarRooms::index');
-$routes->get('seminar_rooms/(:num)', 'SeminarRooms::detail/$1');
+$routes->get('seminar-rooms',       'SeminarRooms::index');
+$routes->get('seminar-rooms/detail/(:num)', 'SeminarRooms::detail/$1');
+$routes->get('seminar_rooms',       'SeminarRooms::index'); // 하위 호환성
+$routes->get('seminar_rooms/(:num)', 'SeminarRooms::detail/$1'); // 하위 호환성
 $routes->get('sitemap/seminarRoomPage/(:num)',            'SitemapController::seminarRoomPage/$1');  // ← 추가
 
 // 캠핑장 
@@ -65,14 +67,18 @@ $routes->get('sitemap/campingPage/(:num)', 'SitemapController::campingPage/$1');
 
 // 세계 식당 
 
-$routes->get('world_res',          'WorldRes::index');
-$routes->get('world_res/(:num)',   'WorldRes::detail/$1');
+$routes->get('world-res',          'WorldRes::index');
+$routes->get('world-res/detail/(:num)',   'WorldRes::detail/$1');
+$routes->get('world_res',          'WorldRes::index'); // 하위 호환성
+$routes->get('world_res/(:num)',   'WorldRes::detail/$1'); // 하위 호환성
 $routes->get('sitemap/worldResPage/(:num)', 'SitemapController::worldResPage/$1');
 
 
 // 체육시설
-$routes->get('sports_facilities',          'SportsFacility::index');
-$routes->get('sports_facilities/(:num)',   'SportsFacility::detail/$1');
+$routes->get('sports-facility',          'SportsFacility::index');
+$routes->get('sports-facility/detail/(:num)',   'SportsFacility::detail/$1');
+$routes->get('sports_facilities',          'SportsFacility::index'); // 하위 호환성
+$routes->get('sports_facilities/(:num)',   'SportsFacility::detail/$1'); // 하위 호환성
 
 $routes->get('sitemap/sportsFacilitiesPage/(:num)', 'SitemapController::sportsFacilitiesPage/$1');
 
@@ -85,8 +91,10 @@ $routes->get('sitemap/libraryInfoPage/(:num)', 'SitemapController::libraryInfoPa
 //안경점
 
 // app/Config/Routes.php 에 추가
-$routes->get('shops', 'OpenServiceInfoController::index');
-$routes->get('shops/(:num)', 'OpenServiceInfoController::detail/$1');
+$routes->get('open-service-info', 'OpenServiceInfoController::index');
+$routes->get('open-service-info/detail/(:num)', 'OpenServiceInfoController::detail/$1');
+$routes->get('shops', 'OpenServiceInfoController::index'); // 하위 호환성
+$routes->get('shops/(:num)', 'OpenServiceInfoController::detail/$1'); // 하위 호환성
 $routes->get('sitemap/shopsPage/(:num)', 'SitemapController::shopsPage/$1');
 
 $routes->get('analytics', 'Analytics::index');

@@ -162,7 +162,11 @@ $robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large
 
   <div class="grid">
     <?php if (!empty($salons) && is_array($salons)): ?>
-      <?php foreach ($salons as $salon): ?>
+      <?php 
+        $count = 0;
+        foreach ($salons as $salon): 
+          $count++;
+      ?>
         <?php
           // ✅ 웁스 방지: 키 없으면 빈값 처리
           $id    = $salon['id'] ?? null;
@@ -187,12 +191,34 @@ $robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large
             <?php endif; ?>
           </div>
         </a>
+        
+        <!-- 광고 중간 삽입 (6개 카드 후) -->
+        <?php if ($count === 6): ?>
+          <div class="ad" style="grid-column:1/-1; margin:1rem 0;">
+            <ins class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-6686738239613464"
+              data-ad-slot="1204098626"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+          </div>
+        <?php endif; ?>
       <?php endforeach; ?>
     <?php else: ?>
       <div class="card" style="grid-column:1/-1;">
         검색 결과가 없습니다.
       </div>
     <?php endif; ?>
+  </div>
+
+  <!-- 광고(하단) -->
+  <div class="ad">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-6686738239613464"
+      data-ad-slot="1204098626"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
   </div>
 
   <div class="pager-wrap">

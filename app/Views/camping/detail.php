@@ -19,14 +19,34 @@ $url             = esc($camping['HMPG_URL']           ?? '');
 $lat             = esc($camping['LC_LA']              ?? '0');
 $lng             = esc($camping['LC_LO']              ?? '0');
 
+// ✅ 컨트롤러에서 넘어온 좌표 사용
+$latitude  = (is_numeric($latitude)  ? (float)$latitude  : null);
+$longitude = (is_numeric($longitude) ? (float)$longitude : null);
+
 // 구·읍·면 추출
-preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/', $lotAddr, $m);
-$district        = $m[0] ?? '지역';
+$district_name = $district ?? '지역';
+preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $lotAddr ?: $roadAddr, $m);
+if (!$district_name || $district_name === '지역') {
+    $district_name = $m[0] ?? '지역';
+}
+
+preg_match('/^(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\s]*/u', $roadAddr ?: $lotAddr, $m2);
+$region_guess = $m2[0] ?? '대한민국';
 
 // SEO용 메타
-$seoTitle   = "{$facilityName} 캠핑장 – {$district} {$roadAddr} | 편의시설·운영정보";
-$seoDesc    = "{$facilityName} 캠핑장의 위치({$district} {$roadAddr}), 카테고리({$category}), 편의시설 및 운영정보를 확인하세요.";
+$seoTitle   = "{$facilityName} | {$district_name} 캠핑장 위치·편의시설·운영정보";
+$seoDesc    = "{$district_name}에 위치한 {$facilityName} 캠핑장 정보. {$category} 카테고리, 편의시설 및 운영정보를 확인하고 네이버 지도로 위치도 바로 확인하세요.";
 $canonical  = current_url();
+
+// 네이버 지도 Key
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
+
+$nearby_campings = $nearby_campings ?? [];
+$districtUrl = site_url('camping?district=' . urlencode($district_name));
+$campingsUrl = site_url('camping');
+
+// 네이버 지도 검색은 "주소만"
+$mapQuery = trim(html_entity_decode($roadAddr ?: $lotAddr));
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -65,11 +85,13 @@ $canonical  = current_url();
       "addressLocality": "<?= esc($district) ?>",
       "streetAddress": "<?= esc($roadAddr) ?> <?= esc($lotAddr) ?>"
     },
+    <?php if ($latitude !== null && $longitude !== null): ?>
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "<?= esc($lat) ?>",
-      "longitude": "<?= esc($lng) ?>"
+      "latitude": <?= json_encode($latitude) ?>,
+      "longitude": <?= json_encode($longitude) ?>
     },
+    <?php endif; ?>
     "openingHoursSpecification": [
       <?php
         $days = ['Mo','Tu','We','Th','Fr','Sa','Su'];
@@ -91,7 +113,20 @@ $canonical  = current_url();
   }
   </script>
 
-  <!-- <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script> -->
+  <link rel="preconnect" href="https://oapi.map.naver.com" crossorigin>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin>
+
+  <?php if (!empty($naverMapKeyId)): ?>
+  <script>
+    window.navermap_authFailure = function () {
+      console.error('네이버 지도 인증 실패: ncpKeyId 또는 Web 서비스 URL 등록을 확인하세요.');
+    };
+  </script>
+  <script defer src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=<?= esc($naverMapKeyId) ?>"></script>
+  <?php endif; ?>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
   <style>
     body { background:#f5f5f5; font-family:'Noto Sans KR',sans-serif; margin:0; padding:0; color:#333; }
     a { color:#0078ff; text-decoration:none; }
@@ -261,26 +296,116 @@ $canonical  = current_url();
   </div>
 
   <!-- 지도 -->
-  <div class="section">
+  <div class="section" id="mapSection">
     <h2>지도</h2>
-    <div id="map"></div>
+    <?php if ($latitude !== null && $longitude !== null): ?>
+      <div id="map"></div>
+      <p style="margin-top:.5rem; color:#666; font-size:.9rem;">
+        표시 좌표(WGS84): 위도 <?= esc(number_format($latitude, 6)) ?> / 경도 <?= esc(number_format($longitude, 6)) ?>
+      </p>
+    <?php else: ?>
+      <div style="padding:14px; border:1px dashed #cfd8ea; border-radius:12px; background:#fff;">
+        <strong>좌표 정보가 없습니다.</strong><br>
+        서버 지오코딩(API Key) 설정이 안 됐거나, 주소가 지오코딩 결과가 없는 형태일 수 있습니다.<br>
+        <span style="color:#666; font-size:.9rem;">현재 주소: <?= esc($mapQuery ?: '없음') ?></span>
+      </div>
+    <?php endif; ?>
+    <div style="margin-top:.5rem;">
+      <a class="btn" id="naverDirections" href="#" target="_blank" rel="nofollow noopener" style="display:inline-flex; align-items:center; gap:.4rem; padding:.6rem .9rem; border-radius:10px; border:1px solid #dbe7ff; background:#fff; color:#0b3d91; font-weight:700; text-decoration:none;">네이버 지도에서 보기</a>
+      <a class="btn" href="<?= $districtUrl ?>" style="display:inline-flex; align-items:center; gap:.4rem; padding:.6rem .9rem; border-radius:10px; border:1px solid #dbe7ff; background:#f7f9ff; color:#0b3d91; font-weight:700; text-decoration:none; margin-left:.5rem;">같은 지역 더 보기</a>
+    </div>
   </div>
+
+  <!-- 근처 캠핑장 -->
+  <?php if (!empty($nearby_campings)): ?>
+  <div class="section">
+    <h2>근처 캠핑장 보기</h2>
+    <div style="display:grid; grid-template-columns:1fr; gap:.6rem;">
+      <?php foreach ($nearby_campings as $n): ?>
+        <?php
+          $nName = esc($n['FCLTY_NM'] ?? '캠핑장');
+          $nUrl  = esc($n['url'] ?? '#');
+          $nRoad = esc($n['RDNMADR_NM'] ?? '');
+          $nLot  = esc($n['LNM_ADDR'] ?? '');
+          $addr  = $nRoad ?: $nLot;
+        ?>
+        <div style="padding:.85rem 1rem; border:1px solid #eee; border-radius:12px; background:#fff;">
+          <div style="font-weight:800; font-size:1rem; margin:0 0 .25rem;"><a href="<?= $nUrl ?>" style="color:#333; text-decoration:none;"><?= $nName ?></a></div>
+          <div style="color:#666; font-size:.92rem; line-height:1.5;">
+            <?php if ($addr): ?>주소: <?= $addr ?><?php endif; ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+  <?php endif; ?>
 </div>
 
 <?php include APPPATH.'Views/includes/footer.php'; ?>
 
 <script>
-  (function(){
-//     var map = new naver.maps.Map('map', {
-//       center: new naver.maps.LatLng(parseFloat("<?= $lat ?>"), parseFloat("<?= $lng ?>")),
-//       zoom: 16
-//     });
-//     new naver.maps.Marker({
-//       position: map.getCenter(),
-//       map: map,
-//       title: "<?= $facilityName ?>"
-//     });
-  })();
+(function(){
+  // ✅ AdSense: 안전 push
+  function pushAdsSafe(){
+    try{
+      var ins = document.querySelectorAll('ins.adsbygoogle');
+      for (var i=0;i<ins.length;i++){
+        if (!ins[i].getAttribute('data-adsbygoogle-status')) {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      }
+    }catch(e){}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', pushAdsSafe);
+  } else {
+    pushAdsSafe();
+  }
+
+  // ✅ 네이버 지도 링크는 "주소만" 검색
+  var qAddr = <?= json_encode($mapQuery) ?>;
+  var el = document.getElementById("naverDirections");
+  if (el) {
+    el.href = "https://map.naver.com/v5/search/" + encodeURIComponent(qAddr || "");
+  }
+
+  // 좌표 있으면 지도 렌더
+  var lat = <?= $latitude !== null ? json_encode($latitude) : 'null' ?>;
+  var lng = <?= $longitude !== null ? json_encode($longitude) : 'null' ?>;
+
+  function waitForNaver(cb, tries){
+    tries = tries || 0;
+    if (window.naver && naver.maps && naver.maps.Map) return cb();
+    if (tries > 120) return;
+    setTimeout(function(){ waitForNaver(cb, tries + 1); }, 100);
+  }
+
+  if (typeof lat === 'number' && typeof lng === 'number' && isFinite(lat) && isFinite(lng)) {
+    waitForNaver(function(){
+      var center = new naver.maps.LatLng(lat, lng);
+      var map = new naver.maps.Map('map', { center: center, zoom: 16 });
+
+      var marker = new naver.maps.Marker({
+        position: center,
+        map: map,
+        title: <?= json_encode(html_entity_decode($facilityName)) ?>
+      });
+
+      var info = new naver.maps.InfoWindow({
+        content:
+          '<div style="padding:10px 12px; font-size:13px; line-height:1.4;">' +
+          '<strong><?= esc($facilityName) ?></strong><br/>' +
+          '<?= esc($roadAddr ?: $lotAddr) ?>' +
+          '</div>'
+      });
+
+      naver.maps.Event.addListener(marker, "click", function(){
+        if(info.getMap()) info.close();
+        else info.open(map, marker);
+      });
+    });
+  }
+})();
 </script>
 </body>
 </html>

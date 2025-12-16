@@ -54,6 +54,12 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <link rel="canonical" href="<?= esc($canonicalUrl) ?>" />
   <link rel="alternate" href="<?= esc($canonicalUrl) ?>" hreflang="ko" />
+  
+  <!-- 네이버 검색 최적화 -->
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <link rel="preconnect" href="https://oapi.map.naver.com" crossorigin>
   <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
@@ -123,7 +129,14 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
           "latitude": <?= json_encode($latitude) ?>,
           "longitude": <?= json_encode($longitude) ?>
         }
-        <?php endif; ?>
+        <?php endif; ?>,
+        "priceRange": "$$",
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "09:00",
+          "closes": "20:00"
+        }
       }
     ]
   }
