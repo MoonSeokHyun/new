@@ -126,10 +126,10 @@ class HairSalonController extends Controller
     {
         // 환경변수가 있으면 사용, 없으면 기본값 사용 (서버에서 .env 없을 때 대비)
         $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3'; // x-ncp-apigw-api-key-id
-        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: 'YOUR_API_KEY_HERE'; // x-ncp-apigw-api-key
+        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: 'iyBYir1BVYhy4bW5XWB1wHGfUNyOit2Pz4g413ce'; // x-ncp-apigw-api-key
 
         // API Key는 필수이므로 없으면 실패
-        if (!$apiKey || $apiKey === 'YOUR_API_KEY_HERE') {
+        if (!$apiKey) {
             return null;
         }
 
