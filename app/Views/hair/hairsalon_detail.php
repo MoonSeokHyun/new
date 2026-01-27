@@ -239,7 +239,7 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
         data-ad-format="fluid"
         data-ad-layout="in-article"></ins>
     </div>
-
+    <?php include(APPPATH . 'Views/common/coupang.php'); ?>
     <div class="card">
       <h2>기본 정보</h2>
       <ul class="detail">
@@ -252,7 +252,7 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
       </ul>
       <p class="note">※ 공개 데이터 기반 정보로 실제 운영 정보는 변동될 수 있습니다.</p>
     </div>
-
+   
     <!-- 광고(3) 중간 -->
     <div class="ad">
       <ins class="adsbygoogle"
