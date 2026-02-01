@@ -14,7 +14,7 @@
     $isNaverFirstVisit = ($isMobile && $isNaver && empty($naverCookie));
 
     $exposureFreq = 70; // 노출 확률 %
-    $distants = 30;  // 스와이프 거리
+    $distants = 40;  // 스와이프 거리
 
     $isFirstNaver = ($isNaverFirstVisit && mt_rand(1,100) <= $exposureFreq);
 
