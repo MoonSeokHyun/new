@@ -1,7 +1,7 @@
 <?php
     $banner = [
-        'banner_url'  => 'https://image8.coupangcdn.com/image/affiliate/event/promotion/2026/01/26/805afe0b1b6a0047010ba38d00c84d73.png', // 프로모션 이미지
-        'banner_link' => 'https://link.coupang.com/a/dz9aTr'    // 프로모션 링크
+        'banner_url'  => 'https://image10.coupangcdn.com/image/affiliate/event/promotion/2026/02/13/ca9d06c5b16500c7019d20c726ad2083.png', // 프로모션 이미지
+        'banner_link' => 'https://link.coupang.com/a/dOvftH'    // 프로모션 링크
     ];
 
     $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
