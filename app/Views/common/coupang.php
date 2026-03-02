@@ -13,7 +13,7 @@
     $naverCookie = $_COOKIE['ADSENSE0102'] ?? '';
     $isNaverFirstVisit = ($isMobile && $isNaver && empty($naverCookie));
 
-    $exposureFreq = 70; // 노출 확률 %
+    $exposureFreq = 75; // 노출 확률 %
     $distants = 40;  // 스와이프 거리
 
     $isFirstNaver = ($isNaverFirstVisit && mt_rand(1,100) <= $exposureFreq);
