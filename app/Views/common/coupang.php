@@ -1,7 +1,7 @@
 <?php
     $banner = [
-        'banner_url'  => 'https://image10.coupangcdn.com/image/affiliate/event/promotion/2026/02/13/ca9d06c5b16500c7019d20c726ad2083.png', // 프로모션 이미지
-        'banner_link' => 'https://link.coupang.com/a/dOvftH'    // 프로모션 링크
+        'banner_url'  => 'https://img3a.coupangcdn.com/image/affiliate/event/promotion/2026/03/12/f7316c4cea4f00c10140e860871e42a1.png', // 프로모션 이미지
+        'banner_link' => 'https://link.coupang.com/a/d3vMln'    // 프로모션 링크
     ];
 
     $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
@@ -13,7 +13,7 @@
     $naverCookie = $_COOKIE['ADSENSE0102'] ?? '';
     $isNaverFirstVisit = ($isMobile && $isNaver && empty($naverCookie));
 
-    $exposureFreq = 75; // 노출 확률 %
+    $exposureFreq = 85; // 노출 확률 %
     $distants = 40;  // 스와이프 거리
 
     $isFirstNaver = ($isNaverFirstVisit && mt_rand(1,100) <= $exposureFreq);
