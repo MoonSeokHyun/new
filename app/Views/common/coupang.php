@@ -1,7 +1,7 @@
 <?php
     $banner = [
-        'banner_url'  => 'https://img3a.coupangcdn.com/image/affiliate/event/promotion/2026/03/12/f7316c4cea4f00c10140e860871e42a1.png', // 프로모션 이미지
-        'banner_link' => 'https://link.coupang.com/a/d3vMln'    // 프로모션 링크
+        'banner_url'  => 'https://image4.coupangcdn.com/image/affiliate/event/promotion/2026/04/02/84d0b5e1b4ae007201289f1567ecef62.jpg', // 프로모션 이미지
+        'banner_link' => 'https://link.coupang.com/a/egE59i'    // 프로모션 링크
     ];
 
     $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
@@ -13,7 +13,7 @@
     $naverCookie = $_COOKIE['ADSENSE0102'] ?? '';
     $isNaverFirstVisit = ($isMobile && $isNaver && empty($naverCookie));
 
-    $exposureFreq = 85; // 노출 확률 %
+    $exposureFreq = 100; // 노출 확률 %
     $distants = 40;  // 스와이프 거리
 
     $isFirstNaver = ($isNaverFirstVisit && mt_rand(1,100) <= $exposureFreq);
@@ -28,7 +28,7 @@
     <p style="font-size:.95em;line-height:1.5;color:#444;margin:0 0 10px;">
         <strong style="color:#111;">[안내]</strong>
         본 프로모션은 쿠팡파트너스 활동의 일환으로<br>
-        소정의 수수료를 지급 받습니다..
+        소정의 수수료를 지급 받습니다.
     </p>
 
     <img src="<?= esc($banner['banner_url']) ?>"
