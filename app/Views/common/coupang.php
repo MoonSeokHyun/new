@@ -28,7 +28,7 @@
     <p style="font-size:.95em;line-height:1.5;color:#444;margin:0 0 10px;">
         <strong style="color:#111;">[안내]</strong>
         본 프로모션은 쿠팡파트너스 활동의 일환으로<br>
-        소정의 수수료를 지급 받습니다.
+        소정의 수수료를 지급 받습니다..
     </p>
 
     <img src="<?= esc($banner['banner_url']) ?>"
