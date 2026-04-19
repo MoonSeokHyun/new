@@ -7,7 +7,7 @@ $phone = esc($shop['PhoneNumber'] ?? '');
 $area = esc($shop['Area'] ?? '');
 $district_name = $district ?? '지역';
 
-$canonicalUrl = current_url();
+$canonicalUrl = site_url('open-service-info/detail/' . ($shop['id'] ?? 0));
 
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $address, $matches);
 if (!$district_name || $district_name === '지역') {

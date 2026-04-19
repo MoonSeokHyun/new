@@ -6,7 +6,7 @@ $address = $road_address ?: $lot_address;
 $phone = esc($restaurant['TEL_NO'] ?? '');
 $district_name = $district ?? '지역';
 
-$canonicalUrl = current_url();
+$canonicalUrl = site_url('world-res/detail/' . ($restaurant['id'] ?? 0));
 
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $address, $matches);
 if (!$district_name || $district_name === '지역') {

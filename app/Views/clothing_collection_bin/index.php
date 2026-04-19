@@ -1,11 +1,12 @@
 <?php
 helper(['url']);
+$request = service('request');
 $search = isset($search) ? trim((string)$search) : '';
+$page = max(1, (int)($request->getGet('page') ?? 1));
+$isSearch = ($search !== '');
+$isPaginated = ($page > 1);
 $listUrl = site_url('clothing-collection-bin');
 $canonical = $listUrl;
-if ($search !== '') {
-  $canonical = $listUrl . '?search=' . urlencode($search);
-}
 $seoTitle = ($search !== '')
   ? "{$search} 폐의류 수거함 검색 결과 | 폐의류 수거함 목록"
   : "폐의류 수거함 목록 | 지역별 수거함 정보";
@@ -13,7 +14,7 @@ $seoDescParts = [];
 if ($search !== '') $seoDescParts[] = "검색어: {$search}";
 $seoDescParts[] = "전국 폐의류 수거함 주소/전화번호/관리기관 정보를 확인하세요.";
 $seoDescription = implode(' · ', $seoDescParts);
-$robots = 'index,follow,max-image-preview:large';
+$robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
 ?>
 <!DOCTYPE html>
 <html lang="ko">

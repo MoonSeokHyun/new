@@ -1,20 +1,16 @@
 <?php
 helper(['url']);
 
+$request = service('request');
 $search = isset($search) ? trim((string)$search) : '';
-$page   = isset($page) ? (int)$page : 1;
+$page   = max(1, (int)($request->getGet('page') ?? ($page ?? 1)));
+$isSearch = ($search !== '');
+$isPaginated = ($page > 1);
 
 $listUrl = site_url('hairsalon');
 
-// ✅ canonical: 검색이면 검색 URL로, 아니면 기본 목록 URL
+// 검색 결과/페이징 URL 색인 억제 + 대표 URL 통합
 $canonical = $listUrl;
-if ($search !== '') {
-  $canonical = $listUrl . '?search=' . urlencode($search);
-} elseif ($page > 1) {
-  // 페이지네이션은 중복 위험. 기본은 1페이지만 canonical로 두는 게 보통 안전.
-  // 다만 네가 원하면 아래처럼 page 포함 canonical로 바꿔도 됨.
-  $canonical = $listUrl;
-}
 
 $seoTitle = ($search !== '')
   ? "{$search} 미용실 검색 결과 | 미용실 목록"
@@ -25,8 +21,7 @@ if ($search !== '') $seoDescParts[] = "검색어: {$search}";
 $seoDescParts[] = "전국 미용실 주소/전화번호/업종 정보를 확인하세요.";
 $seoDescription = implode(' · ', $seoDescParts);
 
-// ✅ 페이지 2+ 는 보통 noindex 권장 (중복/얇은 페이지 방지)
-$robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
+$robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
 ?>
 <!DOCTYPE html>
 <html lang="ko">

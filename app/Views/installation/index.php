@@ -1,17 +1,15 @@
 <?php
 helper(['url']);
 
+$request = service('request');
 $search = isset($search) ? trim((string)$search) : '';
-$page   = isset($page) ? (int)$page : 1;
+$page   = max(1, (int)($request->getGet('page') ?? ($page ?? 1)));
+$isSearch = ($search !== '');
+$isPaginated = ($page > 1);
 
 $listUrl = site_url('installation');
 
 $canonical = $listUrl;
-if ($search !== '') {
-  $canonical = $listUrl . '?search=' . urlencode($search);
-} elseif ($page > 1) {
-  $canonical = $listUrl;
-}
 
 $seoTitle = ($search !== '')
   ? "{$search} 폐의약품 수거장소 검색 결과 | 수거장소 목록"
@@ -22,7 +20,7 @@ if ($search !== '') $seoDescParts[] = "검색어: {$search}";
 $seoDescParts[] = "전국 폐의약품 수거장소 주소/전화번호/관리기관 정보를 확인하세요.";
 $seoDescription = implode(' · ', $seoDescParts);
 
-$robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
+$robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
 ?>
 <!DOCTYPE html>
 <html lang="ko">

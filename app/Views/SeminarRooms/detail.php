@@ -5,7 +5,8 @@ $lot_address = esc(is_array($room) ? ($room['LNM_ADDR'] ?? '') : ($room->LNM_ADD
 $address = $road_address ?: $lot_address;
 $district_name = $district ?? '지역';
 
-$canonicalUrl = current_url();
+$roomId = is_array($room) ? ($room['id'] ?? 0) : ($room->id ?? 0);
+$canonicalUrl = site_url('seminar-rooms/detail/' . $roomId);
 
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $address, $matches);
 if (!$district_name || $district_name === '지역') {

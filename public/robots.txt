@@ -4,20 +4,25 @@ Disallow: /posts/create
 Disallow: /posts/*/edit
 Disallow: /crawler/
 Disallow: /dcinside/crawl
+# 검색 파라미터 URL 크롤 억제
+Disallow: /*?*search=
 
 # 네이버 봇 최적화
 User-agent: Yeti
 Allow: /
 Crawl-delay: 1
+Disallow: /*?*search=
 
 User-agent: NaverBot
 Allow: /
 Crawl-delay: 1
+Disallow: /*?*search=
 
 # 구글 봇
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 0
+Disallow: /*?*search=
 
 # 사이트맵
 Sitemap: https://pongpongkorea.com/sitemap.xml

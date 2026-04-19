@@ -1,16 +1,33 @@
+<?php
+helper('url');
+$canonical = site_url('camping');
+$seoTitle = '캠핑장 목록 | 지역별 캠핑장 정보';
+$seoDesc = '전국 캠핑장 주소와 최신 업데이트 정보를 확인하고 상세 페이지에서 위치와 주변 정보를 확인하세요.';
+?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><?= esc($seoTitle) ?></title>
+    <meta name="description" content="<?= esc($seoDesc) ?>" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="<?= esc($canonical) ?>" />
+    <link rel="alternate" href="<?= esc($canonical) ?>" hreflang="ko" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="<?= esc($seoTitle) ?>" />
+    <meta property="og:description" content="<?= esc($seoDesc) ?>" />
+    <meta property="og:url" content="<?= esc($canonical) ?>" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
+    <meta name="twitter:description" content="<?= esc($seoDesc) ?>" />
 
     <!-- 네이버 지도 API (필요 없으시면 제거) -->
     <!-- <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=psp2wjl0ra"></script> -->
   
     <!-- 광고 스크립트 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
-
-    <title>캠핑장 목록</title>
 
     <style>
         body {

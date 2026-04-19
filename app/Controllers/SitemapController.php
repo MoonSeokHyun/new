@@ -49,14 +49,14 @@ class SitemapController extends Controller
             'model' => ClothingCollectionBinModel::class,
             'count' => 'countAllBins',
             'fetch' => 'getAllBins',
-            'route' => 'clothingcollectionbin/show',
+            'route' => 'clothing-collection-bin/show',
             'priority' => '0.6',
         ],
         'seminarRoomPage' => [
             'model' => SeminarRoomModel::class,
             'count' => 'countAllResults',
             'fetch' => 'findAll',
-            'route' => 'seminar_rooms',
+            'route' => 'seminar-rooms/detail',
             'priority' => '0.5',
         ],
         'campingPage' => [
@@ -70,14 +70,14 @@ class SitemapController extends Controller
             'model' => WorldResModel::class,
             'count' => 'countAllRestaurants',
             'fetch' => 'getRestaurants',
-            'route' => 'world_res',
+            'route' => 'world-res/detail',
             'priority' => '0.6',
         ],
         'sportsFacilitiesPage' => [
             'model' => SportsFacilityModel::class,
             'count' => 'countAllFacilities',
             'fetch' => 'getFacilities',
-            'route' => 'sports_facilities',
+            'route' => 'sports-facility/detail',
             'priority' => '0.6',
         ],
         'libraryInfoPage' => [
@@ -91,7 +91,7 @@ class SitemapController extends Controller
             'model' => OpenServiceInfoModel::class,
             'count' => 'countAll',
             'fetch' => 'findAll',
-            'route' => 'shops',
+            'route' => 'open-service-info/detail',
             'priority' => '0.5',
         ],
         'animalHospitalPage' => [
@@ -121,7 +121,11 @@ class SitemapController extends Controller
 
             // count 메서드가 없으면 fallback
             $total = $this->safeCount($model, $conf['count'] ?? null);
-            $pages = max(1, (int) ceil($total / $this->perPage));
+            if ($total <= 0) {
+                continue;
+            }
+
+            $pages = (int) ceil($total / $this->perPage);
 
             for ($i = 1; $i <= $pages; $i++) {
                 // site_url로 통일 (도메인/서브폴더 꼬임 방지)
@@ -175,8 +179,6 @@ class SitemapController extends Controller
 
         $items = $this->safeFetch($model, $conf['fetch'] ?? null, $this->perPage, $offset);
 
-        $today = date('Y-m-d'); // ✅ 네이버용 "오늘 고정"
-        $changefreq = 'daily';
         $priority = $conf['priority'] ?? '0.5';
 
         $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -187,11 +189,13 @@ class SitemapController extends Controller
             if (!$id) continue;
 
             $loc = site_url("{$conf['route']}/{$id}");
+            $lastmod = $this->extractLastmod($item);
 
             $xml .= "  <url>\n";
             $xml .= "    <loc>" . esc($loc) . "</loc>\n";
-            $xml .= "    <lastmod>{$today}</lastmod>\n";
-            $xml .= "    <changefreq>{$changefreq}</changefreq>\n";
+            if ($lastmod !== null) {
+                $xml .= "    <lastmod>{$lastmod}</lastmod>\n";
+            }
             $xml .= "    <priority>{$priority}</priority>\n";
             $xml .= "  </url>\n";
         }
@@ -266,5 +270,39 @@ class SitemapController extends Controller
         }
 
         return [];
+    }
+
+    /**
+     * lastmod 추출:
+     * 가능한 실제 수정일을 사용하고, 없으면 태그를 생략한다.
+     */
+    protected function extractLastmod($item): ?string
+    {
+        $candidates = [
+            'updated_at',
+            'updatedAt',
+            'modified_at',
+            'modifiedAt',
+            'last_modified',
+            'LAST_UPDT_DE',
+            'LAST_UPDATE_DATE',
+            'created_at',
+            'createdAt',
+            'REG_DT',
+        ];
+
+        foreach ($candidates as $key) {
+            $value = is_object($item) ? ($item->{$key} ?? null) : ($item[$key] ?? null);
+            if (!is_string($value) || trim($value) === '') {
+                continue;
+            }
+
+            $ts = strtotime($value);
+            if ($ts !== false) {
+                return date('Y-m-d', $ts);
+            }
+        }
+
+        return null;
     }
 }

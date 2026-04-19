@@ -36,7 +36,7 @@ $region_guess = $m2[0] ?? '대한민국';
 // SEO용 메타
 $seoTitle   = "{$facilityName} | {$district_name} 캠핑장 위치·편의시설·운영정보";
 $seoDesc    = "{$district_name}에 위치한 {$facilityName} 캠핑장 정보. {$category} 카테고리, 편의시설 및 운영정보를 확인하고 네이버 지도로 위치도 바로 확인하세요.";
-$canonical  = current_url();
+$canonical  = site_url('camping/' . ($camping['id'] ?? 0));
 
 // 네이버 지도 Key
 $naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';

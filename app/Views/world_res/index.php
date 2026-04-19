@@ -1,17 +1,15 @@
 <?php
 helper(['url']);
 
+$request = service('request');
 $search = isset($search) ? trim((string)$search) : '';
-$page   = isset($page) ? (int)$page : 1;
+$page   = max(1, (int)($request->getGet('page') ?? ($page ?? 1)));
+$isSearch = ($search !== '');
+$isPaginated = ($page > 1);
 
 $listUrl = site_url('world-res');
 
 $canonical = $listUrl;
-if ($search !== '') {
-  $canonical = $listUrl . '?search=' . urlencode($search);
-} elseif ($page > 1) {
-  $canonical = $listUrl;
-}
 
 $seoTitle = ($search !== '')
   ? "{$search} 세계 음식점 검색 결과 | 세계 음식점 목록"
@@ -22,7 +20,7 @@ if ($search !== '') $seoDescParts[] = "검색어: {$search}";
 $seoDescParts[] = "전국 세계 음식점 주소/영업시간/편의시설 정보를 확인하세요.";
 $seoDescription = implode(' · ', $seoDescParts);
 
-$robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
+$robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
 ?>
 <!DOCTYPE html>
 <html lang="ko">

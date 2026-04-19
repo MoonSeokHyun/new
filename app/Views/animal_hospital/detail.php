@@ -33,7 +33,7 @@ $lng = (isset($longitude) && is_numeric($longitude)) ? (float)$longitude : null;
 /* =========================
  * Canonical (쿼리 제거)
  * ========================= */
-$canonicalUrl = site_url(uri_string());
+$canonicalUrl = site_url('animal-hospital/detail/' . ($hospital['id'] ?? 0));
 
 /* =========================
  * SEO 메타 (중복 방지)

@@ -3,7 +3,7 @@ $facilityName = esc($facility['FCLTY_NM'] ?? '체육시설');
 $road_address = esc($facility['RDNMADR_NM'] ?? '');
 $district_name = $district ?? '지역';
 
-$canonicalUrl = current_url();
+$canonicalUrl = site_url('sports-facility/detail/' . ($facility['id'] ?? 0));
 
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $road_address, $matches);
 if (!$district_name || $district_name === '지역') {

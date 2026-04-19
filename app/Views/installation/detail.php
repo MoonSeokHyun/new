@@ -9,7 +9,7 @@ $phone = esc($installation['Managing Institution Phone Number'] ?? '');
 $province = esc($installation['Province Name'] ?? '');
 $district_name = $district ?? '지역';
 
-$canonicalUrl = current_url();
+$canonicalUrl = site_url('installation/show/' . ($installation['id'] ?? 0));
 
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $road_address ?: $lot_address, $matches);
 if (!$district_name || $district_name === '지역') {

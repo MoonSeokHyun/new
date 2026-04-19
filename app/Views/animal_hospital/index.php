@@ -1,12 +1,14 @@
 <?php
 helper('url');
 
+$request = service('request');
 $search = trim((string)($search ?? ''));
+$page = max(1, (int)($request->getGet('page') ?? 1));
+$isSearch = ($search !== '');
+$isPaginated = ($page > 1);
+$listUrl = site_url('animal-hospital');
 
-// canonical: page만 제거, search는 유지
-$qs = $_GET ?? [];
-unset($qs['page']);
-$canonical = current_url() . (count($qs) ? ('?' . http_build_query($qs)) : '');
+$canonical = $listUrl;
 
 $title = $search !== ''
   ? "동물병원 검색: {$search} | 전국 동물병원 목록"
@@ -15,6 +17,8 @@ $title = $search !== ''
 $desc  = $search !== ''
   ? "‘{$search}’ 관련 동물병원 목록입니다. 병원명/주소 기반으로 검색할 수 있고, 상세 페이지에서 지도와 정보를 확인할 수 있습니다."
   : "전국 동물병원 목록 페이지입니다. 병원명, 주소, 상태를 확인하고 상세 페이지에서 지도 및 정보를 확인할 수 있습니다.";
+
+$robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
 ?>
 <!doctype html>
 <html lang="ko">
@@ -24,7 +28,7 @@ $desc  = $search !== ''
 
   <title><?= esc($title) ?></title>
   <meta name="description" content="<?= esc($desc) ?>" />
-  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="robots" content="<?= esc($robots) ?>" />
   <link rel="canonical" href="<?= esc($canonical) ?>" />
 
   <meta property="og:type" content="website" />

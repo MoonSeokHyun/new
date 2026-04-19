@@ -1,17 +1,15 @@
 <?php
 helper(['url']);
 
+$request = service('request');
 $search = isset($search) ? trim((string)$search) : '';
-$page   = isset($page) ? (int)$page : 1;
+$page   = max(1, (int)($request->getGet('page') ?? ($page ?? 1)));
+$isSearch = ($search !== '');
+$isPaginated = ($page > 1);
 
 $listUrl = site_url('seminar-rooms');
 
 $canonical = $listUrl;
-if ($search !== '') {
-  $canonical = $listUrl . '?search=' . urlencode($search);
-} elseif ($page > 1) {
-  $canonical = $listUrl;
-}
 
 $seoTitle = ($search !== '')
   ? "{$search} 세미나룸 검색 결과 | 세미나룸 목록"
@@ -22,7 +20,7 @@ if ($search !== '') $seoDescParts[] = "검색어: {$search}";
 $seoDescParts[] = "전국 세미나룸 주소/운영시간/편의시설 정보를 확인하세요.";
 $seoDescription = implode(' · ', $seoDescParts);
 
-$robots = ($page > 1) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
+$robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-image-preview:large';
 ?>
 <!DOCTYPE html>
 <html lang="ko">

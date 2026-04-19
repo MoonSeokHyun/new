@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <?php $canonical = site_url('/'); ?>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="naver-site-verification" content="3364bf3d26f95db9c37f59a7acb7f4523cc8c823" />
@@ -8,14 +9,14 @@
   <meta name="description" content="전국 미용실, 도서관, 안경점, 동물병원, 캠핑장, 체육시설, 세계음식점 등 생활시설 정보를 한눈에 검색하세요. 공공데이터 기반 정확한 위치, 전화번호, 운영정보 제공." />
   <meta name="keywords" content="공공데이터, 생활시설, 미용실, 도서관, 안경점, 동물병원, 캠핑장, 체육시설, 세계음식점, 위치검색, 전화번호" />
   <meta name="robots" content="index,follow,max-image-preview:large" />
-  <link rel="canonical" href="<?= current_url() ?>" />
-  <link rel="alternate" href="<?= current_url() ?>" hreflang="ko" />
+  <link rel="canonical" href="<?= esc($canonical) ?>" />
+  <link rel="alternate" href="<?= esc($canonical) ?>" hreflang="ko" />
   
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="공공데이터 포털 - 퐁퐁코리아 | 전국 생활시설 정보 검색" />
   <meta property="og:description" content="전국 미용실, 도서관, 안경점, 동물병원, 캠핑장, 체육시설, 세계음식점 등 생활시설 정보를 한눈에 검색하세요." />
-  <meta property="og:url" content="<?= current_url() ?>" />
+  <meta property="og:url" content="<?= esc($canonical) ?>" />
   <meta property="og:locale" content="ko_KR" />
   <meta property="og:site_name" content="퐁퐁코리아" />
   

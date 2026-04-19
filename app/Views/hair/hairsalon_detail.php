@@ -7,7 +7,7 @@ $status       = esc($salon['business_status_name'] ?? '');
 $dStatus      = esc($salon['detailed_business_status_name'] ?? '');
 $typeName     = esc($salon['business_type_name'] ?? '');
 
-$canonicalUrl = current_url();
+$canonicalUrl = site_url('hairsalon/detail/' . ($salon['id'] ?? 0));
 
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $road_address, $matches);
 $district_name = $matches[0] ?? '지역';
