@@ -84,16 +84,18 @@ $routes->get('sports_facilities/(:num)', static function ($id) { // 하위 호�
 
 $routes->get('sitemap/sportsFacilitiesPage/(:num)', 'SitemapController::sportsFacilitiesPage/$1');
 
-// 도서관 (canonical: 소문자 하이픈)
+// 도서관 (canonical: 소문자 하이픈). 뷰 canonical 메타는 library-info 로 고정.
 $routes->get('library-info', 'LibraryInfoController::index');
 $routes->get('library-info/detail/(:num)', 'LibraryInfoController::detail/$1');
-// 과거 대소문자 혼합 URL 하위호환 (301)
-$routes->get('LibraryInfo', static function () {
-    return redirect()->to(site_url('library-info'), 'auto', 301);
-});
-$routes->get('LibraryInfo/detail/(:num)', static function ($id) {
-    return redirect()->to(site_url('library-info/detail/' . (int) $id), 'auto', 301);
-});
+$routes->get('/library-info', 'LibraryInfoController::index');
+$routes->get('/library-info/detail/(:num)', 'LibraryInfoController::detail/$1');
+// 과거 대소문자 혼합·소문자 URL — 리다이렉트 없이 동일 페이지 (환경별 site_url/리다이렉트 오류 방지)
+$routes->get('LibraryInfo', 'LibraryInfoController::index');
+$routes->get('LibraryInfo/detail/(:num)', 'LibraryInfoController::detail/$1');
+$routes->get('/LibraryInfo', 'LibraryInfoController::index');
+$routes->get('/LibraryInfo/detail/(:num)', 'LibraryInfoController::detail/$1');
+$routes->get('libraryinfo', 'LibraryInfoController::index');
+$routes->get('libraryinfo/detail/(:num)', 'LibraryInfoController::detail/$1');
 $routes->get('sitemap/libraryInfoPage/(:num)', 'SitemapController::libraryInfoPage/$1');  // 도서관 사이트맵 라우터 유지
 
 //안경점
