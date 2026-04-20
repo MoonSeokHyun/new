@@ -1,5 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow">
   <title>Analytics</title>
   <style>
     body { font-family:sans-serif; padding:1rem; }

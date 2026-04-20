@@ -104,7 +104,7 @@ class HairSalonController extends Controller
                 ->findAll();
 
             foreach ($nearby as &$s) {
-                $s['url'] = site_url('hairsalon/' . $s['id']);
+                $s['url'] = site_url('hairsalon/detail/' . $s['id']);
             }
             unset($s);
         }
@@ -124,12 +124,11 @@ class HairSalonController extends Controller
      * ========================= */
     private function naverGeocode(string $query): ?array
     {
-        // 환경변수가 있으면 사용, 없으면 기본값 사용 (서버에서 .env 없을 때 대비)
-        $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3'; // x-ncp-apigw-api-key-id
-        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: 'iyBYir1BVYhy4bW5XWB1wHGfUNyOit2Pz4g413ce'; // x-ncp-apigw-api-key
+        // 환경변수에 설정된 경우에만 사용 (코드에 키를 절대 하드코딩하지 않는다)
+        $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: '';
 
-        // API Key는 필수이므로 없으면 실패
-        if (!$apiKey) {
+        if ($apiKeyId === '' || $apiKey === '') {
             return null;
         }
 

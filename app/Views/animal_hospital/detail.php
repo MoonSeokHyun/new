@@ -44,13 +44,23 @@ if ($status)      $mix[] = "상태 {$status}";
 if (!$roadAddress && $landAddress) $mix[] = "지번 {$landAddress}";
 $mixText = implode(', ', array_slice($mix, 0, 2));
 
-$seoTitle = "{$hospitalName} | {$district} 동물병원 위치·주소·상태";
-$seoDesc  = "{$district}에 위치한 {$hospitalName} 동물병원 정보입니다. {$mixText}를 확인하고 지도에서 위치를 바로 확인하세요.";
+$addrSnippet = $addressForUse ? mb_substr(preg_replace('/\s+/u', ' ', trim($addressForUse)), 0, 40, 'UTF-8') : '';
+$seoTitleBase = $addrSnippet !== ''
+    ? "{$hospitalName} ({$addrSnippet}) | {$district} 동물병원"
+    : "{$hospitalName} | {$district} 동물병원 정보";
+$seoTitle = mb_substr($seoTitleBase, 0, 60, 'UTF-8');
+
+$descParts = [];
+$descParts[] = "{$district} {$hospitalName} 동물병원";
+if ($addrSnippet) $descParts[] = "주소 {$addrSnippet}";
+if ($status)      $descParts[] = "영업상태 {$status}";
+$descParts[] = "지도 위치와 주변 동물병원도 함께 확인하세요.";
+$seoDesc = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
 
 /* =========================
  * 네이버 지도 Key (JS SDK)
  * ========================= */
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
 ?>
 <!doctype html>
 <html lang="ko">
@@ -70,10 +80,15 @@ $naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
 <meta property="og:title" content="<?= esc($seoTitle) ?>" />
 <meta property="og:description" content="<?= esc($seoDesc) ?>" />
 <meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
+<meta property="og:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="퐁퐁코리아 - 전국 생활시설 정보 검색" />
+<meta name="twitter:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
 <meta property="og:locale" content="ko_KR" />
 
 <!-- Twitter -->
-<meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
 <meta name="twitter:description" content="<?= esc($seoDesc) ?>" />
 

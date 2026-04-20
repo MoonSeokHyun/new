@@ -6,7 +6,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <div id="header-wrapper">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <!-- 사이트 타이틀 -->
   <header>
     <h2>퐁퐁</h2>
@@ -21,9 +20,9 @@
         <a href="#" class="dropdown-toggle">🛠️ 서비스 ▾</a>
         <ul class="sub-menu">
           <li><a href="/hairsalon">💇 미용실</a></li>
-          <li><a href="/seminar_rooms">🏢 공유회의실</a></li>
-          <li><a href="/LibraryInfo">📚 도서관</a></li>
-          <li><a href="/shops">👓 안경점</a></li>
+          <li><a href="/seminar-rooms">🏢 공유회의실</a></li>
+          <li><a href="/library-info">📚 도서관</a></li>
+          <li><a href="/open-service-info">👓 안경점</a></li>
           <li><a href="/animal-hospital">🐶 동물병원</a></li>
         </ul>
       </li>
@@ -33,7 +32,7 @@
         <a href="#" class="dropdown-toggle">♻️ 재활용 ▾</a>
         <ul class="sub-menu">
           <li><a href="/installation">💊 폐의약품</a></li>
-          <li><a href="/clothingcollectionbin">👕 폐의류</a></li>
+          <li><a href="/clothing-collection-bin">👕 폐의류</a></li>
         </ul>
       </li>
 
@@ -42,7 +41,7 @@
         <a href="#" class="dropdown-toggle">🌳 야외활동 ▾</a>
         <ul class="sub-menu">
           <li><a href="/camping">🏕️ 캠핑장</a></li>
-          <li><a href="/sports_facilities">🏟️ 체육시설</a></li>
+          <li><a href="/sports-facility">🏟️ 체육시설</a></li>
         </ul>
       </li>
 
@@ -50,7 +49,7 @@
       <li class="menu-group">
         <a href="#" class="dropdown-toggle">🍽️ 맛집 ▾</a>
         <ul class="sub-menu">
-          <li><a href="/world_res">🌍 세계음식</a></li>
+          <li><a href="/world-res">🌍 세계음식</a></li>
         </ul>
       </li>
     </ul>
@@ -110,9 +109,8 @@
   }
 </style>
 
-<!-- 모바일 드롭다운 + 배너 스크립트 -->
+<!-- 모바일 드롭다운 스크립트 -->
 <script>
-  // 모바일 드롭다운
   if (window.innerWidth <= 768) {
     document.querySelectorAll("#header-wrapper .menu-group > a.dropdown-toggle").forEach(function(toggleLink) {
       toggleLink.addEventListener('click', function(e) {
@@ -122,7 +120,4 @@
       });
     });
   }
-
-  // Google AdSense 자동 로드
-  (adsbygoogle = window.adsbygoogle || []).push({});
 </script>

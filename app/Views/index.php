@@ -19,11 +19,16 @@
   <meta property="og:url" content="<?= esc($canonical) ?>" />
   <meta property="og:locale" content="ko_KR" />
   <meta property="og:site_name" content="퐁퐁코리아" />
+  <meta property="og:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="퐁퐁코리아 - 전국 생활시설 정보 검색" />
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="공공데이터 포털 - 퐁퐁코리아" />
   <meta name="twitter:description" content="전국 생활시설 정보를 한눈에 검색하세요." />
+  <meta name="twitter:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
   
   <!-- 네이버 검색 최적화 -->
   <meta name="format-detection" content="telephone=no" />

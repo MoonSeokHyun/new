@@ -3,7 +3,7 @@ $libName = esc($library['Library Name'] ?? '도서관');
 $road_address = esc($library['Address (Road Name)'] ?? '');
 $district_name = $district ?? '지역';
 
-$canonicalUrl = site_url('LibraryInfo/detail/' . ($library['id'] ?? 0));
+$canonicalUrl = site_url('library-info/detail/' . ($library['id'] ?? 0));
 
 preg_match('/([가-힣]+구|[가-힣]+읍|[가-힣]+면)/u', $road_address, $matches);
 if (!$district_name || $district_name === '지역') {
@@ -17,13 +17,23 @@ $region_guess = $m2[0] ?? '대한민국';
 $latitude  = (is_numeric($latitude)  ? (float)$latitude  : null);
 $longitude = (is_numeric($longitude) ? (float)$longitude : null);
 
-$seoTitle = "{$libName} | {$district_name} 도서관 위치·운영시간·편의시설";
-$seoDescription = "{$district_name}에 위치한 {$libName} 도서관 정보. {$road_address} 위치, 운영시간, 열람 좌석 수, 도서 수를 확인하고 네이버 지도로 위치도 바로 확인하세요.";
+$addrSnippet = $road_address ? mb_substr(preg_replace('/\s+/u', ' ', trim($road_address)), 0, 40, 'UTF-8') : '';
+$seoTitleBase = $addrSnippet !== ''
+    ? "{$libName} ({$addrSnippet}) | {$district_name} 도서관"
+    : "{$libName} | {$district_name} 도서관 정보";
+$seoTitle = mb_substr($seoTitleBase, 0, 60, 'UTF-8');
 
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
+$descParts = [];
+$descParts[] = "{$district_name} {$libName} 도서관";
+if ($addrSnippet) $descParts[] = "주소 {$addrSnippet}";
+if ($phone)       $descParts[] = "전화 {$phone}";
+$descParts[] = "운영시간·열람 좌석·도서 정보와 네이버 지도 위치를 확인하세요.";
+$seoDescription = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
+
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
 $nearby_libraries = $nearby_libraries ?? [];
-$districtUrl = site_url('LibraryInfo?district=' . urlencode($district_name));
-$librariesUrl = site_url('LibraryInfo');
+$districtUrl = site_url('library-info?district=' . urlencode($district_name));
+$librariesUrl = site_url('library-info');
 $mapQuery = trim(html_entity_decode($road_address));
 $phone = esc($library['Library Phone Number'] ?? '');
 $telDigits = preg_replace('/[^0-9]/', '', html_entity_decode($phone));
@@ -46,8 +56,13 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   <meta property="og:title" content="<?= esc($seoTitle) ?>" />
   <meta property="og:description" content="<?= esc($seoDescription) ?>" />
   <meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
+  <meta property="og:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="퐁퐁코리아 - 전국 생활시설 정보 검색" />
+  <meta name="twitter:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
   <meta property="og:locale" content="ko_KR" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
   <?php if (!empty($naverMapKeyId)): ?>

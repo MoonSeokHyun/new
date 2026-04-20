@@ -158,8 +158,9 @@ class AnimalHospitalController extends BaseController
     private function naverGeocode(string $query): ?array
     {
         // 환경변수가 있으면 사용, 없으면 기본값 사용 (서버에서 .env 없을 때 대비)
-        $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
-        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: 'iyBYir1BVYhy4bW5XWB1wHGfUNyOit2Pz4g413ce';
+        $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: '';
+        if ($apiKeyId === '' || $apiKey === '') { return null; }
 
         if (!$apiKey) return null;
 

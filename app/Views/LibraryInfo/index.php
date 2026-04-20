@@ -7,7 +7,7 @@ $page   = max(1, (int)($request->getGet('page') ?? ($page ?? 1)));
 $isSearch = ($search !== '');
 $isPaginated = ($page > 1);
 
-$listUrl = site_url('LibraryInfo');
+$listUrl = site_url('library-info');
 
 $canonical = $listUrl;
 
@@ -41,9 +41,14 @@ $robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-ima
   <meta property="og:title" content="<?= esc($seoTitle) ?>" />
   <meta property="og:description" content="<?= esc($seoDescription) ?>" />
   <meta property="og:url" content="<?= esc($canonical) ?>" />
+  <meta property="og:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="퐁퐁코리아 - 전국 생활시설 정보 검색" />
+  <meta name="twitter:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
   <meta property="og:locale" content="ko_KR" />
 
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
 
@@ -166,7 +171,7 @@ $robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-ima
           $addr  = esc($lib['Address (Road Name)'] ?? '');
           $phone = esc($lib['Library Phone Number'] ?? '');
           $type  = esc($lib['Library Type'] ?? '');
-          $url   = site_url('LibraryInfo/detail/' . $id);
+          $url   = site_url('library-info/detail/' . $id);
         ?>
         <a class="card" href="<?= esc($url) ?>">
           <h2 class="name"><?= $name ?></h2>

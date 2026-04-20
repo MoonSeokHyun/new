@@ -22,10 +22,21 @@ $longitude = (is_numeric($longitude) ? (float)$longitude : null);
 
 $category = esc("{$restaurant['CTGRY_ONE_NM']} / {$restaurant['CTGRY_TWO_NM']} / {$restaurant['CTGRY_THREE_NM']}");
 
-$seoTitle = "{$restaurantName} | {$district_name} 세계 음식점 위치·영업시간·편의시설";
-$seoDescription = "{$district_name}에 위치한 {$restaurantName} 세계 음식점 정보. {$address} 위치, {$category} 카테고리, 영업시간, 주차·편의시설을 확인하고 네이버 지도로 위치도 바로 확인하세요.";
+$addrSnippet = $address ? mb_substr(preg_replace('/\s+/u', ' ', trim($address)), 0, 40, 'UTF-8') : '';
+$seoTitleBase = $addrSnippet !== ''
+    ? "{$restaurantName} ({$addrSnippet}) | {$district_name} 세계 음식점"
+    : "{$restaurantName} | {$district_name} 세계 음식점 정보";
+$seoTitle = mb_substr($seoTitleBase, 0, 60, 'UTF-8');
 
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
+$descParts = [];
+$descParts[] = "{$district_name} {$restaurantName} 세계 음식점";
+if ($addrSnippet) $descParts[] = "주소 {$addrSnippet}";
+if ($category)    $descParts[] = "카테고리 {$category}";
+if ($phone)       $descParts[] = "전화 {$phone}";
+$descParts[] = "영업시간과 편의시설, 네이버 지도 위치를 확인하세요.";
+$seoDescription = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
+
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
 $nearby_restaurants = $nearby_restaurants ?? [];
 $districtUrl = site_url('world-res?district=' . urlencode($district_name));
 $restaurantsUrl = site_url('world-res');
@@ -50,8 +61,13 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   <meta property="og:title" content="<?= esc($seoTitle) ?>" />
   <meta property="og:description" content="<?= esc($seoDescription) ?>" />
   <meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
+  <meta property="og:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="퐁퐁코리아 - 전국 생활시설 정보 검색" />
+  <meta name="twitter:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
   <meta property="og:locale" content="ko_KR" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
   <?php if (!empty($naverMapKeyId)): ?>

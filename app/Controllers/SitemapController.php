@@ -84,7 +84,7 @@ class SitemapController extends Controller
             'model' => LibraryInfoModel::class,
             'count' => 'countAllResults',
             'fetch' => 'findAll',
-            'route' => 'LibraryInfo/detail',
+            'route' => 'library-info/detail',
             'priority' => '0.5',
         ],
         'shopsPage' => [

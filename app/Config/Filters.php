@@ -12,8 +12,8 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
-// 👇 이 줄을 추가
 use App\Filters\AccessLogger;
+use App\Filters\AdminGuard;
 
 class Filters extends BaseFilters
 {
@@ -27,8 +27,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        // 👇 여기에 alias 추가
         'accessLogger'  => AccessLogger::class,
+        'adminGuard'    => AdminGuard::class,
     ];
 
     public array $required = [
@@ -45,21 +45,23 @@ class Filters extends BaseFilters
 
     public array $globals = [
         'before' => [
-            // 기본 필터들
-            // 'honeypot',
-            // 'csrf',
-            // 'invalidchars',
-            // 👇 전역 before에 accessLogger 등록
             'accessLogger',
         ],
         'after' => [
-            // 'honeypot',
-            // 'secureheaders',
-            // 👇 전역 after에도 accessLogger 등록
             'accessLogger',
+            'secureheaders',
         ],
     ];
 
     public array $methods = [];
-    public array $filters = [];
+
+    /**
+     * 특정 URI 패턴에만 적용하는 필터.
+     * - /analytics : 관리자 IP 이외 접근 차단
+     */
+    public array $filters = [
+        'adminGuard' => [
+            'before' => ['analytics', 'analytics/*'],
+        ],
+    ];
 }

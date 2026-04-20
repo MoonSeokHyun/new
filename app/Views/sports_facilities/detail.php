@@ -17,10 +17,20 @@ $region_guess = $m2[0] ?? '대한민국';
 $latitude  = (is_numeric($latitude)  ? (float)$latitude  : null);
 $longitude = (is_numeric($longitude) ? (float)$longitude : null);
 
-$seoTitle = "{$facilityName} | {$district_name} 체육시설 위치·면적·수용인원";
-$seoDescription = "{$district_name}에 위치한 {$facilityName} 체육시설 정보. {$road_address} 위치, 면적, 수용인원, 담당부서를 확인하고 네이버 지도로 위치도 바로 확인하세요.";
+$addrSnippet = $road_address ? mb_substr(preg_replace('/\s+/u', ' ', trim($road_address)), 0, 40, 'UTF-8') : '';
+$seoTitleBase = $addrSnippet !== ''
+    ? "{$facilityName} ({$addrSnippet}) | {$district_name} 체육시설"
+    : "{$facilityName} | {$district_name} 체육시설 정보";
+$seoTitle = mb_substr($seoTitleBase, 0, 60, 'UTF-8');
 
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
+$descParts = [];
+$descParts[] = "{$district_name} {$facilityName} 체육시설";
+if ($addrSnippet) $descParts[] = "주소 {$addrSnippet}";
+if ($phone)       $descParts[] = "전화 {$phone}";
+$descParts[] = "면적·수용인원·담당부서 정보와 네이버 지도 위치를 확인하세요.";
+$seoDescription = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
+
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
 $nearby_facilities = $nearby_facilities ?? [];
 $districtUrl = site_url('sports-facility?district=' . urlencode($district_name));
 $facilitiesUrl = site_url('sports-facility');
@@ -46,8 +56,13 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   <meta property="og:title" content="<?= esc($seoTitle) ?>" />
   <meta property="og:description" content="<?= esc($seoDescription) ?>" />
   <meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
+  <meta property="og:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="퐁퐁코리아 - 전국 생활시설 정보 검색" />
+  <meta name="twitter:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
   <meta property="og:locale" content="ko_KR" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
   <?php if (!empty($naverMapKeyId)): ?>

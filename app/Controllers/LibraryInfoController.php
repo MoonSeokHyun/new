@@ -75,7 +75,7 @@ class LibraryInfoController extends BaseController
                 ->findAll();
 
             foreach ($nearby as &$n) {
-                $n['url'] = site_url('LibraryInfo/detail/' . $n['id']);
+                $n['url'] = site_url('library-info/detail/' . $n['id']);
             }
             unset($n);
         }
@@ -91,8 +91,9 @@ class LibraryInfoController extends BaseController
 
     private function naverGeocode(string $query): ?array
     {
-        $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
-        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: 'iyBYir1BVYhy4bW5XWB1wHGfUNyOit2Pz4g413ce';
+        $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: '';
+        if ($apiKeyId === '' || $apiKey === '') { return null; }
         if (!$apiKey) return null;
         $base = 'https://maps.apigw.ntruss.com/map-geocode/v2/geocode';
         $url  = $base . '?' . http_build_query(['query' => $query, 'count' => 1, 'page' => 1, 'language' => 'kor']);

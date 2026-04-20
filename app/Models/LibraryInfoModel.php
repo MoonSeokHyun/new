@@ -34,7 +34,7 @@ class LibraryInfoModel extends Model
         // 라이브러리 정보를 가져와서 사이트맵에 추가
         $libraries = $this->findAll();
         foreach ($libraries as $library) {
-            $url = site_url('LibraryInfo/detail/' . $library['id']);
+            $url = site_url('library-info/detail/' . $library['id']);
             $lastModified = date('Y-m-d', strtotime($library['Data Reference Date'])); // 데이터 참조 날짜 사용
 
             // URL 항목 추가

@@ -20,10 +20,19 @@ $region_guess = $m2[0] ?? '대한민국';
 $latitude  = (is_numeric($latitude)  ? (float)$latitude  : null);
 $longitude = (is_numeric($longitude) ? (float)$longitude : null);
 
-$seoTitle = "{$roomName} | {$district_name} 세미나룸 위치·운영시간·편의시설";
-$seoDescription = "{$district_name}에 위치한 {$roomName} 세미나룸 정보. {$address} 위치, 운영시간, 편의시설을 확인하고 네이버 지도로 위치도 바로 확인하세요.";
+$addrSnippet = $address ? mb_substr(preg_replace('/\s+/u', ' ', trim($address)), 0, 40, 'UTF-8') : '';
+$seoTitleBase = $addrSnippet !== ''
+    ? "{$roomName} ({$addrSnippet}) | {$district_name} 세미나룸"
+    : "{$roomName} | {$district_name} 세미나룸 정보";
+$seoTitle = mb_substr($seoTitleBase, 0, 60, 'UTF-8');
 
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: 'c3hsihbnx3';
+$descParts = [];
+$descParts[] = "{$district_name} {$roomName} 세미나룸";
+if ($addrSnippet) $descParts[] = "주소 {$addrSnippet}";
+$descParts[] = "운영시간과 편의시설, 네이버 지도 위치를 한 번에 확인하세요.";
+$seoDescription = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
+
+$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
 $nearby_rooms = $nearby_rooms ?? [];
 $districtUrl = site_url('seminar-rooms?district=' . urlencode($district_name));
 $roomsUrl = site_url('seminar-rooms');
@@ -46,8 +55,13 @@ $mapQuery = trim(html_entity_decode($address));
   <meta property="og:title" content="<?= esc($seoTitle) ?>" />
   <meta property="og:description" content="<?= esc($seoDescription) ?>" />
   <meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
+  <meta property="og:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="퐁퐁코리아 - 전국 생활시설 정보 검색" />
+  <meta name="twitter:image" content="<?= esc(site_url('assets/og/og-default.jpg')) ?>" />
   <meta property="og:locale" content="ko_KR" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
   <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
   <?php if (!empty($naverMapKeyId)): ?>

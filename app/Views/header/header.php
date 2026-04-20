@@ -90,30 +90,34 @@
 
 
 <div id="hd_section">
-    <a href="/">퐁퐁코리아 도태남 집합소</a>
+    <a href="/">퐁퐁코리아</a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="hd_dd_menu">
         <ul>
             <li class="has-sub"><a href="/">메인</a></li>
             <li class="has-sub">
-                <a href="#">공지사항</a>
+                <a href="#">생활시설</a>
                 <div class="dd_toggle">
-                    <a href="/posts?category=99">공지사항</a>
+                    <a href="/hairsalon">미용실</a>
+                    <a href="/library-info">도서관</a>
+                    <a href="/open-service-info">안경점</a>
+                    <a href="/animal-hospital">동물병원</a>
                 </div>
             </li>
             <li class="has-sub">
-                <a href="#">베스트 게시판</a>
+                <a href="#">야외활동</a>
                 <div class="dd_toggle">
-                    <a href="/posts?category=9">풍코 베스트</a>
+                    <a href="/camping">캠핑장</a>
+                    <a href="/sports-facility">체육시설</a>
                 </div>
             </li>
             <li class="has-sub">
-                <a href="#">전체 게시판</a>
+                <a href="#">기타</a>
                 <div class="dd_toggle">
-                    <a href="/posts?category=1">풍코 토론</a>
-                    <a href="/posts?category=8">풍코 이슈</a>
-                    <a href="/posts?category=4">자유 게시판</a>
-                    <a href="/posts?category=7">유머 게시판</a>
+                    <a href="/world-res">세계음식</a>
+                    <a href="/seminar-rooms">공유회의실</a>
+                    <a href="/installation">폐의약품</a>
+                    <a href="/clothing-collection-bin">의류 수거함</a>
                 </div>
             </li>
         </ul>

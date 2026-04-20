@@ -1,28 +1,54 @@
 User-agent: *
 Allow: /
-Disallow: /posts/create
-Disallow: /posts/*/edit
+# 종료된 게시판(410) – 크롤 자원 낭비 방지
+Disallow: /posts
+Disallow: /posts/
+# 내부 기능 페이지
 Disallow: /crawler/
-Disallow: /dcinside/crawl
-# 검색 파라미터 URL 크롤 억제
+Disallow: /dcinside/
+# 검색 파라미터 URL 크롤 억제 (중복 콘텐츠 방지)
 Disallow: /*?*search=
+Disallow: /*?*page=
+Disallow: /*?*district=
+Disallow: /*?*category=
 
 # 네이버 봇 최적화
 User-agent: Yeti
 Allow: /
 Crawl-delay: 1
+Disallow: /posts
+Disallow: /posts/
+Disallow: /crawler/
+Disallow: /dcinside/
 Disallow: /*?*search=
+Disallow: /*?*page=
+Disallow: /*?*district=
+Disallow: /*?*category=
 
 User-agent: NaverBot
 Allow: /
 Crawl-delay: 1
+Disallow: /posts
+Disallow: /posts/
+Disallow: /crawler/
+Disallow: /dcinside/
 Disallow: /*?*search=
+Disallow: /*?*page=
+Disallow: /*?*district=
+Disallow: /*?*category=
 
 # 구글 봇
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 0
+Disallow: /posts
+Disallow: /posts/
+Disallow: /crawler/
+Disallow: /dcinside/
 Disallow: /*?*search=
+Disallow: /*?*page=
+Disallow: /*?*district=
+Disallow: /*?*category=
 
 # 사이트맵
-Sitemap: https://pongpongkorea.com/sitemap.xml
+Sitemap: https://pongpongkorea.co.kr/sitemap.xml
