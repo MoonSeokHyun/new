@@ -13,6 +13,10 @@ if (!$district_name || $district_name === '지역') {
 preg_match('/^(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\s]*/u', $road_address, $m2);
 $region_guess = $m2[0] ?? '대한민국';
 
+$phone = esc($library['Library Phone Number'] ?? '');
+$telDigits = preg_replace('/[^0-9]/', '', html_entity_decode($phone));
+$telHref   = $telDigits ? "tel:{$telDigits}" : '';
+
 // ✅ 컨트롤러에서 넘어온 WGS84
 $latitude  = (is_numeric($latitude)  ? (float)$latitude  : null);
 $longitude = (is_numeric($longitude) ? (float)$longitude : null);
@@ -35,9 +39,6 @@ $nearby_libraries = $nearby_libraries ?? [];
 $districtUrl = site_url('library-info?district=' . urlencode($district_name));
 $librariesUrl = site_url('library-info');
 $mapQuery = trim(html_entity_decode($road_address));
-$phone = esc($library['Library Phone Number'] ?? '');
-$telDigits = preg_replace('/[^0-9]/', '', html_entity_decode($phone));
-$telHref   = $telDigits ? "tel:{$telDigits}" : '';
 ?>
 <!DOCTYPE html>
 <html lang="ko">
