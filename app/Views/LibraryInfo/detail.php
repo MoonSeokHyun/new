@@ -34,7 +34,7 @@ if ($phone)       $descParts[] = "전화 {$phone}";
 $descParts[] = "운영시간·열람 좌석·도서 정보와 네이버 지도 위치를 확인하세요.";
 $seoDescription = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
 
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+$naverMapKeyId = env('NAVER_MAPS_API_KEY_ID', '');
 $nearby_libraries = $nearby_libraries ?? [];
 $districtUrl = site_url('library-info?district=' . urlencode($district_name));
 $librariesUrl = site_url('library-info');
@@ -121,45 +121,9 @@ $mapQuery = trim(html_entity_decode($road_address));
     ]
   }
   </script>
-  <style>
-    :root{ --blue:#0078ff; --bg:#f5f5f5; --txt:#333; --sub:#666; --card:#fff; --bd:#eee; }
-    body{ background:var(--bg); font-family:'Noto Sans KR',system-ui,-apple-system,sans-serif; margin:0; color:var(--txt); }
-    a{ color:var(--blue); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-    .container{ max-width:900px; margin:1.5rem auto; padding:0 1rem; }
-    .title{ font-size:2rem; margin:.5rem 0 0; }
-    .subtitle{ color:var(--sub); margin:.25rem 0 1rem; line-height:1.5; }
-    .breadcrumb{ font-size:.9rem; color:#555; margin-bottom:1rem; }
-    .grid{ display:grid; grid-template-columns: 1fr; gap:1rem; }
-    .card{ background:var(--card); border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,.08); padding:1.25rem; }
-    .card h2{ font-size:1.15rem; margin:0 0 .75rem; color:var(--blue); border-left:4px solid var(--blue); padding-left:.5rem; }
-    .kv{ display:flex; flex-wrap:wrap; gap:.5rem; }
-    .pill{ background:#eef5ff; color:#0b3d91; border-radius:999px; padding:.35rem .7rem; font-size:.85rem; }
-    .detail{ list-style:none; padding:0; margin:0; }
-    .row{ display:flex; justify-content:space-between; gap:1rem; padding:.65rem 0; border-bottom:1px solid var(--bd); }
-    .row:last-child{ border-bottom:none; }
-    .label{ font-weight:700; }
-    .value{ color:#555; text-align:right; word-break:break-word; }
-    .actions{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.75rem; }
-    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.4rem; padding:.6rem .9rem; border-radius:10px; border:1px solid #dbe7ff; background:#fff; color:#0b3d91; font-weight:700; }
-    .btn.primary{ background:var(--blue); border-color:var(--blue); color:#fff; }
-    .btn.muted{ background:#f7f9ff; }
-    #map{ width:100%; height:340px; border-radius:12px; overflow:hidden; background:#e9eef7; }
-    .note{ margin-top:.5rem; color:var(--sub); font-size:.9rem; line-height:1.5; }
-    .ad{ margin:1rem 0; text-align:center; }
-    .small{ font-size:.92rem; color:#555; line-height:1.7; }
-    .sep{ height:1px; background:var(--bd); margin:1rem 0; }
-    .near-grid{ display:grid; grid-template-columns:1fr; gap:.6rem; }
-    .near-item{ padding:.85rem 1rem; border:1px solid var(--bd); border-radius:12px; background:#fff; }
-    .near-title{ font-weight:800; font-size:1rem; margin:0 0 .25rem; }
-    .near-meta{ color:#666; font-size:.92rem; line-height:1.5; }
-    @media (max-width:640px){
-      .row{ flex-direction:column; align-items:flex-start; }
-      .value{ text-align:left; }
-    }
-  </style>
+  <?php include APPPATH . 'Views/includes/detail_theme.php'; ?>
 </head>
-<body>
+<body class="detail-page">
 <?php include APPPATH . 'Views/includes/header.php'; ?>
 <div class="container">
   <div class="breadcrumb">
@@ -168,8 +132,8 @@ $mapQuery = trim(html_entity_decode($road_address));
     <a href="<?= $districtUrl ?>"><?= esc($district_name) ?></a> &gt;
     상세정보
   </div>
-  <h1 class="title"><?= esc($libName) ?></h1>
-  <p class="subtitle"><?= esc($seoDescription) ?></p>
+    <h1 class="title"><?= esc($libName) ?></h1>
+    <p class="subtitle"><?= esc($seoDescription) ?></p>
   <div class="ad">
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
@@ -283,6 +247,28 @@ $mapQuery = trim(html_entity_decode($road_address));
     <div class="ad">
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6686738239613464" data-ad-slot="1204098626" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
+    <?php if (!empty($blog_posts)): ?>
+    <div class="card" id="blogSection">
+      <h2>네이버 블로그 리뷰</h2>
+      <ul class="blog-list">
+        <?php foreach ($blog_posts as $post): ?>
+          <?php
+            $postTitle = strip_tags($post['title'] ?? '');
+            $postDesc  = strip_tags($post['description'] ?? '');
+            $postLink  = $post['link'] ?? '#';
+            $postDate  = isset($post['postdate'])
+              ? substr($post['postdate'], 0, 4) . '.' . substr($post['postdate'], 4, 2) . '.' . substr($post['postdate'], 6, 2)
+              : '';
+          ?>
+          <li class="blog-item">
+            <a class="blog-title" href="<?= esc($postLink) ?>" target="_blank" rel="noopener noreferrer"><?= esc($postTitle) ?></a>
+            <?php if ($postDesc): ?><p class="blog-desc"><?= esc($postDesc) ?></p><?php endif; ?>
+            <?php if ($postDate): ?><span class="blog-date"><?= esc($postDate) ?></span><?php endif; ?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+    <?php endif; ?>
   </div>
 </div>
 <?php include APPPATH . 'Views/includes/footer.php'; ?>

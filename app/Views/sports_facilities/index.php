@@ -54,82 +54,9 @@ $robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-ima
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
 
-  <style>
-    :root{
-      --bg:#f6f7fb; --card:#fff; --txt:#222; --sub:#555; --bd:#e9ecf2;
-      --blue:#1b6cff; --chip:#eef4ff;
-    }
-    *{ box-sizing:border-box; }
-    body{ margin:0; font-family: system-ui,-apple-system,'Noto Sans KR',sans-serif; background:var(--bg); color:var(--txt); }
-    a{ color:inherit; text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-
-    .container{ max-width:1100px; margin:0 auto; padding:18px 14px 40px; }
-
-    .top{
-      display:flex; gap:12px; align-items:flex-end; justify-content:space-between;
-      padding:16px; background:var(--card); border:1px solid var(--bd); border-radius:16px;
-      box-shadow:0 1px 6px rgba(0,0,0,.05);
-    }
-    .top h1{ margin:0; font-size:22px; }
-    .top p{ margin:6px 0 0; color:var(--sub); font-size:14px; line-height:1.5; }
-
-    .search{
-      display:flex; gap:8px; align-items:center; width:420px; max-width:100%;
-    }
-    .search input{
-      width:100%; padding:12px 14px; border-radius:999px;
-      border:1px solid var(--bd); outline:none; background:#fff;
-    }
-    .search button{
-      padding:12px 14px; border-radius:999px; border:1px solid var(--bd);
-      background:var(--blue); color:#fff; font-weight:800; cursor:pointer;
-    }
-
-    .ad{ margin:14px 0; text-align:center; }
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap:12px;
-      margin-top:14px;
-    }
-    .card{
-      background:var(--card);
-      border:1px solid var(--bd);
-      border-radius:16px;
-      padding:14px 14px 12px;
-      box-shadow:0 1px 6px rgba(0,0,0,.05);
-      transition: transform .15s ease;
-      min-height: 130px;
-    }
-    .card:hover{ transform: translateY(-2px); }
-
-    .name{ font-size:16px; font-weight:900; margin:0 0 8px; }
-    .meta{ color:var(--sub); font-size:13px; line-height:1.45; }
-    .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-    .chip{
-      background:var(--chip); color:#0b3d91;
-      border-radius:999px; padding:6px 10px; font-size:12px; font-weight:800;
-      border:1px solid #dbe7ff;
-    }
-
-    .pager-wrap{
-      margin-top:18px;
-      padding:12px;
-      background:var(--card);
-      border:1px solid var(--bd);
-      border-radius:16px;
-    }
-
-    @media (max-width:980px){ .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (max-width:620px){
-      .top{ flex-direction:column; align-items:stretch; }
-      .grid{ grid-template-columns: 1fr; }
-      .search{ width:100%; }
-    }
-  </style>
+  <?php include APPPATH . 'Views/includes/listing_theme.php'; ?>
 </head>
-<body>
+<body class="listing-page">
 
 <?php include APPPATH . 'Views/includes/header.php'; ?>
 
@@ -200,7 +127,7 @@ $robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-ima
         <?php endif; ?>
       <?php endforeach; ?>
     <?php else: ?>
-      <div class="card" style="grid-column:1/-1;">
+      <div class="card empty-state">
         검색 결과가 없습니다.
       </div>
     <?php endif; ?>
@@ -215,12 +142,11 @@ $robots = ($isSearch || $isPaginated) ? 'noindex,follow' : 'index,follow,max-ima
       data-ad-format="auto"
       data-full-width-responsive="true"></ins>
   </div>
-
-  <div class="pager-wrap">
-    <?php if (isset($pager) && $pager): ?>
+  <?php if (isset($pager) && $pager): ?>
+    <div class="pager-wrap">
       <?= $pager->links('facilities', 'default_full') ?>
-    <?php endif; ?>
-  </div>
+    </div>
+  <?php endif; ?>
 
 </div>
 

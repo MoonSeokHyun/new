@@ -3,10 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\AnimalHospitalModel;
+use App\Traits\NaverGeocodeTrait;
 use CodeIgniter\Exceptions\PageNotFoundException;
 
 class AnimalHospitalController extends BaseController
 {
+    use NaverGeocodeTrait;
+
     public function index()
     {
         helper('url');
@@ -70,12 +73,22 @@ class AnimalHospitalController extends BaseController
             }
         }
 
-        // ✅ 2) DB좌표가 이상하면 주소 지오코딩으로 보정
+        // ✅ 2) DB좌표가 이상하면 주소 지오코딩으로 보정 (신주소 → 실패 시 지번)
         if (($lat === null || $lng === null) && $address !== '') {
             $geo = $this->naverGeocodeCached($address);
             if ($geo) {
                 $lat = $geo['lat'];
                 $lng = $geo['lng'];
+            }
+        }
+        if (($lat === null || $lng === null)) {
+            $alt = trim((string)($hospital['old_address'] ?? ''));
+            if ($alt !== '' && $alt !== $address) {
+                $geo = $this->naverGeocodeCached($alt);
+                if ($geo) {
+                    $lat = $geo['lat'];
+                    $lng = $geo['lng'];
+                }
             }
         }
 
@@ -98,12 +111,15 @@ class AnimalHospitalController extends BaseController
             unset($n);
         }
 
+        $blogPosts = $this->naverBlogSearch($hospital['b_name'] ?? '');
+
         return view('animal_hospital/detail', [
             'hospital'         => $hospital,
             'latitude'         => $lat,
             'longitude'        => $lng,
             'district'         => $district,
             'nearby_hospitals' => $nearby,
+            'blog_posts'       => $blogPosts,
         ]);
     }
 
@@ -149,55 +165,4 @@ class AnimalHospitalController extends BaseController
         }
     }
 
-    /**
-     * 네이버 Geocoding REST
-     * ENV:
-     * - NAVER_MAPS_API_KEY_ID
-     * - NAVER_MAPS_API_KEY
-     */
-    private function naverGeocode(string $query): ?array
-    {
-        // 환경변수가 있으면 사용, 없으면 기본값 사용 (서버에서 .env 없을 때 대비)
-        $apiKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
-        $apiKey   = getenv('NAVER_MAPS_API_KEY') ?: '';
-        if ($apiKeyId === '' || $apiKey === '') { return null; }
-
-        if (!$apiKey) return null;
-
-        $url = 'https://maps.apigw.ntruss.com/map-geocode/v2/geocode?' . http_build_query([
-            'query' => $query,
-            'count' => 1,
-        ]);
-
-        $ch = curl_init();
-        curl_setopt_array($ch, [
-            CURLOPT_URL            => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT        => 6,
-            CURLOPT_HTTPHEADER     => [
-                'Accept: application/json',
-                'x-ncp-apigw-api-key-id: ' . $apiKeyId,
-                'x-ncp-apigw-api-key: ' . $apiKey,
-            ],
-        ]);
-
-        $raw  = curl_exec($ch);
-        $http = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if (!$raw || $http !== 200) return null;
-
-        $json = json_decode($raw, true);
-        if (!is_array($json)) return null;
-        if (($json['status'] ?? '') !== 'OK') return null;
-
-        $a = $json['addresses'][0] ?? null;
-        if (!is_array($a)) return null;
-
-        $x = isset($a['x']) ? (float)$a['x'] : null; // 경도
-        $y = isset($a['y']) ? (float)$a['y'] : null; // 위도
-        if ($x === null || $y === null) return null;
-
-        return ['lat' => $y, 'lng' => $x];
-    }
 }

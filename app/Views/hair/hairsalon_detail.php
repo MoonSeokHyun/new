@@ -27,23 +27,21 @@ if ($typeName)     $parts[] = "업종 {$typeName}";
 $mix = $parts ? implode(', ', array_slice($parts, 0, 2)) : "{$district_name} 지역";
 
 $addrForTitle = $road_address ?: $full_address;
-$addrSnippet  = $addrForTitle ? mb_substr(preg_replace('/\s+/u', ' ', trim($addrForTitle)), 0, 40, 'UTF-8') : '';
-$seoTitleBase = $addrSnippet !== ''
+$addrSnippet  = $addrForTitle ? mb_substr(preg_replace('/\s+/u', ' ', trim($addrForTitle)), 0, 30, 'UTF-8') : '';
+$seoTitle = $addrSnippet !== ''
     ? "{$bizName} ({$addrSnippet}) | {$district_name} 미용실"
     : "{$bizName} | {$district_name} 미용실 정보";
-$seoTitle = mb_substr($seoTitleBase, 0, 60, 'UTF-8');
 
+$descAddrSnippet = $addrForTitle ? mb_substr(preg_replace('/\s+/u', ' ', trim($addrForTitle)), 0, 50, 'UTF-8') : '';
 $descParts = [];
 $descParts[] = "{$district_name}에 위치한 {$bizName} 미용실";
-if ($addrSnippet) $descParts[] = "주소 {$addrSnippet}";
-if ($phone)       $descParts[] = "전화 {$phone}";
-if ($typeName)    $descParts[] = "업종 {$typeName}";
-if ($status)      $descParts[] = "영업상태 {$status}";
-$descParts[] = "네이버 지도로 위치와 주변 미용실도 함께 확인하세요.";
+if ($descAddrSnippet) $descParts[] = "주소 {$descAddrSnippet}";
+if ($phone)           $descParts[] = "전화 {$phone}";
+if ($typeName && $typeName !== '미용업') $descParts[] = "업종 {$typeName}";
 $seoDescription = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
 
 // 환경변수가 있으면 사용, 없으면 기본값 사용 (서버에서 .env 없을 때 대비)
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+$naverMapKeyId = env('NAVER_MAPS_API_KEY_ID', '');
 
 $nearby_salons = $nearby_salons ?? [];
 
@@ -160,59 +158,24 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
   }
   </script>
 
-  <style>
-    :root{ --blue:#0078ff; --bg:#f5f5f5; --txt:#333; --sub:#666; --card:#fff; --bd:#eee; }
-    body{ background:var(--bg); font-family:'Noto Sans KR',system-ui,-apple-system,sans-serif; margin:0; color:var(--txt); }
-    a{ color:var(--blue); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-    .container{ max-width:900px; margin:1.5rem auto; padding:0 1rem; }
-    .title{ font-size:2rem; margin:.5rem 0 0; }
-    .subtitle{ color:var(--sub); margin:.25rem 0 1rem; line-height:1.5; }
-    .breadcrumb{ font-size:.9rem; color:#555; margin-bottom:1rem; }
-    .grid{ display:grid; grid-template-columns: 1fr; gap:1rem; }
-    .card{ background:var(--card); border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,.08); padding:1.25rem; }
-    .card h2{ font-size:1.15rem; margin:0 0 .75rem; color:var(--blue); border-left:4px solid var(--blue); padding-left:.5rem; }
-    .kv{ display:flex; flex-wrap:wrap; gap:.5rem; }
-    .pill{ background:#eef5ff; color:#0b3d91; border-radius:999px; padding:.35rem .7rem; font-size:.85rem; }
-    .detail{ list-style:none; padding:0; margin:0; }
-    .row{ display:flex; justify-content:space-between; gap:1rem; padding:.65rem 0; border-bottom:1px solid var(--bd); }
-    .row:last-child{ border-bottom:none; }
-    .label{ font-weight:700; }
-    .value{ color:#555; text-align:right; word-break:break-word; }
-    .actions{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.75rem; }
-    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.4rem; padding:.6rem .9rem; border-radius:10px; border:1px solid #dbe7ff; background:#fff; color:#0b3d91; font-weight:700; }
-    .btn.primary{ background:var(--blue); border-color:var(--blue); color:#fff; }
-    .btn.muted{ background:#f7f9ff; }
-    #map{ width:100%; height:340px; border-radius:12px; overflow:hidden; background:#e9eef7; }
-    .note{ margin-top:.5rem; color:var(--sub); font-size:.9rem; line-height:1.5; }
-    .ad{ margin:1rem 0; text-align:center; }
-    .small{ font-size:.92rem; color:#555; line-height:1.7; }
-    .sep{ height:1px; background:var(--bd); margin:1rem 0; }
-    .near-grid{ display:grid; grid-template-columns:1fr; gap:.6rem; }
-    .near-item{ padding:.85rem 1rem; border:1px solid var(--bd); border-radius:12px; background:#fff; }
-    .near-title{ font-weight:800; font-size:1rem; margin:0 0 .25rem; }
-    .near-meta{ color:#666; font-size:.92rem; line-height:1.5; }
-    @media (max-width:640px){
-      .row{ flex-direction:column; align-items:flex-start; }
-      .value{ text-align:left; }
-    }
-  </style>
+  <?php include APPPATH . 'Views/includes/detail_theme.php'; ?>
 </head>
-<body>
+<body class="detail-page">
 
 <?php include APPPATH . 'Views/includes/header.php'; ?>
 
 <div class="container">
 
-  <div class="breadcrumb">
+  <div class="page-hero">
+    <div class="breadcrumb">
     <a href="<?= site_url() ?>">홈</a> &gt;
     <a href="<?= $salonsUrl ?>">미용실 목록</a> &gt;
     <a href="<?= $districtUrl ?>"><?= esc($district_name) ?></a> &gt;
     상세정보
   </div>
-
-  <h1 class="title"><?= esc($bizName) ?></h1>
-  <p class="subtitle"><?= esc($seoDescription) ?></p>
+    <h1 class="title"><?= esc($bizName) ?></h1>
+    <p class="subtitle"><?= esc($seoDescription) ?></p>
+  </div>
 
   <!-- 광고(1) 상단 -->
   <div class="ad">
@@ -257,7 +220,6 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
         data-ad-format="fluid"
         data-ad-layout="in-article"></ins>
     </div>
-    <?php include(APPPATH . 'Views/common/coupang.php'); ?>
     <div class="card">
       <h2>기본 정보</h2>
       <ul class="detail">
@@ -270,7 +232,7 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
       </ul>
       <p class="note">※ 공개 데이터 기반 정보로 실제 운영 정보는 변동될 수 있습니다.</p>
     </div>
-   
+    <?php include(APPPATH . 'Views/common/coupang.php'); ?>
     <!-- 광고(3) 중간 -->
     <div class="ad">
       <ins class="adsbygoogle"
@@ -351,6 +313,28 @@ $telHref   = $telDigits ? "tel:{$telDigits}" : '';
         data-ad-format="auto"
         data-full-width-responsive="true"></ins>
     </div>
+    <?php if (!empty($blog_posts)): ?>
+    <div class="card" id="blogSection">
+      <h2>네이버 블로그 리뷰</h2>
+      <ul class="blog-list">
+        <?php foreach ($blog_posts as $post): ?>
+          <?php
+            $postTitle = strip_tags($post['title'] ?? '');
+            $postDesc  = strip_tags($post['description'] ?? '');
+            $postLink  = $post['link'] ?? '#';
+            $postDate  = isset($post['postdate'])
+              ? substr($post['postdate'], 0, 4) . '.' . substr($post['postdate'], 4, 2) . '.' . substr($post['postdate'], 6, 2)
+              : '';
+          ?>
+          <li class="blog-item">
+            <a class="blog-title" href="<?= esc($postLink) ?>" target="_blank" rel="noopener noreferrer"><?= esc($postTitle) ?></a>
+            <?php if ($postDesc): ?><p class="blog-desc"><?= esc($postDesc) ?></p><?php endif; ?>
+            <?php if ($postDate): ?><span class="blog-date"><?= esc($postDate) ?></span><?php endif; ?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+    <?php endif; ?>
 
   </div>
 </div>

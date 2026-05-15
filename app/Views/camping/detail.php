@@ -51,7 +51,7 @@ $seoDesc = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
 $canonical  = site_url('camping/' . ($camping['id'] ?? 0));
 
 // 네이버 지도 Key
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+$naverMapKeyId = env('NAVER_MAPS_API_KEY_ID', '');
 
 $nearby_campings = $nearby_campings ?? [];
 $districtUrl = site_url('camping?district=' . urlencode($district_name));
@@ -144,33 +144,32 @@ $mapQuery = trim(html_entity_decode($roadAddr ?: $lotAddr));
   <?php endif; ?>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
-  <style>
-    body { background:#f5f5f5; font-family:'Noto Sans KR',sans-serif; margin:0; padding:0; color:#333; }
-    a { color:#0078ff; text-decoration:none; }
-    .container{ max-width:800px; margin:2rem auto; padding:0 1rem; }
-    .content-title{ font-size:2rem; margin-bottom:.5rem; border-bottom:2px solid #0078ff; padding-bottom:.3rem; }
-    .breadcrumb{ font-size:.9rem; color:#555; margin-bottom:1.5rem; }
-    .ad-box{ margin:1.5rem 0; text-align:center; }
-    .section{ background:#fff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); margin-bottom:1.5rem; padding:1.5rem; }
-    .section h2{ font-size:1.2rem; margin-bottom:1rem; color:#0078ff; border-left:4px solid #0078ff; padding-left:.5rem; }
-    .detail-list{ margin:0; padding:0; }
-    .detail-item{ display:flex; justify-content:space-between; padding:.75rem 0; border-bottom:1px solid #eee; }
-    .detail-item:last-child{ border-bottom:none; }
-    .label{ font-weight:600; }
-    .value{ color:#555; text-align:right; }
-    #map{ width:100%; height:300px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
-  </style>
+  <?php include APPPATH . 'Views/includes/detail_theme.php'; ?>
 </head>
-<body>
+<body class="detail-page">
 
 <?php include APPPATH.'Views/includes/header.php'; ?>
 
 <div class="container">
-  <h1 class="content-title"><?= $facilityName ?></h1>
   <div class="breadcrumb">
     <a href="<?= site_url() ?>">홈</a> &gt;
     <a href="<?= site_url('camping') ?>">캠핑장 목록</a> &gt;
     상세정보
+  </div>
+
+  <div class="hero">
+    <h1><?= $facilityName ?></h1>
+    <p><?= esc($seoDesc) ?></p>
+    <div class="kv" style="margin-top:12px;">
+      <?php if ($district_name): ?><span class="pill"><?= esc($district_name) ?></span><?php endif; ?>
+      <?php if ($category): ?><span class="pill"><?= esc($category) ?></span><?php endif; ?>
+      <?php if ($manageBy): ?><span class="pill">관리: <?= esc($manageBy) ?></span><?php endif; ?>
+    </div>
+    <div class="actions" style="margin-top:16px;">
+      <a class="btn muted" href="#mapSection">지도 보기</a>
+      <a class="btn" href="<?= $districtUrl ?>">같은 지역 캠핑장</a>
+      <a class="btn" href="<?= $campingsUrl ?>">캠핑장 목록</a>
+    </div>
   </div>
 
   <div class="ad-box">
@@ -354,6 +353,28 @@ $mapQuery = trim(html_entity_decode($roadAddr ?: $lotAddr));
         </div>
       <?php endforeach; ?>
     </div>
+  </div>
+  <?php endif; ?>
+  <?php if (!empty($blog_posts)): ?>
+  <div class="card" id="blogSection" style="margin-top:18px;">
+    <h2>네이버 블로그 리뷰</h2>
+    <ul class="blog-list">
+      <?php foreach ($blog_posts as $post): ?>
+        <?php
+          $postTitle = strip_tags($post['title'] ?? '');
+          $postDesc  = strip_tags($post['description'] ?? '');
+          $postLink  = $post['link'] ?? '#';
+          $postDate  = isset($post['postdate'])
+            ? substr($post['postdate'], 0, 4) . '.' . substr($post['postdate'], 4, 2) . '.' . substr($post['postdate'], 6, 2)
+            : '';
+        ?>
+        <li class="blog-item">
+          <a class="blog-title" href="<?= esc($postLink) ?>" target="_blank" rel="noopener noreferrer"><?= esc($postTitle) ?></a>
+          <?php if ($postDesc): ?><p class="blog-desc"><?= esc($postDesc) ?></p><?php endif; ?>
+          <?php if ($postDate): ?><span class="blog-date"><?= esc($postDate) ?></span><?php endif; ?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
   </div>
   <?php endif; ?>
 </div>

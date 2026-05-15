@@ -26,14 +26,15 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => '203.245.28.201', // 로컬호스트
-        'username'     => 'mls0000', // 사용자 이름
-        'password'     => 'Alcls1475', // 비밀번호
-        'database'     => 'ParkingNet', // 데이터베이스 이름
-        'DBDriver'     => 'MySQLi', // 또는 'PDO' 사용
+        // .env 는 __construct()에서 env()로 읽습니다(속성 기본값에 함수 호출 불가).
+        'hostname'     => 'localhost',
+        'username'     => '',
+        'password'     => '',
+        'database'     => '',
+        'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
-        'DBDebug'      => (ENVIRONMENT !== 'production'),
+        'DBDebug'      => true,
         'cacheOn'      => false,
         'cachedir'     => '',
         'charset'      => 'utf8',
@@ -43,7 +44,7 @@ class Database extends Config
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'saveQueries'  => true,
+        'saveQueries'  => false,
         'port'         => 3306, // 필요한 경우 포트 번호를 추가하세요
         'numberNative' => false,
         'dateFormat'   => [
@@ -88,6 +89,11 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
+
+        $this->default['hostname'] = env('database.default.hostname', $this->default['hostname']);
+        $this->default['username'] = env('database.default.username', $this->default['username']);
+        $this->default['password'] = env('database.default.password', $this->default['password']);
+        $this->default['database'] = env('database.default.database', $this->default['database']);
 
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that

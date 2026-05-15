@@ -60,7 +60,7 @@ $seoDesc = mb_substr(implode(' · ', $descParts), 0, 155, 'UTF-8');
 /* =========================
  * 네이버 지도 Key (JS SDK)
  * ========================= */
-$naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
+$naverMapKeyId = env('NAVER_MAPS_API_KEY_ID', '');
 ?>
 <!doctype html>
 <html lang="ko">
@@ -130,47 +130,9 @@ $naverMapKeyId = getenv('NAVER_MAPS_API_KEY_ID') ?: '';
 }
 </script>
 
-<style>
-:root{
-  --pri:#2563eb; --pri2:#1d4ed8; --bg:#f6f8fc; --card:#fff;
-  --txt:#111827; --sub:#6b7280; --bd:#e5e7eb;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:'Noto Sans KR',system-ui;background:var(--bg);color:var(--txt);}
-a{text-decoration:none;color:inherit}
-.container{max-width:980px;margin:0 auto;padding:18px 14px 44px}
-.breadcrumb{font-size:13px;color:#6b7280;margin-bottom:10px}
-.breadcrumb a{color:#374151}
-.hero{background:linear-gradient(135deg,#fff 0%,#eef2ff 100%);border:1px solid var(--bd);border-radius:16px;padding:16px}
-.hero h1{margin:0 0 6px;font-size:22px}
-.hero p{margin:0;color:var(--sub);line-height:1.6}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.btn{padding:10px 14px;border-radius:12px;border:1px solid #dbeafe;background:#fff;font-weight:800}
-.btn.primary{background:var(--pri);border-color:var(--pri);color:#fff}
-.btn.primary:hover{background:var(--pri2)}
-.grid{display:grid;gap:14px;margin-top:16px}
-.card{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:16px}
-.card h2{margin:0 0 10px;font-size:16px;color:var(--pri);border-left:4px solid var(--pri);padding-left:10px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)}
-.row:last-child{border-bottom:none}
-.label{font-weight:900}
-.value{color:#374151;text-align:right;max-width:70%;word-break:break-word}
-@media(max-width:640px){.row{flex-direction:column;align-items:flex-start}.value{text-align:left;max-width:100%}}
-#ad{margin:14px 0;text-align:center}
-#ad .adsbygoogle{border-radius:14px;overflow:hidden}
-#map{width:100%;height:340px;border-radius:14px;background:#e5e7eb;overflow:hidden}
-.note{margin-top:8px;font-size:13px;color:var(--sub);line-height:1.6}
-.sep{height:1px;background:var(--bd);margin:10px 0}
-.kv{display:flex;gap:8px;flex-wrap:wrap}
-.pill{display:inline-flex;gap:6px;align-items:center;background:#eef2ff;color:#1e3a8a;font-weight:900;font-size:12px;padding:6px 10px;border-radius:999px}
-.near-grid{display:grid;grid-template-columns:1fr;gap:10px}
-.near-item{border:1px solid var(--bd);border-radius:14px;padding:12px;background:#fff}
-.near-title{font-weight:900;margin:0 0 4px}
-.near-meta{color:var(--sub);font-size:13px;line-height:1.5}
-
-</style>
+<?php include APPPATH . 'Views/includes/detail_theme.php'; ?>
 </head>
-<body>
+<body class="detail-page">
 
 <?php include APPPATH.'Views/includes/header.php'; ?>
 
@@ -323,6 +285,28 @@ a{text-decoration:none;color:inherit}
       data-ad-format="auto"
       data-full-width-responsive="true"></ins>
   </div>
+  <?php if (!empty($blog_posts)): ?>
+  <div class="card" id="blogSection">
+    <h2>네이버 블로그 리뷰</h2>
+    <ul class="blog-list">
+      <?php foreach ($blog_posts as $post): ?>
+        <?php
+          $postTitle = strip_tags($post['title'] ?? '');
+          $postDesc  = strip_tags($post['description'] ?? '');
+          $postLink  = $post['link'] ?? '#';
+          $postDate  = isset($post['postdate'])
+            ? substr($post['postdate'], 0, 4) . '.' . substr($post['postdate'], 4, 2) . '.' . substr($post['postdate'], 6, 2)
+            : '';
+        ?>
+        <li class="blog-item">
+          <a class="blog-title" href="<?= esc($postLink) ?>" target="_blank" rel="noopener noreferrer"><?= esc($postTitle) ?></a>
+          <?php if ($postDesc): ?><p class="blog-desc"><?= esc($postDesc) ?></p><?php endif; ?>
+          <?php if ($postDate): ?><span class="blog-date"><?= esc($postDate) ?></span><?php endif; ?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  </div>
+  <?php endif; ?>
 
 </div>
 
